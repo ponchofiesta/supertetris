@@ -6,9 +6,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Controller for View
+ * View Controller for game board
  */
-public class GuiController implements Initializable {
+public class BoardViewController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 

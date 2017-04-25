@@ -1,6 +1,10 @@
-<?import javafx.scene.layout.*?>
-<Pane fx:controller="de.vfh.pressanykey.supertetris.GuiController"
-      xmlns:fx="http://javafx.com/fxml"
-      stylesheets="board.css">
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+
+<Pane prefHeight="600.0" prefWidth="600.0" stylesheets="board.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.vfh.pressanykey.supertetris.BoardViewController">
+
+    <Text layoutX="194.0" layoutY="266.0" styleClass="textfeld">Juhu, wir können umschalten</Text>
 
 </Pane>

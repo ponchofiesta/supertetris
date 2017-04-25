@@ -1,3 +1,7 @@
 .root {
     -fx-background-color: black;
 }
+.textfeld {
+    -fx-fill: white;
+    -fx-font-size: 20px;
+}

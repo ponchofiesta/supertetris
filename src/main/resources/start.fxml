@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="600.0" stylesheets="start.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.vfh.pressanykey.supertetris.StartViewController">
+
+    <Button fx:id="btnStart" layoutX="250.0" layoutY="266.0" onAction="#btnClick" text="Play">test</Button>
+
+</AnchorPane>
