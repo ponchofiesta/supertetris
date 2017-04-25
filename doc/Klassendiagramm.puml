@@ -12,7 +12,7 @@ Stones "1" *-- "*" Stone
 
 
 class SupertetrisApp {
-    -gameController: GameController
+    
 }
 
 class StartViewController {
