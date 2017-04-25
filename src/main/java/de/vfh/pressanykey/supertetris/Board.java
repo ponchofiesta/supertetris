@@ -1,4 +1,4 @@
-package supertetris;
+package de.vfh.pressanykey.supertetris;
 
 import javafx.scene.shape.Rectangle;
 

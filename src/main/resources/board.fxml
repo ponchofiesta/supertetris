@@ -1,0 +1,6 @@
+<?import javafx.scene.layout.*?>
+<Pane fx:controller="de.vfh.pressanykey.supertetris.GuiController"
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="board.css">
+
+</Pane>
