@@ -2,9 +2,11 @@
 skinparam classAttributeIconSize 0
 
 
-SupertetrisApp "1" *-- "1" GameController
+SupertetrisApp "1" *-- "1" StartViewController
+SupertetrisApp "1" *-- "1" BoardViewController
+StartViewController "1" *-- "1" BoardViewController
+BoardViewController "1" *-- "1" GameController
 GameController "1" *-- "1" Board
-GameController "1" *-- "1" GuiController
 Board "1" *-- "1" Stones
 Stones "1" *-- "*" Stone
 
@@ -13,12 +15,16 @@ class SupertetrisApp {
     -gameController: GameController
 }
 
-class GameController {
-    -board : Board
+class StartViewController {
+
 }
 
-class GuiController {
+class BoardViewController {
+    -gameController : GameController
+}
 
+class GameController {
+    -board : Board
 }
 
 class Board {
