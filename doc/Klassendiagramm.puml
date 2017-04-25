@@ -1,0 +1,31 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+
+SupertetrisApp "1" *-- "1" GameController
+GameController "1" *-- "1" Board
+Board "1" *-- "1" Stones
+Stones "1" *-- "*" Stone
+
+
+class SupertetrisApp {
+    -gameController: GameController
+}
+
+class GameController {
+    -board : Board
+}
+
+class Board {
+    -stones: Stone[]
+}
+
+class Stones {
+
+}
+
+class Stone {
+
+}
+
+@enduml
