@@ -18,18 +18,28 @@ import java.util.ResourceBundle;
 public class StartViewController implements Initializable {
 
     @FXML
-    private Button btnStart;
-
+    private Button btnSingleplayer;
     @FXML
-    public void btnClick(ActionEvent actionEvent) throws Exception {
-        Stage stage = (Stage)btnStart.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("board.fxml"));
-        stage.setScene(new Scene(root, 600, 600));
-        stage.show();
-    }
+    private Button btnMultiplayer;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+    }
+
+    @FXML
+    public void btnSingleplayerClick(ActionEvent actionEvent) throws Exception {
+        setView((Stage)btnSingleplayer.getScene().getWindow(), "board.fxml");
+    }
+
+    @FXML
+    public void btnMultiplayerClick(ActionEvent actionEvent) throws Exception {
+        setView((Stage)btnMultiplayer.getScene().getWindow(), "multiplayer.fxml");
+    }
+
+    private void setView(Stage stage, String fxmlfile) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource(fxmlfile));
+        stage.setScene(new Scene(root, 600, 600));
+        stage.show();
     }
 }
