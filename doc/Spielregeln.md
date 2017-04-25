@@ -20,7 +20,13 @@ Die Steine fallen von oben nach unten herunter. Sie erscheinen schrittweise, sin
 
 Der vorletzte Takt eines Steins legt diesen ab. Er lässt sich dann aber noch seitlich vom Spieler verschieben. Erst der nachfolgende Takt beendet die Ablage des Steins.
 
-Wenn eine Reihe voll mit Steinen ist, verschindet sie und der Spieler bekommen Punkte.
+Ein typischer taktweiser Ablauf sieht also wie folgt aus ( | markiert das Ende eines Taktes):
+Stein erscheint | Stein fällt | Stein fällt | ... | Stein erreicht Boden/Reihe | Stein verschiebbar | Neuer Stein erscheint
+
+Wenn eine Reihe voll mit Steinen ist, verschwindet sie und der Spieler bekommen Punkte.
+(TODO: Wird die Reihe zunächst besonders hervorgehoben (z.B. blinken) und wenn ja, dauert das Hervorheben und Verschwinden 1 oder 2 Takte?)
+
+Das Spiel endet, sobald kein neuer Stein mehr auf dem Spielfeld erscheinen kann, da die oberste Reihe an der Stelle, an der der neue Stein erscheinen sollte schon durch andere Steine belegt ist.
 
 ## Steuerung
 
@@ -34,4 +40,4 @@ Es gibt diese Steine:
 
 ## Mehrspielermodus
 
-Ein Spieler kann ein Spiel hosten (Server) (TODO: auch Taktgeber?). Ein zweiter Spieler kann sich zu diesem Spieler verbinden. Wenn ein Spieler eine Reihe abbaut, bekommt der andere Spieler diese Reihe unter seinem Steinstabel dazu mit einem zufälligen freien Block in der Reihe.
+Ein Spieler kann ein Spiel hosten (Server) (TODO: auch Taktgeber?). Ein zweiter Spieler kann sich zu diesem Spieler verbinden. Wenn ein Spieler eine Reihe abbaut, bekommt der andere Spieler diese Reihe unter seinem Steinstapel dazu mit einem zufälligen freien Block in der Reihe.
