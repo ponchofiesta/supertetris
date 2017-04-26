@@ -22,7 +22,7 @@ Das bisher einzige Kommando ist das Hinzufügen von Reihen:
 
 ```javascript
 {
-	"cmd": "addrows",
+    "cmd": "addrows",
     "data": {
     	"count": <rowcount>
     }
