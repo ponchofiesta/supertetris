@@ -75,7 +75,7 @@ Während des Spiels werden Infos über hinzuzufügende Reihen von beiden Seiten 
 }
 ```
 
-Wenn ein Spieler am oben Rand ankommt, also verliert, sendet er:
+Wenn ein Spieler am oben Rand ankommt oder den Beenden-Button drückt, also verliert, sendet er:
 
 ```javascript
 {
@@ -83,6 +83,23 @@ Wenn ein Spieler am oben Rand ankommt, also verliert, sendet er:
     "data": {}
 }
 ```
+
+Pause-Button:
+
+```javascript
+{
+    "cmd": "startpause",
+    "data": {}
+}
+```
+
+```javascript
+{
+    "cmd": "endpause",
+    "data": {}
+}
+```
+
 ### Beispiel-Nachricht
 
 Eine Nachricht sieht dann bspw. so aus (In Java würden aber erst ein Object erstellen, dass wir dann per Methode umwandeln):
