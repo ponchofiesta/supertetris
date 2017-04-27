@@ -2,6 +2,8 @@
 
 Der Multiplayer-Modus erlaubt es zwei Spielern per Netzwerk gegeneinader zu spielen. Dafür wird ein Protokoll benötigt, mit dem Server und Client kommunizieren.
 
+Die Server-Suche und -Antwort laufen per UDP. Im Spiel wird per TCP kommuniziert. Alles läuft über Port 1337.
+
 Es werden keine aktuellen Spielinfos übertragen. Das macht das Protkoll sehr einfach. Es wird nur übertragen, wenn Reihen beim gegenspieler hinzugefügt werden müssen.
 
 ## Protokoll
@@ -18,7 +20,51 @@ Nachrichten sind generell so aufgebaut:
 ```
 Das erlaubt auch das Protokoll ggf. zu erweitern.
 
-Das bisher einzige Kommando ist das Hinzufügen von Reihen:
+### Ablauf
+
+TODO: Sequenzdiagramm
+
+Um einen Server zu suchen wird ein UDP-Broadcast mit einer Suchanfrage gesendet:
+
+```javascript
+{
+    "cmd": "whoisserver",
+    "data": {}
+}
+```
+
+Diese Anfrage wird vom Server mit einer UDP-Antwort an den Client beantwortet:
+
+```javascript
+{
+    "cmd": "iamserver",
+    "data": {
+    	"gamename": <gamename>
+    }
+}
+```
+
+Der Client baut eine TCP-Verbindung zum Server auf und tritt dem Spiel bei:
+
+```javascript
+{
+    "cmd": "joingame",
+    "data": {
+    	"gamename": <gamename>
+    }
+}
+```
+
+Der Server startet das Spiel:
+
+```javascript
+{
+    "cmd": "startgame",
+    "data": {}
+}
+```
+
+Während des Spiels werden Infos über hinzuzufügende Reihen von beiden Seiten gsendet:
 
 ```javascript
 {
@@ -28,6 +74,16 @@ Das bisher einzige Kommando ist das Hinzufügen von Reihen:
     }
 }
 ```
+
+Wenn ein Spieler am oben Rand ankommt, also verliert, sendet er:
+
+```javascript
+{
+    "cmd": "gameover",
+    "data": {}
+}
+```
+### Beispiel-Nachricht
 
 Eine Nachricht sieht dann bspw. so aus (In Java würden aber erst ein Object erstellen, dass wir dann per Methode umwandeln):
 
