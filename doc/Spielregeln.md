@@ -30,13 +30,15 @@ Das Spiel endet, sobald kein neuer Stein mehr auf dem Spielfeld erscheinen kann,
 
 ## Steuerung
 
-Man spielt mit den Cursor-tasten auf der Tastatur. *Rechts* und *Links* schieben den Stein zu den Seiten. *Hoch* dreht den Stein um 90° im Uhrzeigersinn. *Runter* lässt den Stein schneller fallen.
+Man spielt mit den Cursor-tasten auf der Tastatur. *Rechts* und *Links* schieben den Stein zu den Seiten. *Hoch* dreht den Stein um 90° im Uhrzeigersinn. *Runter* lässt den Stein schneller fallen. Die gedrückte Runter-Taste beeinflusst nur den Stein, bei dem sie gedrückt wurde. Sobald ein neuer Stein erscheint, muss die Runter-Taste erneut gedrückt werden, wenn man diesen schneller fallen lassen möchte.
 
 ## Steine
 
 Es gibt diese Steine:
 
 ![](https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Tetrominoes_IJLO_STZ_Worlds.svg/360px-Tetrominoes_IJLO_STZ_Worlds.svg.png)
+
+Jeder Steintyp hat eine eigene Farbe, die sich im Laufe des Spiels nicht ändert, d.h. ein viererblock ist z.B. immer rot.
 
 ## Mehrspielermodus
 
