@@ -6,6 +6,7 @@ Die Server-Suche und -Antwort laufen per UDP. Im Spiel wird per TCP kommuniziert
 
 > Es werden keine aktuellen Spielinfos übertragen. Das macht das Protkoll sehr einfach. 
 > Es wird nur übertragen, wenn Reihen > beim gegenspieler hinzugefügt werden müssen.
+
 Dieses Verhalten ist zwar einfacher zu implementieren, aber m.E. auch etwas langweilig, weil ich als Spieler kaum nachverfolgen kann, wie sich mein Gegner schlägt. Schöner wäre, aktuelle Spielinfos zu übertragen, sodass ich sehe, was mein Gegner aktuell tut und ob ich womöglich bald mit einer neuen Reihe rechnen muss (siehe [Mockup zum Multiplayer-Mode](mockup/Multiplayer_Game_Mockup.png))
 
 ## Protokoll
