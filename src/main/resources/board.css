@@ -1,7 +1,35 @@
-.root {
-    -fx-background-color: black;
+#boardview {
+    -fx-background-color: #1d4d99;
 }
-.textfeld {
-    -fx-fill: white;
-    -fx-font-size: 20px;
+
+#topbox {
+    -fx-border-width: 0 0 5 0;
+    -fx-border-style: solid;
+    -fx-border-color: white;
+}
+
+#title {
+    -fx-font-family: "Bungee Outline";
+    -fx-font-size: 32pt;
+    -fx-text-fill: white;
+}
+
+#board,
+#nextField {
+    -fx-border-style: solid;
+    -fx-border-color: white;
+}
+
+.button {
+    -fx-font: 14pt "Bungee Hairline";
+    -fx-padding: 10;
+    -fx-background-color: none;
+    -fx-border-color: white;
+    -fx-border-radius: 0;
+    -fx-text-fill: white;
+}
+
+.label {
+    -fx-text-fill: white;
+    -fx-font: 11pt "Bungee";
 }

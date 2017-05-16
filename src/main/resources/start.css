@@ -1,6 +1,19 @@
-.button {
-    -fx-font: bold 20pt "Arial";
+#startview {
+    -fx-background-image: url("images/bg_start.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-color: #011749;
+    -fx-background-position: center;
 }
-#title {
-    -fx-font: bold 36pt Impact;
+.button {
+    -fx-font: 20pt "Bungee";
+    -fx-padding: 10;
+    -fx-background-color: rgba(255, 255, 255, 0.7);
+    -fx-border-color: white;
+    -fx-border-radius: 0;
+}
+#titlesuper,
+#titletetris {
+    -fx-font-family: "Bungee Outline";
+    -fx-font-size: 60pt;
+    -fx-text-fill: white;
 }

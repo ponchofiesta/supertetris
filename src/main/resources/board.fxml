@@ -1,10 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Text?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<Pane prefHeight="600.0" prefWidth="600.0" stylesheets="board.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.vfh.pressanykey.supertetris.BoardViewController">
-
-    <Text layoutX="194.0" layoutY="266.0" styleClass="textfeld">Juhu, wir können umschalten</Text>
-
-</Pane>
+<BorderPane fx:id="boardview" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.vfh.pressanykey.supertetris.BoardViewController">
+   <top>
+      <HBox fx:id="topbox" alignment="CENTER" prefHeight="73.0" prefWidth="800.0" BorderPane.alignment="TOP_CENTER">
+         <children>
+            <Label fx:id="title" text="Supertetris">
+               <HBox.margin>
+                  <Insets right="200.0" />
+               </HBox.margin>
+            </Label>
+            <Button fx:id="btnPause" mnemonicParsing="false" text="Pause">
+               <HBox.margin>
+                  <Insets right="15.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="btnStop" mnemonicParsing="false" onAction="#btnStopClick" text="Beenden">
+               <HBox.margin>
+                  <Insets right="15.0" />
+               </HBox.margin></Button>
+            <Button fx:id="btnRestart" mnemonicParsing="false" text="Neu">
+               <HBox.margin>
+                  <Insets right="15.0" />
+               </HBox.margin></Button>
+         </children>
+      </HBox>
+   </top>
+   <left>
+      <VBox alignment="TOP_RIGHT" prefHeight="387.0" prefWidth="184.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Punkte" />
+            <Label text="205">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin></Label>
+            <Label text="Reihen" />
+            <Label text="5">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin></Label>
+            <Label text="Level" />
+            <Label text="2" textAlignment="RIGHT" />
+         </children>
+         <BorderPane.margin>
+            <Insets top="40.0" />
+         </BorderPane.margin></VBox>
+   </left>
+   <right>
+      <VBox prefHeight="387.0" prefWidth="193.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Nächstes" />
+            <Region fx:id="nextField" prefHeight="100.0" prefWidth="100.0">
+               <VBox.margin>
+                  <Insets bottom="20.0" right="20.0" />
+               </VBox.margin></Region>
+            <Label text="Zeit" />
+            <Label fx:id="lbTimer" text="00:00" />
+         </children>
+         <BorderPane.margin>
+            <Insets top="40.0" />
+         </BorderPane.margin></VBox>
+   </right>
+   <center>
+      <Pane prefHeight="427.0" prefWidth="538.0" BorderPane.alignment="CENTER">
+         <children>
+            <Region fx:id="board" layoutX="87.0" layoutY="26.0" prefHeight="375.0" prefWidth="250.0" />
+         </children>
+      </Pane>
+   </center>
+    <stylesheets>
+        <URL value="@board.css" />
+    </stylesheets>
+</BorderPane>
