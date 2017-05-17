@@ -1,4 +1,29 @@
-#box_singleplayer,
-#box_multiplayer {
-    -fx-padding: 30px;
+#connectview {
+    -fx-background-color: #1d4d99;
+}
+
+#topbox {
+    -fx-border-width: 0 0 5 0;
+    -fx-border-style: solid;
+    -fx-border-color: white;
+}
+
+.button {
+    -fx-font: 14pt "Bungee";
+    -fx-padding: 10;
+    -fx-background-color: none;
+    -fx-border-color: white;
+    -fx-border-radius: 0;
+    -fx-text-fill: white;
+}
+
+.label {
+    -fx-text-fill: white;
+    -fx-font: 11pt "Bungee";
+}
+
+#title {
+    -fx-font-family: "Bungee Outline";
+    -fx-font-size: 26pt;
+    -fx-text-fill: white;
 }
