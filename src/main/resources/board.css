@@ -14,7 +14,7 @@
     -fx-text-fill: white;
 }
 
-#board,
+#boardPane,
 #nextField {
     -fx-border-style: solid;
     -fx-border-color: white;
@@ -33,3 +33,4 @@
     -fx-text-fill: white;
     -fx-font: 11pt "Bungee";
 }
+
