@@ -9,26 +9,46 @@ BoardViewController "1" *-- "1" GameController
 GameController "1" *-- "1" Board
 Board "1" *-- "1" Stones
 Stones "1" *-- "*" Stone
-
+Timer "1" -- "1" GameController
+Player "1-2" -- "1" GameController
+Score "1" -- "1" GameController
+MultiplayerViewController -- GameController
+MultiplayerViewController -- StartViewController
+ViewController -- MultiplayerViewController
+ViewController -- StartViewController
+ViewController -- BoardViewController
+TetrisServer -- TetrisClient
+TetrisServer "1" -- "1" TetrisServerThread
+TetrisServer "1" -- "1" GameController
 
 class SupertetrisApp {
-    
+    void maim()
+}
+
+abstract class ViewController {
 }
 
 class StartViewController {
-
+    public void btnSingleplayerClick()
+    public void btnMultiplayerClick()
 }
 
 class BoardViewController {
-    -gameController : GameController
+    gameController : GameController
+}
+
+class MultiplayerViewController {
+
 }
 
 class GameController {
-    -board : Board
+    board : Board
+    start()
+    stop()
 }
 
 class Board {
-    -stones: Stone[]
+    stones: Stone[]
 }
 
 class Stones {
@@ -38,5 +58,29 @@ class Stones {
 class Stone {
 
 }
+
+class Player {
+    String name
+}
+
+class Timer {
+}
+
+class Score {
+    int level
+    int points
+    int rows
+}
+
+class TetrisClient {
+
+}
+
+class TetrisServer {
+}
+
+class TetrisServerThread {
+}
+
 
 @enduml
