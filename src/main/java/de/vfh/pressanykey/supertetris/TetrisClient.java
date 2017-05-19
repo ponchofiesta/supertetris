@@ -10,7 +10,7 @@ import java.net.UnknownHostException;
 
 public class TetrisClient {
 
-    public void startClient(String hostName, int portNumber) {
+    public void startClient(String hostName, int portNumber, String playerName) {
         try {
             Socket tetrisSocket = new Socket(hostName, portNumber);
             PrintWriter out = new PrintWriter(tetrisSocket.getOutputStream(), true);
@@ -24,7 +24,7 @@ public class TetrisClient {
 
                 fromUser = stdIn.readLine();
                 if (fromUser != null) {
-                    System.out.println("Client: " + fromUser);
+                    System.out.println(playerName + ": " + fromUser);
                     out.println(fromUser);
                 }
             }
@@ -32,7 +32,7 @@ public class TetrisClient {
             System.err.println("Don't know about host " + hostName);
             System.exit(1);
         } catch (IOException e) {
-            System.err.println("Couldn't get I/O for the connection to " + hostName);
+            System.err.println("Couldn't get I/O for the connection to " + hostName + ":" + portNumber);
             System.exit(1);
         }
     }

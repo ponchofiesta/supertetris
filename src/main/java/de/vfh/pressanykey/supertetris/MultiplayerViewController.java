@@ -1,6 +1,6 @@
 package de.vfh.pressanykey.supertetris;
 
-import javafx.concurrent.Task;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -29,6 +29,8 @@ public class MultiplayerViewController extends ViewController {
     private Label lbGuestName;
     @FXML
     private TextField txtName;
+    @FXML
+    private TextField connectInfo;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -36,41 +38,71 @@ public class MultiplayerViewController extends ViewController {
 
     }
 
-    final TetrisServer server = new TetrisServer();
-    final TetrisClient client = new TetrisClient();
+    private final TetrisServer server = new TetrisServer();
+    private final TetrisClient client1 = new TetrisClient();
+    private final TetrisClient client2 = new TetrisClient();
+    private String hostAddress;
+    private int port;
+    private String playerName;
 
     @FXML
     public void btnNewGameClick(ActionEvent actionEvent) throws Exception {
+        // who wants to start the server?
+        playerName = txtName.getText();
 
-        lbAddress.setText(server.getIP());
-        lbHostName.setText(txtName.getCharacters().toString());
+        final Thread serverThread = new Thread(() -> server.startServer(playerName));
 
-
-        final Thread serverThread = new Thread(() -> server.startServer());
-
-        final Thread clientThread = new Thread(() -> {
+        final Thread client1Thread = new Thread(() -> {
             // at first we must wait until the server is running
             try {
                 serverThread.join(200);
-            } catch (InterruptedException e) {
+                // then we can connect as client1
+                // infos on server
+                port = server.getPortNumber();
+                hostAddress = server.getHost4Address();
+                Platform.runLater(() -> {
+                    lbAddress.setText(hostAddress + ":" + port);
+                    lbHostName.setText(playerName);
+                });
+                // connect
+                client1.startClient(hostAddress, port, playerName);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            // then we can connect as client
-            // infos on server
-            int port = server.getPortNumber();
-            String hostAddress = server.getIP();
-            System.out.println("Port: " + port);
-            System.out.println("IP: " + hostAddress);
-            // connect
-            client.startClient(hostAddress, port);
+
         });
 
         serverThread.start();
-        clientThread.start();
+        client1Thread.start();
     }
 
     @FXML
     public void btnJoinGameClick(ActionEvent actionEvent) throws Exception {
+        // who is connecting?
+        playerName = txtName.getText();
 
+        // Get the address we want to connect to from the textfield
+        String[] split = connectInfo.getText().split(":");
+        hostAddress = split[0];
+        port = Integer.parseInt(split[1]);
+
+        // this thread is created to deal with the client-server communication while the game is played
+        final Thread client2Thread = new Thread(() -> {
+            // we just want to join the game so we expect that the server is running
+            try {
+                Platform.runLater(() -> {
+                    lbAddress.setText(hostAddress + ":" + port);
+                    lbGuestName.setText(playerName);
+                });
+
+                client2.startClient(hostAddress, port, playerName);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        });
+
+        client2Thread.start();
     }
 }

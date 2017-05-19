@@ -32,7 +32,7 @@
                         <Insets right="20.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefHeight="26.0" prefWidth="186.0" />
+                  <TextField fx:id="connectInfo" prefHeight="26.0" prefWidth="186.0" />
                </children>
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
@@ -79,7 +79,7 @@
                         <Insets right="20.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="lbHostName" text="Max" />
+                  <Label fx:id="lbHostName" text="" />
                </children>
             </HBox>
             <HBox prefHeight="32.0" prefWidth="560.0">
