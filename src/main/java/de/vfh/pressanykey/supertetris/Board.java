@@ -1,5 +1,6 @@
 package de.vfh.pressanykey.supertetris;
 
+import com.sun.javafx.scene.traversal.Direction;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -96,11 +97,18 @@ public class Board {
      */
     private void moveDown() {
         y++;
-        move();
-        onStoneMoved(currentStone);
+        if(isCrossing(KeyCode.DOWN)) {
+            y--;
+            mergeStone();
+        } else {
+            move();
+            onStoneMoved(currentStone);
+        }
     }
 
     public void moveStone(KeyCode key) {
+        int oldX = x;
+        int oldY = y;
         if(key == KeyCode.LEFT) {
             x--;
         } else if(key == KeyCode.RIGHT) {
@@ -110,7 +118,12 @@ public class Board {
         } else if(key == KeyCode.DOWN) {
             //TODO: moveStone down stone fast
         }
-        move();
+        if(isCrossing(key)) {
+            x = oldX;
+            y = oldY;
+        } else {
+            move();
+        }
     }
 
     private void move() {
@@ -122,8 +135,33 @@ public class Board {
      * Check if the currentStone is crossing other stones or the border
      * @return is crossing or not
      */
-    private boolean isCrossing() {
-        //TODO: implement isCrossing()
+    private boolean isCrossing(KeyCode key) {
+
+        for(int i = 0; i < currentStone.getMatrix().length; i++) {
+            for(int j = 0; j < currentStone.getMatrix()[0].length; j++) {
+                if(currentStone.getMatrix()[i][j] == 1) {
+                    if(key == KeyCode.DOWN) {
+                        if(i + y - BOARD_HIDDEN >= boardHeight) {
+                            // crossing bottom border
+                            return true;
+                        }
+//                        if(matrix[i+y+1][j] == 1) {
+//
+//                        }
+                    } else if(key == KeyCode.LEFT) {
+                        if(j + x < 0) {
+                            // crossing left border
+                            return true;
+                        }
+                    } else if(key == KeyCode.RIGHT) {
+                        if(j + x >= boardWidth) {
+                            // crossing right border
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
         return false;
     }
 
@@ -153,7 +191,7 @@ public class Board {
      */
     private void doTick() {
         moveDown();
-        if(isCrossing()) {
+        if(isCrossing(KeyCode.DOWN)) {
             // drop stone
             mergeStone();
             // next stone
