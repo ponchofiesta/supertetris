@@ -5,7 +5,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -16,6 +18,8 @@ import java.util.ResourceBundle;
  */
 public class BoardViewController extends ViewController {
 
+    @FXML
+    private StackPane boardPaneContainer;
     @FXML
     private StackPane boardPane;
     @FXML
@@ -34,6 +38,12 @@ public class BoardViewController extends ViewController {
     }
 
     @FXML
+    public void btnPauseClick(ActionEvent actionEvent) throws Exception {
+        gameController.pause();
+
+    }
+
+    @FXML
     public void btnStopClick(ActionEvent actionEvent) throws Exception {
         gameController.stop();
         setView((Stage)btnStop.getScene().getWindow(), "start.fxml");
@@ -42,37 +52,24 @@ public class BoardViewController extends ViewController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-
         //gameController = GameController.getInstance();
         gameController = new GameController();
-        boardPane.getChildren().add(gameController.getBoard());
+        gameController.setView(this);
+        boardPane.getChildren().add(gameController.getBoardPane());
+
+
+
+        //boardPaneContainer.getChildren().add(gameController.getBoardPane());
         gameController.start();
 
+    }
 
-
-        // Start timer
-        Task timerTask = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                Timer timer = new Timer();
-                while (true) {
-                    updateMessage(timer.showTime());
-                    //System.out.println(boardPane.getTranslateX() + "," + boardPane.getTranslateX() + "," + boardPane.getWidth() + "," + boardPane.getHeight());
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        break;
-                    }
-                }
-                return null;
-            }
-        };
-        lbTimer.textProperty().bind(timerTask.messageProperty());
-        Thread timerThread = new Thread(timerTask);
-        timerThread.setName("Timer Task");
-        timerThread.setDaemon(true);
-        timerThread.start();
-
+    /**
+     * set timer label text
+     * @param text text to set for timer label
+     */
+    public void setStopwatchText(String text) {
+        this.lbTimer.setText(text);
     }
 
 }

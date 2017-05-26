@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -20,7 +19,7 @@
                   <Insets right="30.0" />
                </HBox.margin>
             </Label>
-            <Button fx:id="btnPause" mnemonicParsing="false" prefHeight="49.0" prefWidth="222.0" text="Pause">
+            <Button fx:id="btnPause" mnemonicParsing="false" onAction="#btnPauseClick" prefHeight="49.0" prefWidth="222.0" text="Pause">
                <HBox.margin>
                   <Insets right="15.0" />
                </HBox.margin>
@@ -72,11 +71,12 @@
          </BorderPane.margin></VBox>
    </right>
    <center>
-      <Pane prefHeight="427.0" prefWidth="538.0" BorderPane.alignment="CENTER">
+      <StackPane fx:id="boardPaneContainer" prefHeight="427.0" prefWidth="538.0" BorderPane.alignment="CENTER">
          <children>
-            <StackPane fx:id="boardPane" layoutX="120.0" layoutY="23.0" prefHeight="380.0" prefWidth="190.0" />
+            <StackPane fx:id="boardPane" layoutX="120.0" layoutY="23.0" maxHeight="380.0" maxWidth="190.0" minHeight="380.0" minWidth="190.0" prefHeight="380.0" prefWidth="190.0" StackPane.alignment="CENTER">
+               </StackPane>
          </children>
-      </Pane>
+      </StackPane>
    </center>
     <stylesheets>
         <URL value="@board.css" />

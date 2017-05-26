@@ -14,6 +14,11 @@
     -fx-text-fill: white;
 }
 
+/* correct positioning of stones */
+#boardPane>* {
+    -fx-alignment: top-left;
+}
+
 #boardPane,
 #nextField {
     -fx-border-style: solid;
