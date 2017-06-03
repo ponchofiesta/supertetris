@@ -13,21 +13,8 @@ public class TetrisClient {
     public void startClient(String hostName, int portNumber, String playerName) {
         try {
             Socket tetrisSocket = new Socket(hostName, portNumber);
-            PrintWriter out = new PrintWriter(tetrisSocket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(tetrisSocket.getInputStream()));
-            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-            String fromServer;
-            String fromUser;
-
-            while ((fromServer = in.readLine()) != null) {
-                System.out.println("Server: " + fromServer);
-
-                fromUser = stdIn.readLine();
-                if (fromUser != null) {
-                    System.out.println(playerName + ": " + fromUser);
-                    out.println(fromUser);
-                }
-            }
+            System.out.println("Client is running");
+            new TetrisClientThread(tetrisSocket).action();
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host " + hostName);
             System.exit(1);

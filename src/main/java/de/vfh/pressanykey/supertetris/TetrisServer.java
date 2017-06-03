@@ -3,10 +3,7 @@ package de.vfh.pressanykey.supertetris;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 
 /**
  * Handles the connection of players
@@ -14,14 +11,19 @@ import java.util.List;
 public class TetrisServer {
 
     private int portNumber;
+    private ServerSocket serverSocket;
+
 
     public void startServer(String playerName) {
+        // We use our communication model
+        CommunicationModel model = new CommunicationModel();
         boolean listening = true;
+
         try {
             // Create socket
-            ServerSocket serverSocket = new ServerSocket(0);
+            serverSocket = new ServerSocket(0);
             portNumber = serverSocket.getLocalPort();
-            System.out.println("Server socket up and running");
+            System.out.println("Tetris server up and running");
 
             // Listen for connections until two players are connected
             // Set up a new thread for each connected player
@@ -31,8 +33,8 @@ public class TetrisServer {
                 System.out.println("Listening on port " + portNumber);
 
                 // Start thread for new player
-                TetrisServerThread client = new TetrisServerThread(serverSocket.accept(), playerName);
-                client.start();
+                Socket s = serverSocket.accept();
+                new TetrisServerThread(s, model, playerName);
 
                 // Count connections and stop listening as soon as two players are connected
                 connectNumber++;
