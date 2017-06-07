@@ -33,9 +33,9 @@ public class BoardViewController extends ViewController {
 
     private GameController gameController;
 
-    public StackPane getBoardPane() {
-        return this.boardPane;
-    }
+//    public StackPane getBoardPane() {
+//        return this.boardPane;
+//    }
 
     @FXML
     public void btnPauseClick(ActionEvent actionEvent) throws Exception {
@@ -57,19 +57,13 @@ public class BoardViewController extends ViewController {
         gameController.setView(this);
         boardPane.getChildren().add(gameController.getBoardPane());
 
-
+        gameController.addStopwatchListener((obj, value) -> {
+            this.lbTimer.setText((String)value);
+        });
 
         //boardPaneContainer.getChildren().add(gameController.getBoardPane());
         gameController.start();
 
-    }
-
-    /**
-     * set timer label text
-     * @param text text to set for timer label
-     */
-    public void setStopwatchText(String text) {
-        this.lbTimer.setText(text);
     }
 
 }

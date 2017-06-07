@@ -4,15 +4,22 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
+
+import javax.swing.event.ChangeListener;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observer;
 
 /**
  * The Game Controller
  */
 public class GameController {
 
-    private static GameController gameController;
+    //private static GameController gameController;
 
     private BoardViewController view;
     private final Board board;
@@ -24,9 +31,8 @@ public class GameController {
 
     private boolean isPaused = false;
 
-    private Timeline stopwatchTimer;
-    private long stopwatchStart = 0;
-    private long stopwatchPause = 0;
+    private Stopwatch stopwatch;
+
 
     /**
      * constructor
@@ -35,8 +41,15 @@ public class GameController {
         this.boardPane = new BoardPane(BOARD_WIDTH, BOARD_HEIGHT);
         this.board = new Board();
         board.setBoardPane(boardPane);
+        stopwatch = new Stopwatch();
 
-
+        board.addBoardListener(new BoardListener() {
+            @Override
+            public void onGameover() {
+                stop();
+                //TODO: show points or something
+            }
+        });
     }
 
 //    public static GameController getInstance() {
@@ -50,9 +63,9 @@ public class GameController {
      * get the game board
      * @return game board
      */
-    public Board getBoard() {
-        return board;
-    }
+//    public Board getBoard() {
+//        return board;
+//    }
 
     public BoardPane getBoardPane() {
         return boardPane;
@@ -61,6 +74,7 @@ public class GameController {
     public void setView(BoardViewController view) {
         this.view = view;
     }
+
 
     /**
      * start game
@@ -71,22 +85,7 @@ public class GameController {
             //TODO: scores, audio, other things...
 
             // start stopwatch
-            stopwatchStart = System.currentTimeMillis();
-            stopwatchTimer = new Timeline(new KeyFrame(Duration.millis(1000), ae -> {
-                long nowTime = System.currentTimeMillis();
-                double diffTime = (nowTime - stopwatchStart) / 1000.0;
-                String time;
-                int minutes;
-                int seconds;
-                minutes = (int) diffTime/60;
-                seconds = (int) diffTime%60;
-                time = (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-                /// Variante mit format, soll allerdings langsamer sein:
-                //time = String.format("%02d:%02d", minutes, seconds);
-                view.setStopwatchText(time);
-            }));
-            stopwatchTimer.setCycleCount(Animation.INDEFINITE);
-            stopwatchTimer.play();
+            stopwatch.start();
 
             // register key presses
             boardPane.getScene().setOnKeyPressed(e -> {
@@ -101,12 +100,10 @@ public class GameController {
 
     public void pause() {
         if(isPaused) {
-            stopwatchStart = System.currentTimeMillis() - (stopwatchPause - stopwatchStart);
-            stopwatchTimer.play();
+            stopwatch.pause();
             board.play();
         } else {
-            stopwatchTimer.pause();
-            stopwatchPause = System.currentTimeMillis();
+            stopwatch.pause();
             board.pause();
         }
         isPaused = !isPaused;
@@ -116,8 +113,13 @@ public class GameController {
      * stop game
      */
     public void stop() {
-        stopwatchTimer.stop();
+        stopwatch.stop();
         board.stop();
+    }
+
+
+    public void addStopwatchListener(Observer sl) {
+        stopwatch.addObserver(sl);
     }
 
 

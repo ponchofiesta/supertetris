@@ -1,6 +1,8 @@
 package de.vfh.pressanykey.supertetris;
 
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
@@ -16,9 +18,15 @@ public class Stone extends Group {
 
     private static final Random RANDOM = new Random();
 
-    private final int[][] matrix;
+    private int[][] matrix;
 
     private StoneType stoneType;
+
+    public Color getColor() {
+        return stoneType.color;
+    }
+
+    private ReadOnlyDoubleProperty blockSize = new SimpleDoubleProperty();
 
     private static final StoneType I = new StoneType(new int[][]{
         {0, 0, 0, 0},
@@ -63,6 +71,7 @@ public class Stone extends Group {
     }, Color.ORANGERED);
 
     private static final StoneType[] STONE_TYPES = new StoneType[]{I, J, L, O, S, T, Z};
+    //private static final StoneType[] STONE_TYPES = new StoneType[]{I};
 
     /**
      * constructor
@@ -72,47 +81,9 @@ public class Stone extends Group {
     private Stone(StoneType stonetype, ReadOnlyDoubleProperty blockSize) {
         matrix = stonetype.matrix;
         stoneType = stonetype;
-
+        this.blockSize = blockSize;
         // fill the matrix of the stone
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-
-                // the painted block
-                final Rectangle rectangle = new Rectangle();
-                final int finalI = i;
-                final int finalJ = j;
-
-//                ChangeListener<Number> changeListener = new ChangeListener<Number>() {
-//                    @Override
-//                    public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
-//                        rectangle.setWidth(number2.doubleValue());
-//                        rectangle.setHeight(number2.doubleValue());
-//                        rectangle.setTranslateY(number2.doubleValue() * finalI);
-//                        rectangle.setTranslateX(number2.doubleValue() * finalJ);
-//                    }
-//                };
-//                rectangle.setUserData(changeListener);
-
-                // set position and dimensions of the block
-                rectangle.setWidth(blockSize.doubleValue());
-                rectangle.setHeight(blockSize.get());
-                rectangle.setTranslateY(blockSize.get() * finalI);
-                rectangle.setTranslateX(blockSize.get() * finalJ);
-
-                // paint the blocks - or hide them
-                if (matrix[i][j] == 1) {
-                    rectangle.setFill(stonetype.color);
-                    rectangle.setArcHeight(7);
-                    rectangle.setArcWidth(7);
-                } else {
-                    rectangle.setOpacity(0);
-                }
-
-                // add block to the stone
-                getChildren().add(rectangle);
-
-            }
-        }
+        createBlocks();
     }
 
     /**
@@ -128,6 +99,51 @@ public class Stone extends Group {
 
     public int[][] getMatrix() {
         return matrix;
+    }
+
+    public static int[][] rotateMatrix(int[][] matrix) {
+        int[][] newMatrix = new int[matrix[0].length][matrix.length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                newMatrix[j][matrix.length - 1 - i] = matrix[i][j];
+            }
+        }
+        return newMatrix;
+    }
+
+    public void rotate() {
+        matrix = rotateMatrix(matrix);
+        getChildren().clear();
+        createBlocks();
+    }
+
+    private void createBlocks() {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+
+                // the painted block
+                final Rectangle rectangle = new Rectangle();
+
+                // set position and dimensions of the block
+                rectangle.setWidth(blockSize.doubleValue());
+                rectangle.setHeight(blockSize.get());
+                rectangle.setTranslateY(blockSize.get() * i);
+                rectangle.setTranslateX(blockSize.get() * j);
+
+                // paint the blocks - or hide them
+                if (matrix[i][j] == 1) {
+                    rectangle.setFill(stoneType.color);
+                    rectangle.setArcHeight(7);
+                    rectangle.setArcWidth(7);
+                } else {
+                    rectangle.setOpacity(0);
+                }
+
+                // add block to the stone
+                getChildren().add(rectangle);
+
+            }
+        }
     }
 
     /**
