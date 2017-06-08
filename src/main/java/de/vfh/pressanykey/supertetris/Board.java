@@ -15,6 +15,7 @@ import javafx.util.Duration;
 
 import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * game logic
@@ -54,26 +55,6 @@ public class Board {
     private BoardPane boardPane;
 
     private List<BoardListener> boardListeners = new ArrayList<>();
-
-    private final static int[] levelSpeed = new int[] {
-            1000,
-            800,
-            700,
-            600,
-            500,
-            400,
-            300
-    };
-    private final static int[] levelPointFactor = new int[] {
-            1,
-            2,
-            4,
-            8,
-            16,
-            32,
-            64
-    };
-    private int points = 0;
 
     public void setBoardPane(BoardPane boardPane) {
         this.boardPane = boardPane;
@@ -185,14 +166,22 @@ public class Board {
      */
     private void mergeStone() {
 
-        // merge stone with board and check if rows are completed
-        // walk through all blocks of this stone
         Map<Integer, Boolean> rowsCompleted = new HashMap();
+        boolean hasBlockInRow;
+        int x;
+        int y;
+
+        // walk through all blocks of this stone
         for(int i = 0; i < currentStone.getMatrix().length; i++) {
+
+            hasBlockInRow = false;
+            y = this.y + i - BOARD_HIDDEN;
+
             for (int j = 0; j < currentStone.getMatrix()[0].length; j++) {
+
                 if(currentStone.getMatrix()[i][j] == 1) {
-                    final int x = this.x + j;
-                    final int y = this.y + i - BOARD_HIDDEN;
+                    hasBlockInRow = true;
+                    x = this.x + j;
 
                     // create new rectangle for this block
                     final Rectangle rectangle = new Rectangle();
@@ -207,20 +196,20 @@ public class Board {
                     // add rectangle to the matrix and to the boardPane
                     matrix[y][x] = rectangle;
                     boardPane.getChildren().add(rectangle);
-
-                    // check if row is completed
-                    if(!rowsCompleted.containsKey(y)) {
-                        rowsCompleted.put(y, true);
-                        for(int k = 0; k < matrix[y].length; k++) {
-                            if(matrix[y][k] != null) {
-                                rowsCompleted.put(y, false);
-                                break;
-                            }
-                        }
-                    }
-
                 }
             }
+
+            // check if row is completed
+            if(hasBlockInRow) {
+                rowsCompleted.put(y, true);
+                for(int k = 0; k < matrix[y].length; k++) {
+                    if(matrix[y][k] == null) {
+                        rowsCompleted.put(y, false);
+                        break;
+                    }
+                }
+            }
+
         }
 
         // remove currentStone
@@ -228,20 +217,41 @@ public class Board {
         currentStone = null;
         notifyDropped();
 
-        removeRows(rowsCompleted.keySet().toArray(new Integer[0]));
+        // remove completed rows
+        removeRows(rowsCompleted.entrySet()
+                .stream()
+                .filter(map -> map.getValue()) // get only where value==true
+                .map(e -> e.getKey()) // get the keys only
+                .mapToInt(e -> (int)e) // cast to int
+                .toArray()
+        );
 
     }
 
-    private void removeRows(Integer[] rows) {
-        //TODO: implement removeRows (not ready)
+    private void removeRows(int[] rows) {
         if(rows.length == 0) {
             return;
         }
-        for(int i = rows[rows.length-1]; i > 0; i--) {
-            for(int j = 0; j < matrix[0].length; j++) {
-
+        boolean isRowEmpty;
+        for(int r = 0; r < rows.length; r++) {
+            for(int i = rows[r]; i > 0; i--) {
+                isRowEmpty = true;
+                for(int j = 0; j < matrix[0].length; j++) {
+                    if(i == rows[r] && matrix[i][j] != null) {
+                        boardPane.getChildren().remove(matrix[i][j]);
+                    }
+                    matrix[i][j] = matrix[i-1][j];
+                    if(matrix[i][j] != null) {
+                        isRowEmpty = false;
+                        matrix[i][j].setTranslateY(boardPane.getBlockSize().doubleValue() * i);
+                    }
+                }
+                if(isRowEmpty) {
+                    break;
+                }
             }
         }
+
         notifyRowDeleted(rows.length);
     }
 

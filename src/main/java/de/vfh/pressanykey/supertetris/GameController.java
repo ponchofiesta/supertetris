@@ -33,6 +33,8 @@ public class GameController {
 
     private Stopwatch stopwatch;
 
+    private Scores scores;
+
 
     /**
      * constructor
@@ -42,6 +44,7 @@ public class GameController {
         this.board = new Board();
         board.setBoardPane(boardPane);
         stopwatch = new Stopwatch();
+        scores = new Scores();
 
         board.addBoardListener(new BoardListener() {
             @Override
@@ -49,7 +52,17 @@ public class GameController {
                 stop();
                 //TODO: show points or something
             }
+
+            @Override
+            public void onRowDeleted(int count) {
+                scores.rowsDeleted(count);
+            }
         });
+
+        scores.addObserver((o, arg) -> {
+            //TODO: implement score and level update in BoardViewController
+        });
+
     }
 
 //    public static GameController getInstance() {

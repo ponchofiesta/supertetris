@@ -10,7 +10,7 @@ import java.util.Observable;
 /**
  * Created by poncho on 07.06.2017.
  */
-public class Stopwatch extends Observable{
+public class Stopwatch extends Observable {
 
     private Timeline stopwatchTimer;
     private long stopwatchStart = 0;
