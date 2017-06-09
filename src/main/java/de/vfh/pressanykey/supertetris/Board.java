@@ -46,7 +46,9 @@ public class Board {
      * the current stone
      */
     private Stone currentStone;
+    private Stone nextStone;
 
+    private int downTimerDelay = 0;
     /**
      * heartbeat ticker
      */
@@ -55,6 +57,11 @@ public class Board {
     private BoardPane boardPane;
 
     private List<BoardListener> boardListeners = new ArrayList<>();
+
+    public Board() {
+        downTimer = new Timeline();
+        downTimer.setCycleCount(Animation.INDEFINITE);
+    }
 
     public void setBoardPane(BoardPane boardPane) {
         this.boardPane = boardPane;
@@ -65,7 +72,12 @@ public class Board {
      */
     public void spawnStone() {
 
-        currentStone = Stone.getRandom(boardPane.getBlockSize());
+        if(nextStone == null) {
+            nextStone = Stone.getRandom(boardPane.getBlockSize());
+        }
+        currentStone = nextStone;
+        nextStone = Stone.getRandom(boardPane.getBlockSize());
+        notifyNext(nextStone);
 
         boardPane.getChildren().add(currentStone);
 
@@ -190,8 +202,7 @@ public class Board {
                     rectangle.setTranslateY(boardPane.getBlockSize().doubleValue() * y);
                     rectangle.setTranslateX(boardPane.getBlockSize().doubleValue() * x);
                     rectangle.setFill(currentStone.getColor());
-                    rectangle.setArcHeight(7);
-                    rectangle.setArcWidth(7);
+                    rectangle.getStyleClass().add("block");
 
                     // add rectangle to the matrix and to the boardPane
                     matrix[y][x] = rectangle;
@@ -255,6 +266,19 @@ public class Board {
         notifyRowDeleted(rows.length);
     }
 
+    public void setDownTimer(int delay) {
+        // start the timer for down moving
+        if(downTimerDelay == delay) {
+            return;
+        }
+        System.out.println(delay);
+        downTimerDelay = delay;
+        downTimer.stop();
+        downTimer.getKeyFrames().setAll(new KeyFrame(Duration.millis(delay), ae -> {
+            doTick();
+        }));
+        downTimer.play();
+    }
 
     /**
      * run on every timer tick
@@ -270,12 +294,7 @@ public class Board {
 
         spawnStone();
 
-        // start the timer for down moving
-        downTimer = new Timeline(new KeyFrame(Duration.millis(300), ae -> {
-            doTick();
-        }));
-        downTimer.setCycleCount(Animation.INDEFINITE);
-        downTimer.play();
+        setDownTimer(Scores.getSpeed(1));
     }
 
     /**
@@ -325,9 +344,14 @@ public class Board {
             boardListener.onRotate();
         }
     }
-    private void notifySpawn() {
+    private void notifySpawn(Stone stone) {
         for (BoardListener boardListener : boardListeners) {
-            boardListener.onSpawn();
+            boardListener.onSpawn(stone);
+        }
+    }
+    private void notifyNext(Stone stone) {
+        for (BoardListener boardListener : boardListeners) {
+            boardListener.onNext(stone);
         }
     }
 

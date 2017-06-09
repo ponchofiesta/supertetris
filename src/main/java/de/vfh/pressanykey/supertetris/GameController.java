@@ -22,6 +22,7 @@ public class GameController {
     //private static GameController gameController;
 
     private BoardViewController view;
+
     private final Board board;
 
     private BoardPane boardPane;
@@ -48,21 +49,25 @@ public class GameController {
 
         board.addBoardListener(new BoardListener() {
             @Override
-            public void onGameover() {
+            void onGameover() {
                 stop();
                 //TODO: show points or something
             }
 
             @Override
-            public void onRowDeleted(int count) {
+            void onRowDeleted(int count) {
                 scores.rowsDeleted(count);
             }
         });
 
         scores.addObserver((o, arg) -> {
-            //TODO: implement score and level update in BoardViewController
+            board.setDownTimer(scores.getSpeed());
         });
 
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
     public Scores getScores() {

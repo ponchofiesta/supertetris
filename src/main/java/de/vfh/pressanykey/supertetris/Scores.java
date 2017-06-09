@@ -43,6 +43,12 @@ public class Scores extends Observable {
     public int getSpeed() {
         // returns the speed based on the level
         // Graph: http://fooplot.com/?lang=de#W3sidHlwZSI6MCwiZXEiOiItbG9nKHgrMSkqNTAwKzEwMDAiLCJjb2xvciI6IiMwMDAwMDAifSx7InR5cGUiOjEwMDAsIndpbmRvdyI6WyIwIiwiMzAiLCItMCIsIjEwMDAiXX1d
-        return (int)(-Math.log(level+1) * 500 + 1000);
+        return getSpeed(level+1);
+    }
+
+    public static int getSpeed(int level) {
+        // returns the speed based on the level
+        // Graph: http://fooplot.com/?lang=de#W3sidHlwZSI6MCwiZXEiOiItbG9nKHgrMSkqNTAwKzEwMDAiLCJjb2xvciI6IiMwMDAwMDAifSx7InR5cGUiOjEwMDAsIndpbmRvdyI6WyIwIiwiMzAiLCItMCIsIjEwMDAiXX1d
+        return (int)(-Math.log10(level+1) * 640 + 1000);
     }
 }

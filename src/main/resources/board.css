@@ -39,3 +39,7 @@
     -fx-font: 11pt "Bungee";
 }
 
+.block {
+    -fx-arc-height: 7px;
+    -fx-arc-width: 7px;
+}

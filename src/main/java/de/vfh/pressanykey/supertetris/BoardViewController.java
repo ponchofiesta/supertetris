@@ -23,6 +23,8 @@ public class BoardViewController extends ViewController {
     @FXML
     private StackPane boardPane;
     @FXML
+    private StackPane nextField;
+    @FXML
     private Button btnPause;
     @FXML
     private Button btnStop;
@@ -46,7 +48,6 @@ public class BoardViewController extends ViewController {
     @FXML
     public void btnPauseClick(ActionEvent actionEvent) throws Exception {
         gameController.pause();
-
     }
 
     @FXML
@@ -71,6 +72,14 @@ public class BoardViewController extends ViewController {
             lblPoints.setText(gameController.getScores().getPoints().toString());
             lblLevel.setText(gameController.getScores().getLevel().toString());
             lblRows.setText(gameController.getScores().getLineCount().toString());
+        });
+
+        gameController.getBoard().addBoardListener(new BoardListener() {
+            @Override
+            void onNext(Stone stone) {
+                nextField.getChildren().clear();
+                nextField.getChildren().add(stone);
+            }
         });
 
         //boardPaneContainer.getChildren().add(gameController.getBoardPane());

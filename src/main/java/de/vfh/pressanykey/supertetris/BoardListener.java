@@ -24,7 +24,11 @@ public abstract class BoardListener {
 
     }
 
-    void onSpawn() {
+    void onSpawn(Stone stone) {
+
+    }
+
+    void onNext(Stone stone) {
 
     }
 }

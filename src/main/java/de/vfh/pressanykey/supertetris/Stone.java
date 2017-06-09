@@ -129,12 +129,11 @@ public class Stone extends Group {
                 rectangle.setHeight(blockSize.get());
                 rectangle.setTranslateY(blockSize.get() * i);
                 rectangle.setTranslateX(blockSize.get() * j);
+                rectangle.getStyleClass().add("block");
 
                 // paint the blocks - or hide them
                 if (matrix[i][j] == 1) {
                     rectangle.setFill(stoneType.color);
-                    rectangle.setArcHeight(7);
-                    rectangle.setArcWidth(7);
                 } else {
                     rectangle.setOpacity(0);
                 }
