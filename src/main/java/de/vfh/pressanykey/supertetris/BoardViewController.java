@@ -1,15 +1,11 @@
 package de.vfh.pressanykey.supertetris;
 
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -64,16 +60,19 @@ public class BoardViewController extends ViewController {
         gameController.setView(this);
         boardPane.getChildren().add(gameController.getBoardPane());
 
+        // bind stopwatch updates to view
         gameController.getStopwatch().addObserver((obj, value) -> {
             this.lbTimer.setText((String)value);
         });
 
+        // bind score updates to view
         gameController.getScores().addObserver((o, arg) -> {
             lblPoints.setText(gameController.getScores().getPoints().toString());
             lblLevel.setText(gameController.getScores().getLevel().toString());
             lblRows.setText(gameController.getScores().getLineCount().toString());
         });
 
+        // bind preview stone updates to view
         gameController.getBoard().addBoardListener(new BoardListener() {
             @Override
             void onNext(Stone stone) {
@@ -82,7 +81,6 @@ public class BoardViewController extends ViewController {
             }
         });
 
-        //boardPaneContainer.getChildren().add(gameController.getBoardPane());
         gameController.start();
 
     }

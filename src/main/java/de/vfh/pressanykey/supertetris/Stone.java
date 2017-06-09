@@ -1,10 +1,7 @@
 package de.vfh.pressanykey.supertetris;
 
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -18,6 +15,9 @@ public class Stone extends Group {
 
     private static final Random RANDOM = new Random();
 
+    /**
+     * Board matrix
+     */
     private int[][] matrix;
 
     private StoneType stoneType;
@@ -71,10 +71,9 @@ public class Stone extends Group {
     }, Color.ORANGERED);
 
     private static final StoneType[] STONE_TYPES = new StoneType[]{I, J, L, O, S, T, Z};
-    //private static final StoneType[] STONE_TYPES = new StoneType[]{I};
 
     /**
-     * constructor
+     * Constructor
      * @param stonetype which stone to create
      * @param blockSize size of an block
      */
@@ -87,7 +86,7 @@ public class Stone extends Group {
     }
 
     /**
-     * get a random stone
+     * Get a random stone
      * @param size size of a single block
      * @return a random stone
      */
@@ -97,10 +96,19 @@ public class Stone extends Group {
         return new Stone(stonetype, size);
     }
 
+    /**
+     * Get board matrix
+     * @return
+     */
     public int[][] getMatrix() {
         return matrix;
     }
 
+    /**
+     * Rotate a given matrix by 90deg
+     * @param matrix The matrix to be rotated
+     * @return The rotated matrix
+     */
     public static int[][] rotateMatrix(int[][] matrix) {
         int[][] newMatrix = new int[matrix[0].length][matrix.length];
         for (int i = 0; i < matrix.length; i++) {
@@ -111,12 +119,18 @@ public class Stone extends Group {
         return newMatrix;
     }
 
+    /**
+     * Rotate the stone by 90deg
+     */
     public void rotate() {
         matrix = rotateMatrix(matrix);
         getChildren().clear();
         createBlocks();
     }
 
+    /**
+     * Create all blocks for this stone
+     */
     private void createBlocks() {
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[i].length; j++) {

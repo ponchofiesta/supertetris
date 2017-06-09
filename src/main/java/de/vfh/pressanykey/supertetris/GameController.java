@@ -1,18 +1,7 @@
 package de.vfh.pressanykey.supertetris;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.scene.input.KeyCode;
-import javafx.util.Duration;
-
-import javax.swing.event.ChangeListener;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observer;
 
 /**
  * The Game Controller
@@ -66,6 +55,10 @@ public class GameController {
 
     }
 
+    /**
+     * get the game board
+     * @return game board
+     */
     public Board getBoard() {
         return board;
     }
@@ -86,29 +79,28 @@ public class GameController {
 //    }
 
     /**
-     * get the game board
-     * @return game board
+     * Get BoardPane (view)
+     * @return
      */
-//    public Board getBoard() {
-//        return board;
-//    }
-
     public BoardPane getBoardPane() {
         return boardPane;
     }
 
+    /**
+     * Set the view controller to use
+     * @param view
+     */
     public void setView(BoardViewController view) {
         this.view = view;
     }
 
 
     /**
-     * start game
+     * Start game
      */
     public void start() {
         Platform.runLater(() -> {
             board.start();
-            //TODO: scores, audio, other things...
 
             // start stopwatch
             stopwatch.start();
@@ -124,6 +116,9 @@ public class GameController {
         });
     }
 
+    /**
+     * Pause game
+     */
     public void pause() {
         if(isPaused) {
             stopwatch.pause();
@@ -136,7 +131,7 @@ public class GameController {
     }
 
     /**
-     * stop game
+     * Stop game
      */
     public void stop() {
         stopwatch.stop();

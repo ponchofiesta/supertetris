@@ -1,34 +1,35 @@
 package de.vfh.pressanykey.supertetris;
 
-import com.sun.javafx.scene.traversal.Direction;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.binding.DoubleBinding;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.event.ActionEvent;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-
-import java.awt.event.ActionListener;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
- * game logic
+ * Game logic
  */
 public class Board {
 
+    /**
+     * Hidden rows over the board (for new spawning stones)
+     */
     private static final int BOARD_HIDDEN = 2;
 
+    /**
+     * Width of board matrix
+     */
     private int boardWidth = 10;
+
+    /**
+     * Height of board matrix
+     */
     private int boardHeight = 20;
 
     /**
-     * board matrix holding all the blocks of the stones
+     * Board matrix holding all the blocks of the stones
      */
     private final Rectangle[][] matrix = new Rectangle[boardHeight][boardWidth];
 
@@ -43,32 +44,53 @@ public class Board {
     private int y = 0;
 
     /**
-     * the current stone
+     * Current stone
      */
     private Stone currentStone;
+
+    /**
+     * Next stone
+     */
     private Stone nextStone;
 
-    private int downTimerDelay = 0;
     /**
-     * heartbeat ticker
+     * Delay for timer for down moving in ms
+     */
+    private int downTimerDelay = 0;
+
+    /**
+     * Timer for down moving
      */
     private Timeline downTimer;
 
+    /**
+     * Reference to the BoardPane (view)
+     */
     private BoardPane boardPane;
 
+    /**
+     * Listeners for Board events
+     */
     private List<BoardListener> boardListeners = new ArrayList<>();
 
+    /**
+     * Constructor
+     */
     public Board() {
         downTimer = new Timeline();
         downTimer.setCycleCount(Animation.INDEFINITE);
     }
 
+    /**
+     * Set new BoardPane (view)
+     * @param boardPane
+     */
     public void setBoardPane(BoardPane boardPane) {
         this.boardPane = boardPane;
     }
 
     /**
-     * spawn a new stone on top
+     * Spawn a new stone on top
      */
     public void spawnStone() {
 
@@ -85,12 +107,10 @@ public class Board {
         y = 0;
 
         move();
-
-        //moveDown();
     }
 
     /**
-     * moveStone currentStone down
+     * Move current stone down
      */
     private void moveDown() {
         y++;
@@ -110,6 +130,10 @@ public class Board {
         }
     }
 
+    /**
+     * Move the stone
+     * @param key Represents the direction: left/right/down or up for rotate
+     */
     public void moveStone(KeyCode key) {
         int oldX = x;
         int oldY = y;
@@ -132,6 +156,10 @@ public class Board {
         }
     }
 
+    /**
+     * Check if there is enough space for the stone to rotate
+     * @return true, if ok / false, if not
+     */
     private boolean tryRotate() {
         int[][] oldMatrix = currentStone.getMatrix();
         int[][] newMatrix = Stone.rotateMatrix(oldMatrix);
@@ -141,6 +169,9 @@ public class Board {
         return true;
     }
 
+    /**
+     * Move the stone in the view
+     */
     private void move() {
         currentStone.setTranslateX(x * boardPane.getBlockSize().get());
         currentStone.setTranslateY((y - BOARD_HIDDEN) * boardPane.getBlockSize().get());
@@ -169,12 +200,16 @@ public class Board {
         return false;
     }
 
+    /**
+     * Check if the currentStone is crossing other stones or the border
+     * @return is crossing or not
+     */
     private boolean isCrossing() {
         return isCrossing(currentStone.getMatrix());
     }
 
     /**
-     * merge stone with board matrix
+     * Merge stone with board matrix
      */
     private void mergeStone() {
 
@@ -239,6 +274,10 @@ public class Board {
 
     }
 
+    /**
+     * Remove rows from board
+     * @param rows row numbers to remove
+     */
     private void removeRows(int[] rows) {
         if(rows.length == 0) {
             return;
@@ -266,6 +305,10 @@ public class Board {
         notifyRowDeleted(rows.length);
     }
 
+    /**
+     * Set new timer delay for falling blocks
+     * @param delay Delay in ms
+     */
     public void setDownTimer(int delay) {
         // start the timer for down moving
         if(downTimerDelay == delay) {
@@ -281,74 +324,114 @@ public class Board {
     }
 
     /**
-     * run on every timer tick
+     * Run on every timer tick
      */
     private void doTick() {
         moveDown();
     }
 
     /**
-     * start game
+     * Start game
      */
     public void start() {
-
         spawnStone();
-
         setDownTimer(Scores.getSpeed(1));
     }
 
     /**
-     * stop game
+     * Stop game
      */
     public void stop() {
         downTimer.stop();
     }
 
+    /**
+     * Pause game
+     */
     public void pause() {
         downTimer.pause();
     }
+
+    /**
+     * Resume game
+     */
     public void play() {
         downTimer.play();
     }
 
+    /**
+     * Add listener to Board events
+     * @param boardListener
+     */
     public void addBoardListener(BoardListener boardListener) {
         boardListeners.add(boardListener);
     }
 
+    /**
+     * Remove listener from Board events
+     * @param boardListener
+     */
     public void removeBoardListener(BoardListener boardListener) {
         boardListeners.remove(boardListener);
     }
 
+    /**
+     * Notify all listeners on game over
+     */
     private void notifyGameover() {
         for (BoardListener boardListener : boardListeners) {
             boardListener.onGameover();
         }
     }
+
+    /**
+     * Notify all listeners on stone dropped
+     */
     private void notifyDropped() {
         for (BoardListener boardListener : boardListeners) {
             boardListener.onDropped();
         }
     }
+
+    /**
+     * Notify all listeners on row deleted
+     */
     private void notifyRowDeleted(int count) {
         for (BoardListener boardListener : boardListeners) {
             boardListener.onRowDeleted(count);
         }
     }
+
+    /**
+     * Notify all listeners on stone moved
+     */
     private void notifyMove() {
         for (BoardListener boardListener : boardListeners) {
             boardListener.onMove();
         }
     }
+
+    /**
+     * Notify all listeners on stone rotated
+     */
     private void notifyRotate() {
         for (BoardListener boardListener : boardListeners) {
             boardListener.onRotate();
         }
     }
+
+    /**
+     * Notify all listeners on stone spawn
+     */
     private void notifySpawn(Stone stone) {
         for (BoardListener boardListener : boardListeners) {
             boardListener.onSpawn(stone);
         }
     }
+
+    /**
+     * Notify all listeners on next stone changed
+     */
     private void notifyNext(Stone stone) {
         for (BoardListener boardListener : boardListeners) {
             boardListener.onNext(stone);

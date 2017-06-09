@@ -8,7 +8,7 @@ import javafx.util.Duration;
 import java.util.Observable;
 
 /**
- * Created by poncho on 07.06.2017.
+ * Stopwatch for play time
  */
 public class Stopwatch extends Observable {
 
@@ -17,6 +17,9 @@ public class Stopwatch extends Observable {
     private long stopwatchPause = 0;
     private boolean isPaused = false;
 
+    /**
+     * Start the stopwatch
+     */
     public void start() {
         stopwatchStart = System.currentTimeMillis();
         stopwatchTimer = new Timeline(new KeyFrame(Duration.millis(1000), ae -> {
@@ -30,7 +33,6 @@ public class Stopwatch extends Observable {
             time = (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
             /// Variante mit format, soll allerdings langsamer sein:
             //time = String.format("%02d:%02d", minutes, seconds);
-            //view.setStopwatchText(time);
             setChanged();
             notifyObservers(time);
         }));
@@ -38,6 +40,9 @@ public class Stopwatch extends Observable {
         stopwatchTimer.play();
     }
 
+    /**
+     * Pause and resume stopwatch
+     */
     public void pause() {
         if(isPaused) {
             stopwatchStart = System.currentTimeMillis() - (stopwatchPause - stopwatchStart);
@@ -49,6 +54,9 @@ public class Stopwatch extends Observable {
         isPaused = !isPaused;
     }
 
+    /**
+     * Stop stopwatch
+     */
     public void stop() {
         stopwatchTimer.stop();
     }

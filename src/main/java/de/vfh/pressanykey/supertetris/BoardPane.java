@@ -8,24 +8,28 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 
 /**
- * view of the board
+ * View of the board
  */
 public class BoardPane extends StackPane {
 
-    private int boardWidth = 10;
-    private int boardHeight = 20;
+    private int boardWidth;
+    private int boardHeight;
 
+    /**
+     * Block size
+     * @return blocks size of one single block in view
+     */
     public ReadOnlyDoubleProperty getBlockSize() {
         return blockSize;
     }
 
     /**
-     * size of one single block
+     * Size of one single block
      */
     private DoubleProperty blockSize = new SimpleDoubleProperty();
 
     /**
-     * constuctor
+     * Constuctor
      */
     public BoardPane(int boardwidth, int boardheight) {
 
