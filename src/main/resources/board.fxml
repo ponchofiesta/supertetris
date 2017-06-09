@@ -39,17 +39,17 @@
       <VBox alignment="TOP_RIGHT" prefHeight="387.0" prefWidth="184.0" BorderPane.alignment="CENTER">
          <children>
             <Label text="Punkte" />
-            <Label text="205">
+            <Label fx:id="lblPoints" text="0">
                <VBox.margin>
                   <Insets bottom="20.0" />
                </VBox.margin></Label>
             <Label text="Reihen" />
-            <Label text="5">
+            <Label fx:id="lblRows" text="0">
                <VBox.margin>
                   <Insets bottom="20.0" />
                </VBox.margin></Label>
             <Label text="Level" />
-            <Label text="2" textAlignment="RIGHT" />
+            <Label fx:id="lblLevel" text="1" textAlignment="RIGHT" />
          </children>
          <BorderPane.margin>
             <Insets top="40.0" />

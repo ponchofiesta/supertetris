@@ -15,12 +15,16 @@ public class Scores extends Observable {
     private int lineCount = 0;
     private int points = 0;
 
-    public int getLevel() {
-        return level;
+    public Integer getLevel() {
+        return level+1;
     }
 
-    public int getPoints() {
+    public Integer getPoints() {
         return points;
+    }
+
+    public Integer getLineCount() {
+        return lineCount;
     }
 
     public void rowsDeleted(int count) {

@@ -30,6 +30,12 @@ public class BoardViewController extends ViewController {
     private Button btnRestart;
     @FXML
     private Label lbTimer = new Label();
+    @FXML
+    private Label lblPoints = new Label();
+    @FXML
+    private Label lblLevel = new Label();
+    @FXML
+    private Label lblRows = new Label();
 
     private GameController gameController;
 
@@ -57,8 +63,14 @@ public class BoardViewController extends ViewController {
         gameController.setView(this);
         boardPane.getChildren().add(gameController.getBoardPane());
 
-        gameController.addStopwatchListener((obj, value) -> {
+        gameController.getStopwatch().addObserver((obj, value) -> {
             this.lbTimer.setText((String)value);
+        });
+
+        gameController.getScores().addObserver((o, arg) -> {
+            lblPoints.setText(gameController.getScores().getPoints().toString());
+            lblLevel.setText(gameController.getScores().getLevel().toString());
+            lblRows.setText(gameController.getScores().getLineCount().toString());
         });
 
         //boardPaneContainer.getChildren().add(gameController.getBoardPane());

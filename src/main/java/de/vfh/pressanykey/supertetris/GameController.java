@@ -65,6 +65,14 @@ public class GameController {
 
     }
 
+    public Scores getScores() {
+        return scores;
+    }
+
+    public Stopwatch getStopwatch() {
+        return stopwatch;
+    }
+
 //    public static GameController getInstance() {
 //        if(gameController == null) {
 //            gameController = new GameController();
@@ -129,11 +137,5 @@ public class GameController {
         stopwatch.stop();
         board.stop();
     }
-
-
-    public void addStopwatchListener(Observer sl) {
-        stopwatch.addObserver(sl);
-    }
-
 
 }
