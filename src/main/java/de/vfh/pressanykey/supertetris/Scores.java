@@ -59,7 +59,7 @@ public class Scores extends Observable {
 
         // level up
         lineCount += count;
-        level = lineCount / 10;
+        level = lineCount / 10 + 1;
 
         setChanged();
         notifyObservers();
