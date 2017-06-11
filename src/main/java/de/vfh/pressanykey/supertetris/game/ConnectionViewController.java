@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -50,6 +51,11 @@ public class ConnectionViewController extends ViewController {
     private String hostAddress;
     private int port;
     private String playerName;
+
+    @FXML
+    public void btnStartGameClick(ActionEvent actionEvent) throws Exception {
+        setView((Stage)btnStartGame.getScene().getWindow(), "multiplayer.fxml");
+    }
 
     @FXML
     public void btnNewGameClick(ActionEvent actionEvent) throws Exception {
