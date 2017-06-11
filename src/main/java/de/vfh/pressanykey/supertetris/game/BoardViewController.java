@@ -1,4 +1,4 @@
-package de.vfh.pressanykey.supertetris;
+package de.vfh.pressanykey.supertetris.game;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -1,4 +1,4 @@
-package de.vfh.pressanykey.supertetris;
+package de.vfh.pressanykey.supertetris.game;
 
 /**
  * Listener class for Board events

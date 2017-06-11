@@ -1,4 +1,4 @@
-package de.vfh.pressanykey.supertetris;
+package de.vfh.pressanykey.supertetris.game;
 
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;

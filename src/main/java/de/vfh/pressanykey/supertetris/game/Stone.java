@@ -1,4 +1,4 @@
-package de.vfh.pressanykey.supertetris;
+package de.vfh.pressanykey.supertetris.game;
 
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;

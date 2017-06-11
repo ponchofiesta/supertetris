@@ -1,5 +1,7 @@
-package de.vfh.pressanykey.supertetris;
+package de.vfh.pressanykey.supertetris.game;
 
+import de.vfh.pressanykey.supertetris.network.GameServer;
+import de.vfh.pressanykey.supertetris.network.PlayerClient;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,7 +15,7 @@ import java.util.ResourceBundle;
 /**
  * View Controller for Multiplayer screen
  */
-public class MultiplayerViewController extends ViewController {
+public class ConnectionViewController extends ViewController {
 
     @FXML
     private Button btnNewGame;
@@ -24,13 +26,18 @@ public class MultiplayerViewController extends ViewController {
     @FXML
     private Label lbAddress;
     @FXML
+    private Label lbPort;
+    @FXML
     private Label lbHostName;
     @FXML
     private Label lbGuestName;
     @FXML
     private TextField txtName;
     @FXML
-    private TextField connectInfo;
+    private TextField connectIP;
+    @FXML
+    private TextField connectPort;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -38,34 +45,37 @@ public class MultiplayerViewController extends ViewController {
 
     }
 
-    private final TetrisServer server = new TetrisServer();
-    private final TetrisClient client1 = new TetrisClient();
-    private final TetrisClient client2 = new TetrisClient();
+    private final GameServer server = new GameServer();
+    private final PlayerClient player = new PlayerClient();
     private String hostAddress;
     private int port;
     private String playerName;
 
     @FXML
     public void btnNewGameClick(ActionEvent actionEvent) throws Exception {
-        // who wants to start the server?
+        // who wants to start a game?
         playerName = txtName.getText();
 
-        final Thread serverThread = new Thread(() -> server.startServer(playerName));
+        // create a thread for starting the server
+        server.connect();
+        final Thread serverThread = new Thread(() -> server.start());
 
-        final Thread client1Thread = new Thread(() -> {
+        // create a thread to connect as client to server
+        final Thread playerThread = new Thread(() -> {
             // at first we must wait until the server is running
             try {
                 serverThread.join(200);
-                // then we can connect as client1
-                // infos on server
+                // display infos on server
                 port = server.getPortNumber();
                 hostAddress = server.getHost4Address();
                 Platform.runLater(() -> {
-                    lbAddress.setText(hostAddress + ":" + port);
+                    lbAddress.setText(hostAddress);
+                    lbPort.setText(String.valueOf(port));
                     lbHostName.setText(playerName);
                 });
-                // connect
-                client1.startClient(hostAddress, port, playerName);
+                /// then we can connect
+                player.connect(hostAddress, port, playerName);
+                player.start();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -73,7 +83,14 @@ public class MultiplayerViewController extends ViewController {
         });
 
         serverThread.start();
-        client1Thread.start();
+        playerThread.start();
+
+
+        // example: create the sending protocol ("Example"-class) / database that the client uses for sending
+        // makeData is the function getting the data wie want to sent
+//        Example ex = Example.makeData();
+//        client.send(ex);
+
     }
 
     @FXML
@@ -82,27 +99,27 @@ public class MultiplayerViewController extends ViewController {
         playerName = txtName.getText();
 
         // Get the address we want to connect to from the textfield
-        String[] split = connectInfo.getText().split(":");
-        hostAddress = split[0];
-        port = Integer.parseInt(split[1]);
+        hostAddress = connectIP.getText();
+        port = Integer.parseInt(connectPort.getText());
 
         // this thread is created to deal with the client-server communication while the game is played
-        final Thread client2Thread = new Thread(() -> {
+        final Thread playerThread = new Thread(() -> {
             // we just want to join the game so we expect that the server is running
             try {
                 Platform.runLater(() -> {
-                    lbAddress.setText(hostAddress + ":" + port);
+                    lbAddress.setText(hostAddress);
+                    lbPort.setText(String.valueOf(port));
                     lbGuestName.setText(playerName);
                 });
-
-                client2.startClient(hostAddress, port, playerName);
-
+                player.connect(hostAddress, port, playerName);
+                player.start();
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
         });
 
-        client2Thread.start();
+        playerThread.start();
+
     }
 }
