@@ -15,14 +15,22 @@
 }
 
 /* correct positioning of stones */
+#boardPane>*,
 #boardPane>* {
     -fx-alignment: top-left;
 }
 
 #boardPane,
+#oppboardPane,
 #nextField {
     -fx-border-style: solid;
     -fx-border-color: white;
+}
+
+#oppboardPane {
+    -fx-border-style: solid;
+    -fx-border-color: lightblue;
+    -fx-background-color: grey;
 }
 
 .button {

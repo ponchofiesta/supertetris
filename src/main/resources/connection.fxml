@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="connectview" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.vfh.pressanykey.supertetris.game.ConnectionViewController">
+   <children>
+      <VBox fx:id="topbox" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="Mein Name" textAlignment="RIGHT">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="txtName" prefHeight="26.0" prefWidth="300.0" />
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="IP-Adresse des Gastgebers">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="connectIP" prefHeight="26.0" prefWidth="186.0" />
+                  <Label text="Port-Nr:">
+                     <HBox.margin>
+                        <Insets left="40.0" right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="connectPort" prefHeight="26.0" prefWidth="186.0" />
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="btnNewGame" mnemonicParsing="false" onAction="#btnNewGameClick" text="Neues Spiel erstellen">
+                     <HBox.margin>
+                        <Insets right="200.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="btnJoinGame" mnemonicParsing="false" onAction="#btnJoinGameClick" text="Spiel beitreten" />
+               </children>
+            </HBox>
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets bottom="20.0" left="40.0" right="40.0" top="40.0" />
+         </padding>
+      </VBox>
+      <VBox prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Label fx:id="title" text="Verbindungsstatus" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets bottom="20.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <HBox prefHeight="27.0" prefWidth="560.0">
+               <children>
+                  <Label text="IP des Gastgebers:">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="lbAddress" text="" />
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="Port:">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="lbPort" text=""/>
+               </children>
+            </HBox>
+            <HBox prefHeight="28.0" prefWidth="560.0">
+               <children>
+                  <Label text="Spieler 1 (Gastgeber):">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="lbHostName" text="" />
+               </children>
+            </HBox>
+            <HBox prefHeight="32.0" prefWidth="560.0">
+               <children>
+                  <Label text="Spieler 2:">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="lbGuestName" text="" />
+               </children>
+            </HBox>
+            <Button fx:id="btnStartGame" onAction="#btnStartGameClick"  mnemonicParsing="false" text="Spiel starten" />
+         </children>
+         <VBox.margin>
+            <Insets top="20.0" />
+         </VBox.margin>
+         <padding>
+            <Insets left="40.0" />
+         </padding>
+      </VBox>
+   </children>
+   <stylesheets>
+      <URL value="@connection.css" />
+   </stylesheets>
+</VBox>

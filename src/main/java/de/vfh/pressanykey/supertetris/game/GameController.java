@@ -10,20 +10,20 @@ public class GameController {
 
     //private static GameController gameController;
 
-    private BoardViewController view;
+    protected BoardViewController view;
 
-    private final Board board;
+    protected final Board board;
 
-    private BoardPane boardPane;
+    protected BoardPane boardPane;
 
-    private static final int BOARD_WIDTH = 10;
-    private static final int BOARD_HEIGHT = 20;
+    protected static final int BOARD_WIDTH = 10;
+    protected static final int BOARD_HEIGHT = 20;
 
-    private boolean isPaused = false;
+    protected boolean isPaused = false;
 
-    private Stopwatch stopwatch;
+    protected Stopwatch stopwatch;
 
-    private Scores scores;
+    protected Scores scores;
 
 
     /**

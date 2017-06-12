@@ -3,13 +3,13 @@ package de.vfh.pressanykey.supertetris.network;
 import java.net.InetAddress;
 
 /**
- * Stores the connection data of a player connected to server
+ * Stores the connection data of a client connected to server
  */
 public class PlayerOnServer {
 
     public String name;
     public InetAddress address;
-    public int port;
+    public int port = -1;
     public boolean status = false;
     public static int playerID = 123;
 

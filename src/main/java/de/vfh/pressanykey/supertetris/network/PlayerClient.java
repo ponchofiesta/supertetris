@@ -1,11 +1,13 @@
 package de.vfh.pressanykey.supertetris.network;
 
 import de.vfh.pressanykey.supertetris.packages.Package00Login;
+import de.vfh.pressanykey.supertetris.packages.Package01Disconnect;
+import de.vfh.pressanykey.supertetris.packages.Packet;
 
 import java.io.IOException;
 import java.net.*;
 
-public class PlayerClient extends Thread{
+public class PlayerClient extends Thread {
 
     private final byte[] PACKET_HEADER = {0x24, 0x40, 0x21, 0x5D};      // we give our datagrams a unique header of four signs: $@!]
     private final byte[] DATA_SPLIT = {0x23, 0x23}; // we use ## as splitter sign in the datagram
@@ -44,7 +46,28 @@ public class PlayerClient extends Thread{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println("SERVER > " + new String(packet.getData()));
+            this.parsePacket(packet.getData(), packet.getAddress(), packet.getPort());
+        }
+    }
+
+    private void parsePacket(byte[] data, InetAddress address, int port) {
+        String message = new String(data).trim();
+        Packet.PacketTypes type = Packet.lookupPacket(message.substring(0,2));
+        Packet packet = null;
+        switch(type) {
+            default:
+            case INVALID:
+                break;
+            case LOGIN:
+                packet = new Package00Login(data);
+                System.out.println("CLIENT > User " + ((Package00Login)packet).getUsername() + " has connected with " + address + " : " + port);
+                // TODO: add player to game
+                break;
+            case DISCONNECT:
+                packet = new Package01Disconnect(data);
+                System.out.println("CLIENT > User " + ((Package01Disconnect)packet).getUsername() + " has left the game :( ...");
+                // TODO: remove player from game
+                break;
         }
     }
 
@@ -56,12 +79,16 @@ public class PlayerClient extends Thread{
     public void send(byte[] data) {
         assert(socket.isConnected());
         DatagramPacket packet = new DatagramPacket(data, data.length, ipAddress, port);
-        System.out.println("Try sending packet to " + ipAddress + " : " + port);
+//        System.out.println("Try sending packet to " + ipAddress + " : " + port);
         try {
             socket.send(packet);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getPlayerName() {
+        return playerName;
     }
 
 }

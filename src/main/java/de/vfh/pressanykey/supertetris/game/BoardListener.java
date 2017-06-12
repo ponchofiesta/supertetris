@@ -31,25 +31,25 @@ public abstract class BoardListener {
     /**
      * Fired when a stone was dropped
      */
-    public void onDropped() {
+    void onDropped() {
     }
 
     /**
      * Fired when a stone was moved
      */
-    public void onMove() {
+    void onMove() {
     }
 
     /**
      * Fired when a stone was rotated
      */
-    public void onRotate() {
+    void onRotate() {
     }
 
     /**
      * Fired when a new stone was added
      * @param stone the new stone
      */
-    public void onSpawn(Stone stone) {
+    void onSpawn(Stone stone) {
     }
 }

@@ -1,5 +1,7 @@
 package de.vfh.pressanykey.supertetris.game;
 
+import de.vfh.pressanykey.supertetris.network.GameServer;
+import de.vfh.pressanykey.supertetris.network.PlayerClient;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -13,6 +15,9 @@ import java.util.ResourceBundle;
  * Abstract view controller with methods all controllers need
  */
 public abstract class ViewController implements Initializable {
+
+    protected final static GameServer server = new GameServer();
+    protected final static PlayerClient client = new PlayerClient();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

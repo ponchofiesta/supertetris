@@ -15,27 +15,27 @@ import java.util.ResourceBundle;
 public class BoardViewController extends ViewController {
 
     @FXML
-    private StackPane boardPaneContainer;
+    protected StackPane boardPaneContainer;
     @FXML
-    private StackPane boardPane;
+    protected StackPane boardPane;
     @FXML
-    private StackPane nextField;
+    protected StackPane nextField;
     @FXML
-    private Button btnPause;
+    protected Button btnPause;
     @FXML
-    private Button btnStop;
+    protected Button btnStop;
     @FXML
-    private Button btnRestart;
+    protected Button btnRestart;
     @FXML
-    private Label lbTimer = new Label();
+    protected Label lbTimer = new Label();
     @FXML
-    private Label lblPoints = new Label();
+    protected Label lblPoints = new Label();
     @FXML
-    private Label lblLevel = new Label();
+    protected Label lblLevel = new Label();
     @FXML
-    private Label lblRows = new Label();
+    protected Label lblRows = new Label();
 
-    private GameController gameController;
+    protected GameController gameController;
 
 //    public StackPane getBoardPane() {
 //        return this.boardPane;

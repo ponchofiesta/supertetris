@@ -1,108 +1,125 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
 <?import java.net.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="connectview" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="de.vfh.pressanykey.supertetris.MultiplayerViewController">
-   <children>
-      <VBox fx:id="topbox" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+<BorderPane fx:id="boardview" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.vfh.pressanykey.supertetris.game.MultiBoardViewController">
+   <top>
+      <HBox fx:id="topbox" alignment="CENTER" prefHeight="73.0" prefWidth="800.0" BorderPane.alignment="TOP_CENTER">
          <children>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Label text="Mein Name" textAlignment="RIGHT">
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="txtName" prefHeight="26.0" prefWidth="300.0" />
-               </children>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Label text="IP-Adresse des Gastgebers">
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="connectInfo" prefHeight="26.0" prefWidth="186.0" />
-               </children>
-            </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Button fx:id="btnNewGame" mnemonicParsing="false" onAction="#btnNewGameClick"
-                          text="Neues Spiel erstellen">
-                     <HBox.margin>
-                        <Insets right="200.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button fx:id="btnJoinGame" mnemonicParsing="false" onAction="#btnJoinGameClick"
-                          text="Spiel beitreten" />
-               </children>
-            </HBox>
+            <Label fx:id="title" prefHeight="62.0" prefWidth="494.0" text="Supertetris">
+               <HBox.margin>
+                  <Insets right="30.0" />
+               </HBox.margin>
+            </Label>
+            <Button fx:id="btnPause" mnemonicParsing="false" onAction="#btnPauseClick" prefHeight="49.0" prefWidth="222.0" text="Pause">
+               <HBox.margin>
+                  <Insets right="15.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="btnStop" mnemonicParsing="false" onAction="#btnStopClick" prefHeight="49.0" prefWidth="268.0" text="Beenden">
+               <HBox.margin>
+                  <Insets right="15.0" />
+               </HBox.margin></Button>
+            <Button fx:id="btnRestart" mnemonicParsing="false" prefHeight="49.0" prefWidth="205.0" text="Neu">
+               <HBox.margin>
+                  <Insets right="15.0" />
+               </HBox.margin></Button>
          </children>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-         <padding>
-            <Insets bottom="20.0" left="40.0" right="40.0" top="40.0" />
-         </padding>
-      </VBox>
-      <VBox prefHeight="200.0" prefWidth="100.0">
+      </HBox>
+   </top>
+
+   <left>
+      <VBox alignment="TOP_RIGHT" prefHeight="387.0" prefWidth="90.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="title" text="Verbindungsstatus" textAlignment="CENTER">
+            <Label text="Spieler" />
+            <Label text="X">
                <VBox.margin>
-                  <Insets bottom="20.0" top="10.0" />
+                  <Insets bottom="20.0" />
                </VBox.margin>
             </Label>
-            <HBox prefHeight="27.0" prefWidth="560.0">
-               <children>
-                  <Label text="IP des Gastgebers:">
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Label>
-                  <Label fx:id="lbAddress"  text="" />
-               </children>
-            </HBox>
-            <HBox prefHeight="28.0" prefWidth="560.0">
-               <children>
-                  <Label text="Spieler 1 (Gastgeber):">
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Label>
-                  <Label fx:id="lbHostName" text="" />
-               </children>
-            </HBox>
-            <HBox prefHeight="32.0" prefWidth="560.0">
-               <children>
-                  <Label text="Spieler 2:">
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Label>
-                  <Label fx:id="lbGuestName" text="" />
-               </children>
-            </HBox>
-            <Button fx:id="btnStartGame" mnemonicParsing="false" text="Spiel starten" />
+            <Label text="Punkte" />
+            <Label fx:id="lblPoints" text="0">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin></Label>
+            <Label text="Reihen" />
+            <Label fx:id="lblRows" text="0">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin></Label>
+            <Label text="Level" />
+            <Label fx:id="lblLevel" text="1" textAlignment="RIGHT" />
          </children>
-         <VBox.margin>
-            <Insets top="20.0" />
-         </VBox.margin>
-         <padding>
-            <Insets left="40.0" />
-         </padding>
-      </VBox>
-   </children>
+         <BorderPane.margin>
+            <Insets right="25.0" top="40.0" />
+         </BorderPane.margin></VBox>
+   </left>
+
+   <center>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <StackPane fx:id="boardPaneContainer" BorderPane.alignment="CENTER">
+               <children>
+                  <StackPane fx:id="boardPane" maxHeight="380.0" maxWidth="190.0" minHeight="380.0" minWidth="190.0" prefHeight="380.0" prefWidth="190.0">
+                  </StackPane>
+               </children>
+            </StackPane>
+            <VBox alignment="TOP_CENTER" prefHeight="387.0" prefWidth="193.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="Nächstes" />
+                  <StackPane fx:id="nextField" prefHeight="100.0" prefWidth="100.0">
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" />
+                     </VBox.margin>
+                  </StackPane>
+                  <Label text="Zeit" />
+                  <Label fx:id="lbTimer" text="00:00" />
+               </children>
+               <HBox.margin>
+                  <Insets top="30.0" />
+               </HBox.margin>
+            </VBox>
+            <StackPane fx:id="oppboardPaneContainer" BorderPane.alignment="CENTER">
+               <children>
+                  <StackPane fx:id="oppboardPane" maxHeight="380.0" maxWidth="190.0" minHeight="380.0" minWidth="190.0" prefHeight="380.0" prefWidth="190.0">
+                  </StackPane>
+               </children>
+            </StackPane>
+         </children>
+      </HBox>
+   </center>
+
+   <right>
+      <VBox prefHeight="387.0" prefWidth="90.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Spieler" />
+            <Label text="Y">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Label>
+            <Label text="Punkte" />
+            <Label fx:id="opplblPoints" text="0">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin></Label>
+            <Label text="Reihen" />
+            <Label fx:id="opplblRows" text="0">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin></Label>
+            <Label text="Level" />
+            <Label fx:id="opplblLevel" text="1" textAlignment="RIGHT" />
+         </children>
+         <BorderPane.margin>
+            <Insets left="25.0" top="40.0" />
+         </BorderPane.margin></VBox>
+   </right>
+
    <stylesheets>
-      <URL value="@multiplayer.css" />
+      <URL value="@board.css" />
    </stylesheets>
-</VBox>
+</BorderPane>

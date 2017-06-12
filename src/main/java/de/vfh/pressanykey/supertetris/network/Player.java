@@ -1,21 +1,24 @@
 package de.vfh.pressanykey.supertetris.network;
 
-/**
- * Created by claudia on 12.06.17.
- */
-public abstract class Player {
+import de.vfh.pressanykey.supertetris.game.Scores;
 
 
-    protected boolean isMoving;
+public class Player {
+
     protected String name;
+    protected Scores scores;  // player's level, line count, scores
 
     public Player(String name) {
-        init();
         this.name = name;
+        this.scores = new Scores();
     }
 
-    public final void init() {
+    public String getName() {
+        return name;
+    }
 
+    public Scores getScores() {
+        return scores;
     }
 
 }

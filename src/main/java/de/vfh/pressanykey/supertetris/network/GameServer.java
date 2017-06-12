@@ -1,6 +1,7 @@
 package de.vfh.pressanykey.supertetris.network;
 
 import de.vfh.pressanykey.supertetris.packages.Package00Login;
+import de.vfh.pressanykey.supertetris.packages.Package01Disconnect;
 import de.vfh.pressanykey.supertetris.packages.Packet;
 
 import java.io.IOException;
@@ -17,23 +18,20 @@ public class GameServer extends Thread {
     private final int MAX_PACKET_SIZE = 1024;
 
     private List<PlayerOnServer> allPlayers = new ArrayList<>();
-//
-//    public connect(GameController game, String ipAddress, int port) {
+
     public void connect() {
-//        this.game = game;
         try {
             this.socket = new DatagramSocket();
             this.port = socket.getLocalPort();
-            System.out.println("DatagramSocket is open on port " + this.port);
+            System.out.println("SERVER > DatagramSocket is open on port " + this.port);
         } catch (SocketException e) {
              e.printStackTrace();
         }
     }
 
     public void run() {
-        System.out.println("Server is running.");
+        System.out.println("SERVER > Server is running.");
         while(true) {
-//            DatagramPacket packet = new DatagramPacket(receiveDataBuffer, MAX_PACKET_SIZE);
             byte[] data = new byte[MAX_PACKET_SIZE];
             DatagramPacket packet = new DatagramPacket(data, data.length);
             try {
@@ -48,25 +46,29 @@ public class GameServer extends Thread {
     private void processPacket(byte[] data, InetAddress address, int port) {
         String message = new String(data).trim();
         Packet.PacketTypes type = Packet.lookupPacket(message.substring(0,2));
+        Packet packet;
         switch(type) {
             default:
             case INVALID:
                 break;
             case LOGIN:
-                Package00Login packet = new Package00Login(data);
-                System.out.println("User " + packet.getUsername() + " has connected with " + address + " : " + port);
-                PlayerOnServer player = new PlayerOnServer(address, port, packet.getUsername());
-                this.allPlayers.add(player);
+                packet = new Package00Login(data);
+                System.out.println("SERVER > User " + ((Package00Login)packet).getUsername() + " has connected with " + address + " : " + port);
+                PlayerOnServer player = new PlayerOnServer(address, port, ((Package00Login)packet).getUsername());
+                this.addConnection(player, (Package00Login) packet);
                 break;
             case DISCONNECT:
+                packet = new Package01Disconnect(data);
+                System.out.println("SERVER > User " + ((Package01Disconnect)packet).getUsername() + " has disconnected :( ...");
+                this.removeConnection((Package01Disconnect)packet);
                 break;
         }
 
-        dumpPacket(data, address, port);
+//        dumpPacket(data, address, port);
 
     }
 
-    public void send(byte[] data, InetAddress address, int port) {
+    private void send(byte[] data, InetAddress address, int port) {
         assert(socket.isConnected());
         DatagramPacket packet = new DatagramPacket(data, data.length, address, port);
         try {
@@ -81,6 +83,42 @@ public class GameServer extends Thread {
         for (PlayerOnServer p : allPlayers) {
             send(data, p.address, p.port);
         }
+    }
+
+    private void addConnection(PlayerOnServer player, Package00Login packet) {
+        boolean alreadyConnected = false;
+        for (PlayerOnServer p : allPlayers) {
+            if(player.getName().equalsIgnoreCase(p.getName())) {
+                if(p.address == null) {
+                    p.address = player.address;
+                }
+                if(p.port == -1) {
+                    p.port = player.port;
+                }
+                alreadyConnected = true;
+            } else {
+                send(packet.getData(), p.address, p.port);
+            }
+        }
+        if(!alreadyConnected) {
+            this.allPlayers.add(player);
+        }
+    }
+
+    private void removeConnection(Package01Disconnect packet) {
+        allPlayers.remove(getPlayerIndex(packet.getUsername()));
+        packet.writeData(this);
+    }
+
+    private int getPlayerIndex(String username) {
+        int index = 0;
+        for (PlayerOnServer p : allPlayers) {
+            if(p.getName().equalsIgnoreCase(username)) {
+                break;
+            }
+            index++;
+        }
+        return index;
     }
 
     // for debugging
@@ -104,19 +142,17 @@ public class GameServer extends Thread {
 
     // Methods for getting the IP address of the machine on which the server is running:
     private List<Inet4Address> getInet4Addresses() throws SocketException {
-        List<Inet4Address> adress = new ArrayList<Inet4Address>();
-
+        List<Inet4Address> serverAddress = new ArrayList<>();
         Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
         for (NetworkInterface netint : Collections.list(nets)) {
             Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
             for (InetAddress inetAddress : Collections.list(inetAddresses)) {
                 if (inetAddress instanceof Inet4Address && !inetAddress.isLoopbackAddress()) {
-                    adress.add((Inet4Address)inetAddress);
+                    serverAddress.add((Inet4Address)inetAddress);
                 }
             }
         }
-
-        return adress;
+        return serverAddress;
     }
 
     public String getHost4Address() throws SocketException {

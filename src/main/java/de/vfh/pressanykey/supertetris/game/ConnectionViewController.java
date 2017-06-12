@@ -1,7 +1,5 @@
 package de.vfh.pressanykey.supertetris.game;
 
-import de.vfh.pressanykey.supertetris.network.GameServer;
-import de.vfh.pressanykey.supertetris.network.PlayerClient;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,21 +37,20 @@ public class ConnectionViewController extends ViewController {
     @FXML
     private TextField connectPort;
 
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-
-    }
-
-    private final GameServer server = new GameServer();
-    private final PlayerClient player = new PlayerClient();
+    // Variables for connection
     private String hostAddress;
     private int port;
     private String playerName;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
+
+
     @FXML
     public void btnStartGameClick(ActionEvent actionEvent) throws Exception {
+        // TODO: ensure that two players are connected and switch the screen for both
         setView((Stage)btnStartGame.getScene().getWindow(), "multiplayer.fxml");
     }
 
@@ -74,30 +71,24 @@ public class ConnectionViewController extends ViewController {
                 // display infos on server
                 port = server.getPortNumber();
                 hostAddress = server.getHost4Address();
+                // then we can connect
+                client.connect(hostAddress, port, playerName);
+                client.start();
+                // display information
                 Platform.runLater(() -> {
                     lbAddress.setText(hostAddress);
                     lbPort.setText(String.valueOf(port));
                     lbHostName.setText(playerName);
                 });
-                /// then we can connect
-                player.connect(hostAddress, port, playerName);
-                player.start();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         });
 
         serverThread.start();
         playerThread.start();
-
-
-        // example: create the sending protocol ("Example"-class) / database that the client uses for sending
-        // makeData is the function getting the data wie want to sent
-//        Example ex = Example.makeData();
-//        client.send(ex);
-
     }
+
 
     @FXML
     public void btnJoinGameClick(ActionEvent actionEvent) throws Exception {
@@ -112,20 +103,20 @@ public class ConnectionViewController extends ViewController {
         final Thread playerThread = new Thread(() -> {
             // we just want to join the game so we expect that the server is running
             try {
+
+                client.connect(hostAddress, port, playerName);
+                client.start();
+                // display information
                 Platform.runLater(() -> {
                     lbAddress.setText(hostAddress);
                     lbPort.setText(String.valueOf(port));
                     lbGuestName.setText(playerName);
                 });
-                player.connect(hostAddress, port, playerName);
-                player.start();
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
         });
-
         playerThread.start();
-
     }
 }
