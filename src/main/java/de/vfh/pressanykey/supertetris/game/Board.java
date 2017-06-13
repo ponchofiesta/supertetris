@@ -1,8 +1,10 @@
 package de.vfh.pressanykey.supertetris.game;
 
+import com.sun.deploy.nativesandbox.NativeSandboxBroker;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.control.Dialog;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -74,11 +76,17 @@ public class Board {
     private List<BoardListener> boardListeners = new ArrayList<>();
 
     /**
+     * How many rows to add to the bottom (queue)
+     */
+    private Integer rowsToAdd;
+
+    /**
      * Constructor
      */
     public Board() {
         downTimer = new Timeline();
         downTimer.setCycleCount(Animation.INDEFINITE);
+        rowsToAdd = 0;
     }
 
     /**
@@ -118,8 +126,7 @@ public class Board {
             y--;
             if(y <= 1) {
                 // game over
-                stop();
-                notifyGameover();
+                gameOver();
                 return;
             }
             mergeStone();
@@ -182,11 +189,13 @@ public class Board {
      * @return is crossing or not
      */
     private boolean isCrossing(int[][] newMatrix) {
+        int x;
+        int y;
         for(int i = 0; i < newMatrix.length; i++) {
+            y = i + this.y - BOARD_HIDDEN;
             for(int j = 0; j < newMatrix[0].length; j++) {
+                x = j + this.x;
                 if(newMatrix[i][j] == 1) {
-                    final int y = i + this.y - BOARD_HIDDEN;
-                    final int x = j + this.x;
                     if(y >= matrix.length // bottom border
                             || x < 0 // left border
                             || x >= matrix[0].length // right border
@@ -231,13 +240,7 @@ public class Board {
                     x = this.x + j;
 
                     // create new rectangle for this block
-                    final Rectangle rectangle = new Rectangle();
-                    rectangle.setWidth(boardPane.getBlockSize().doubleValue());
-                    rectangle.setHeight(boardPane.getBlockSize().doubleValue());
-                    rectangle.setTranslateY(boardPane.getBlockSize().doubleValue() * y);
-                    rectangle.setTranslateX(boardPane.getBlockSize().doubleValue() * x);
-                    rectangle.setFill(currentStone.getColor());
-                    rectangle.getStyleClass().add("block");
+                    Rectangle rectangle = Stone.createBlock(x, y, boardPane.getBlockSize(), currentStone.getColor());
 
                     // add rectangle to the matrix and to the boardPane
                     matrix[y][x] = rectangle;
@@ -306,6 +309,62 @@ public class Board {
     }
 
     /**
+     * Adds rows to the bottom of the board with random hole
+     * @param count number of rows to add
+     */
+    public void addRandomRows(int count) {
+        synchronized(rowsToAdd) {
+            rowsToAdd += count;
+        }
+    }
+
+    /**
+     * Adds row to the bottom of the board with random hole
+     */
+    private void addRandomRow() {
+
+        boolean isCrossingTop = false;
+        int count = 1;
+
+        // move every row [count] rows up
+        for(int i = 0; i < matrix.length - count; i++) {
+            for(int j = 0; j < matrix[0].length; j++) {
+
+                // if there are blocks in the [count] most top rows we will touch top border
+                if(i <= count && matrix[i][j] != null) {
+                    isCrossingTop = true;
+                    boardPane.getChildren().remove(matrix[i][j]);
+                }
+
+                matrix[i][j] = matrix[i+count][j];
+                if(matrix[i][j] != null) {
+                    matrix[i][j].setTranslateY(boardPane.getBlockSize().doubleValue() * i);
+                }
+            }
+        }
+
+        // add [count] random rows to the bottom
+        int holePos;
+        Random rand = new Random();
+        for(int i = matrix.length - count; i < matrix.length; i++) {
+            holePos = rand.nextInt(matrix[0].length);
+            for(int j = 0; j < matrix[0].length; j++) {
+                if(j == holePos) {
+                    continue;
+                }
+                Rectangle rectangle = Stone.createBlock(j, i, boardPane.getBlockSize());
+                matrix[i][j] = rectangle;
+                boardPane.getChildren().add(rectangle);
+            }
+        }
+
+        // if we touch top border the game is lost
+        if(isCrossingTop) {
+            gameOver();
+        }
+    }
+
+    /**
      * Set new timer delay for falling blocks
      * @param delay Delay in ms
      */
@@ -314,7 +373,6 @@ public class Board {
         if(downTimerDelay == delay) {
             return;
         }
-        System.out.println(delay);
         downTimerDelay = delay;
         downTimer.stop();
         downTimer.getKeyFrames().setAll(new KeyFrame(Duration.millis(delay), ae -> {
@@ -328,6 +386,15 @@ public class Board {
      */
     private void doTick() {
         moveDown();
+        if(rowsToAdd > 0) {
+            addRandomRow();
+            rowsToAdd--;
+        }
+    }
+
+    private void gameOver() {
+        stop();
+        notifyGameover();
     }
 
     /**

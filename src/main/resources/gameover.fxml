@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="startview" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.vfh.pressanykey.supertetris.game.GameoverViewController">
+   <children>
+
+
+   </children>
+    <stylesheets>
+        <URL value="@start.css" />
+    </stylesheets>
+   <padding>
+      <Insets bottom="30.0" top="30.0" />
+   </padding>
+</VBox>

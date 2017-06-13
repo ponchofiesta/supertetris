@@ -85,4 +85,12 @@ public class BoardViewController extends ViewController {
 
     }
 
+    public void showGameOver() {
+        try {
+            setView((Stage) btnStop.getScene().getWindow(), "gameover.fxml");
+        } catch(Exception ex) {
+            System.out.println("Error: Could not show gameover screen.");
+        }
+    }
+
 }
