@@ -1,5 +1,6 @@
 package de.vfh.pressanykey.supertetris.game;
 
+import de.vfh.pressanykey.supertetris.network.ClientInterface;
 import de.vfh.pressanykey.supertetris.network.GameServer;
 import de.vfh.pressanykey.supertetris.network.PlayerClient;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,8 @@ public abstract class ViewController implements Initializable {
 
     protected final static GameServer server = new GameServer();
     protected final static PlayerClient client = new PlayerClient();
+    protected final static ClientInterface clientInterFace = new ClientInterface(client);
+    protected static MultiplayerGame game;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -29,4 +32,5 @@ public abstract class ViewController implements Initializable {
         stage.setScene(new Scene(root, 800, 500));
         stage.show();
     }
+
 }

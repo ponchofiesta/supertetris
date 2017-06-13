@@ -1,10 +1,8 @@
 package de.vfh.pressanykey.supertetris.network;
 
-import de.vfh.pressanykey.supertetris.packages.Package00Login;
-import de.vfh.pressanykey.supertetris.packages.Package01Disconnect;
-import de.vfh.pressanykey.supertetris.packages.Package02ConnectState;
-import de.vfh.pressanykey.supertetris.packages.Packet;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.net.*;
@@ -47,40 +45,53 @@ public class GameServer extends Thread {
 
     private void processPacket(byte[] data, InetAddress address, int port) {
         String message = new String(data).trim();
-        Packet.PacketTypes type = Packet.lookupPacket(message.substring(0,2));
-        Packet packet;
-        switch(type) {
-            default:
-            case INVALID:
-                break;
-            case LOGIN:
-                packet = new Package00Login(data, true);
-                System.out.println("SERVER > User " + ((Package00Login)packet).getUsername() + " has connected with " + address + " : " + port);
-                PlayerOnServer player = new PlayerOnServer(address, port, ((Package00Login)packet).getUsername());
-                allPlayers.add(player);
-                sendPlayerState();
-                break;
-            case DISCONNECT:
-                packet = new Package01Disconnect(data, true);
-                System.out.println("SERVER > User " + ((Package01Disconnect)packet).getUsername() + " has disconnected ...");
-                this.removeConnection((Package01Disconnect)packet);
-                break;
+        if(message.startsWith("{")){
+            try {
+                JSONParser parser = new JSONParser();
+                Object obj = parser.parse(message);
+                JSONObject messageObject = (JSONObject) obj;
+                String action = (String) messageObject.get("action");
+                switch (action) {
+                    case Actions.GAME_START:
+                        sendDataToAll(message.getBytes());
+                        break;
+                    case Actions.GAME_STOP:
+                        break;
+                    case Actions.LOGIN:
+                        String player = (String) messageObject.getOrDefault("player", "");
+                        System.out.println("SERVER > User " + player + " has connected with " + address + " : " + port);
+                        PlayerOnServer gamePlayer = new PlayerOnServer(address, port, player);
+                        allPlayers.add(gamePlayer);
+                        sendPlayerState();
+                        break;
+                    case Actions.DISCONNECT:
+                        sendDataToAll(message.getBytes());
+                        allPlayers.remove(getPlayerIndex(address, port));
+                        break;
+                    case Actions.NEW_STONE:
+                        sendToOthers(message.getBytes(), address, port);
+                    default:
+                        System.out.println("SERVER > Invalid packet type");
+                }
+            } catch (ParseException e) {
+                System.out.println("SERVER > Packet could not be parsed: " + e.getMessage());
+            }
         }
-
 //        dumpPacket(data, address, port);
 
     }
 
     private void sendPlayerState() {
         JSONObject state = new JSONObject();
+        state.put("action", Actions.CONNECT_STATE);
         int count = 1;
+        //TODO in der message unterscheiden zwischen "ich" und "gegner" statt player1 und player2
         for (PlayerOnServer p : allPlayers) {
             state.put("player"+count, p.getName());
             count++;
         }
         String message = state.toJSONString();
-        Package02ConnectState packet = new Package02ConnectState(message.getBytes(), false);
-        packet.writeData(this);
+        sendDataToAll(message.getBytes());
     }
 
     private void send(byte[] data, InetAddress address, int port) {
@@ -100,15 +111,19 @@ public class GameServer extends Thread {
         }
     }
 
-    private void removeConnection(Package01Disconnect packet) {
-        allPlayers.remove(getPlayerIndex(packet.getUsername()));
-        packet.writeData(this);
+    public void sendToOthers(byte[] data, InetAddress address, int port) {
+        for (PlayerOnServer p : allPlayers) {
+            if(p.getAddress().equals(address) && p.getPort() == port) {
+                continue;
+            }
+            send(data, p.address, p.port);
+        }
     }
 
-    private int getPlayerIndex(String username) {
+    private int getPlayerIndex(InetAddress address, int port) {
         int index = 0;
         for (PlayerOnServer p : allPlayers) {
-            if(p.getName().equalsIgnoreCase(username)) {
+            if(p.getAddress().equals(address) && p.getPort() == port) {
                 break;
             }
             index++;

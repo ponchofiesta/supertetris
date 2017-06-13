@@ -35,7 +35,7 @@
       <VBox alignment="TOP_RIGHT" prefHeight="387.0" prefWidth="90.0" BorderPane.alignment="CENTER">
          <children>
             <Label text="Spieler" />
-            <Label text="X">
+            <Label fx:id="lblName" text="X">
                <VBox.margin>
                   <Insets bottom="20.0" />
                </VBox.margin>
@@ -82,9 +82,9 @@
                   <Insets top="30.0" />
                </HBox.margin>
             </VBox>
-            <StackPane fx:id="oppboardPaneContainer" BorderPane.alignment="CENTER">
+            <StackPane fx:id="oppBoardPaneContainer" BorderPane.alignment="CENTER">
                <children>
-                  <StackPane fx:id="oppboardPane" maxHeight="380.0" maxWidth="190.0" minHeight="380.0" minWidth="190.0" prefHeight="380.0" prefWidth="190.0">
+                  <StackPane fx:id="oppBoardPane" maxHeight="380.0" maxWidth="190.0" minHeight="380.0" minWidth="190.0" prefHeight="380.0" prefWidth="190.0">
                   </StackPane>
                </children>
             </StackPane>
@@ -96,23 +96,23 @@
       <VBox prefHeight="387.0" prefWidth="90.0" BorderPane.alignment="CENTER">
          <children>
             <Label text="Spieler" />
-            <Label text="Y">
+            <Label fx:id="lblOppName" text="Y">
                <VBox.margin>
                   <Insets bottom="20.0" />
                </VBox.margin>
             </Label>
             <Label text="Punkte" />
-            <Label fx:id="opplblPoints" text="0">
+            <Label fx:id="lblOppPoints" text="0">
                <VBox.margin>
                   <Insets bottom="20.0" />
                </VBox.margin></Label>
             <Label text="Reihen" />
-            <Label fx:id="opplblRows" text="0">
+            <Label fx:id="lblOppRows" text="0">
                <VBox.margin>
                   <Insets bottom="20.0" />
                </VBox.margin></Label>
             <Label text="Level" />
-            <Label fx:id="opplblLevel" text="1" textAlignment="RIGHT" />
+            <Label fx:id="lblOppLevel" text="1" textAlignment="RIGHT" />
          </children>
          <BorderPane.margin>
             <Insets left="25.0" top="40.0" />

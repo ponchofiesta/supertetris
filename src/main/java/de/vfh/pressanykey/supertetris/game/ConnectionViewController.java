@@ -1,8 +1,6 @@
 package de.vfh.pressanykey.supertetris.game;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -18,6 +16,8 @@ import java.util.ResourceBundle;
  */
 public class ConnectionViewController extends ViewController {
 
+    // GUI elements
+    public Stage currentStage;
     @FXML
     private Button btnNewGame;
     @FXML
@@ -45,43 +45,46 @@ public class ConnectionViewController extends ViewController {
     private String hostAddress;
     private int port;
     private String playerName;
-    MultiplayerGame game;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        game = new MultiplayerGame();
+        game = new MultiplayerGame(this);
 
         // Update playernames on connection
-        game.getPlayerCount().addListener((ChangeListener<Number>)((o, oldVal, newVal) -> {
+        game.playerCount.addListener(((o, oldVal, newVal) -> {
             Platform.runLater(() -> {
-                lbFirstPlayer.setText(game.getMyself().getName());
-                lbSecondPlayer.setText(game.getOpponent().getName());
+                lbFirstPlayer.setText(game.myName.getValue());
+                lbSecondPlayer.setText(game.oppName.getValue());
             });
         }));
     }
 
+    private void setCurrentStage(ActionEvent actionEvent){
+        currentStage = (Stage)((Button)actionEvent.getSource()).getScene().getWindow();
+    }
 
     @FXML
     public void btnStartGameClick(ActionEvent actionEvent) throws Exception {
-        System.out.println("playercount is: " + game.getPlayerCount());
-        if(game.getPlayerCount().getValue() != 2) {
+        setCurrentStage(actionEvent);
+        if(game.playerCount.getValue() != 2) {
             Platform.runLater(() -> {
                 lblMessage.setText("Dir fehlt ein Mitspieler, um das Spiel zu starten.");
             });
         } else {
-            // TODO: switch the screen for both
-            setView((Stage)btnStartGame.getScene().getWindow(), "multiplayer.fxml");
+            clientInterFace.sendGameStarted();
         }
-    }
+   }
 
     @FXML
     public void btnNewGameClick(ActionEvent actionEvent) throws Exception {
+        setCurrentStage(actionEvent);
         // who wants to start a game?
         playerName = txtName.getText();
 
         // create a thread for starting the server
         server.connect();
-        final Thread serverThread = new Thread(() -> server.start());
+        final Thread serverThread = new Thread(() -> server.start(), "ServerThread");
+
 
         // create a thread to connect as client to server
         final Thread playerThread = new Thread(() -> {
@@ -92,8 +95,9 @@ public class ConnectionViewController extends ViewController {
                 port = server.getPortNumber();
                 hostAddress = server.getHost4Address();
                 // then we can connect
-                client.connect(hostAddress, port, playerName, game);
+                client.connect(hostAddress, port, game);
                 client.start();
+                clientInterFace.sendLogin(playerName);
                 // display information
                 client.join(200);
                 Platform.runLater(() -> {
@@ -103,7 +107,7 @@ public class ConnectionViewController extends ViewController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        });
+        }, "ClientThread");
 
         serverThread.start();
         playerThread.start();
@@ -112,6 +116,7 @@ public class ConnectionViewController extends ViewController {
 
     @FXML
     public void btnJoinGameClick(ActionEvent actionEvent) throws Exception {
+        setCurrentStage(actionEvent);
         // who is connecting?
         playerName = txtName.getText();
 
@@ -123,8 +128,9 @@ public class ConnectionViewController extends ViewController {
         final Thread playerThread = new Thread(() -> {
             // we just want to join the game so we expect that the server is running
             try {
-                client.connect(hostAddress, port, playerName, game);
+                client.connect(hostAddress, port, game);
                 client.start();
+                clientInterFace.sendLogin(playerName);
                 // display information
                 client.join(200);
                 Platform.runLater(() -> {
@@ -136,6 +142,9 @@ public class ConnectionViewController extends ViewController {
             }
 
         });
+
         playerThread.start();
     }
+
+    // TODO Stop all threads when window is closed
 }
