@@ -40,7 +40,7 @@ public class GameController {
             @Override
             void onGameover() {
                 stop();
-                //TODO: show points or something
+                view.showGameOver();
             }
 
             @Override

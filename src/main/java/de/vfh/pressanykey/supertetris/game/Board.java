@@ -4,6 +4,7 @@ import com.sun.deploy.nativesandbox.NativeSandboxBroker;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.control.Dialog;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -85,6 +86,7 @@ public class Board {
     public Board() {
         downTimer = new Timeline();
         downTimer.setCycleCount(Animation.INDEFINITE);
+        rowsToAdd = 0;
     }
 
     /**
@@ -124,8 +126,7 @@ public class Board {
             y--;
             if(y <= 1) {
                 // game over
-                stop();
-                notifyGameover();
+                gameOver();
                 return;
             }
             mergeStone();
@@ -359,8 +360,7 @@ public class Board {
 
         // if we touch top border the game is lost
         if(isCrossingTop) {
-            stop();
-            notifyGameover();
+            gameOver();
         }
     }
 
@@ -390,6 +390,11 @@ public class Board {
             addRandomRow();
             rowsToAdd--;
         }
+    }
+
+    private void gameOver() {
+        stop();
+        notifyGameover();
     }
 
     /**
