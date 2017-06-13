@@ -9,7 +9,7 @@ import java.io.UnsupportedEncodingException;
 public abstract class Packet {
 
     public enum PacketTypes {
-        INVALID(-1), LOGIN(00), DISCONNECT(01);
+        INVALID(-1), LOGIN(00), DISCONNECT(01), CONNECTSTATE(02);
 
         private int packetId;
 
@@ -33,10 +33,13 @@ public abstract class Packet {
 
     public abstract byte[] getData();
 
-    public String readData(byte[] data) {
+    public String readData(byte[] data, boolean received) {
         try {
             String message = new String(data, "UTF-8").trim();
-            return message.substring(2);
+            if(received) {
+                 message = message.substring(2);
+            }
+            return message;
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

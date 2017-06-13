@@ -10,9 +10,9 @@ public class Package01Disconnect extends Packet {
 
     private String username;
 
-    public Package01Disconnect(byte[] data) {
+    public Package01Disconnect(byte[] data, boolean received) {
         super(01);
-        this.username = readData(data);
+        this.username = readData(data, received);
     }
 
     public Package01Disconnect(String username) {

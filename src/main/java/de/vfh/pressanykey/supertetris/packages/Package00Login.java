@@ -10,14 +10,9 @@ public class Package00Login extends Packet {
 
     private String username;
 
-    public Package00Login(byte[] data) {
+    public Package00Login(byte[] data, boolean received) {
         super(00);
-        this.username = readData(data);
-    }
-
-    public Package00Login(String username) {
-        super(00);
-        this.username = username;
+        this.username = readData(data, received);
     }
 
     @Override
@@ -32,7 +27,7 @@ public class Package00Login extends Packet {
 
     @Override
     public byte[] getData() {
-        return("00" + this.username).getBytes();
+        return("00" + username).getBytes();
     }
 
     public String getUsername() {

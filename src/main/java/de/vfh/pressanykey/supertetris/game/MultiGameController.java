@@ -9,13 +9,17 @@ public class MultiGameController extends GameController {
 
     private PlayerClient client;
     private Player myself;
-//    protected Player opponent;
+    private Player opponent;
+
 
     public MultiGameController() {
         super();
         this.client = ViewController.client;
-        myself = new Player(client.getPlayerName());
-        System.out.println("client for " + client.getPlayerName() + " running on " + client.toString());
+        this.myself = myself;
+        this.opponent = opponent;
+
+
+        // check what's happening on the board and send it to the opponent
         board.addBoardListener(new BoardListener() {
 
             @Override
@@ -33,5 +37,13 @@ public class MultiGameController extends GameController {
         packet.writeData(ViewController.client);
         stopwatch.stop();
         board.stop();
+    }
+
+    public String getPlayerName() {
+        return myself.getName();
+    }
+
+    public String getOpponentName() {
+        return opponent.getName();
     }
 }

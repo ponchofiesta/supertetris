@@ -1,10 +1,25 @@
 package de.vfh.pressanykey.supertetris.game;
 
 
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MultiBoardViewController extends BoardViewController {
+
+    @FXML
+    protected Label lblName;
+    @FXML
+    protected Label lblOppPoints;
+    @FXML
+    protected Label lblOppRows;
+    @FXML
+    protected Label lblOppLevel;
+    @FXML
+    protected Label lblOppName;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -15,6 +30,8 @@ public class MultiBoardViewController extends BoardViewController {
         gameController = new MultiGameController();
         gameController.setView(this);
         boardPane.getChildren().add(gameController.getBoardPane());
+
+//        lblName.setText(((MultiGameController)gameController).getPlayerName());
 
         // bind stopwatch updates to view
         gameController.getStopwatch().addObserver((obj, value) -> {

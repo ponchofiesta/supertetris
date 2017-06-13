@@ -1,8 +1,11 @@
 package de.vfh.pressanykey.supertetris.network;
 
+import de.vfh.pressanykey.supertetris.game.MultiplayerGame;
 import de.vfh.pressanykey.supertetris.packages.Package00Login;
 import de.vfh.pressanykey.supertetris.packages.Package01Disconnect;
+import de.vfh.pressanykey.supertetris.packages.Package02ConnectState;
 import de.vfh.pressanykey.supertetris.packages.Packet;
+import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.net.*;
@@ -18,13 +21,15 @@ public class PlayerClient extends Thread {
     private InetAddress ipAddress;
     private DatagramSocket socket;
     private String playerName;
+    private MultiplayerGame game;
 
 
 //    public void connect(GameController game, String ipAddress, int port) {
-    public void connect(String ipAddress, int port, String playerName) {
+    public void connect(String ipAddress, int port, String playerName, MultiplayerGame game) {
         try {
-            //        this.game = game;
+            this.game = game;
             this.playerName = playerName;
+            // handle connection
             this.port = port;
             this.ipAddress = InetAddress.getByName(ipAddress);
             this.socket = new DatagramSocket();
@@ -59,20 +64,27 @@ public class PlayerClient extends Thread {
             case INVALID:
                 break;
             case LOGIN:
-                packet = new Package00Login(data);
                 System.out.println("CLIENT > User " + ((Package00Login)packet).getUsername() + " has connected with " + address + " : " + port);
-                // TODO: add player to game
                 break;
             case DISCONNECT:
-                packet = new Package01Disconnect(data);
+                packet = new Package01Disconnect(data, true);
                 System.out.println("CLIENT > User " + ((Package01Disconnect)packet).getUsername() + " has left the game :( ...");
-                // TODO: remove player from game
+                game.removeOpponent();
+                break;
+            case CONNECTSTATE:
+                packet = new Package02ConnectState(data, true);
+                String player1 = ((Package02ConnectState)packet).getFirstPlayer();
+                String player2 = ((Package02ConnectState)packet).getSecondPlayer();
+                System.out.println("CLIENT > Connected players: " + player1 + " and " + player2);
+                if(player1 != null) { game.addMyself(player1); }
+                if(player2 != null) { game.addOpponent(player2); }
                 break;
         }
     }
 
     private void gameLogin() {
-        Package00Login loginPacket = new Package00Login(playerName);
+        String message = playerName;
+        Package00Login loginPacket = new Package00Login(message.getBytes(), false);
         send(loginPacket.getData());
     }
 

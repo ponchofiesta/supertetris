@@ -1,6 +1,8 @@
 package de.vfh.pressanykey.supertetris.game;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -27,9 +29,11 @@ public class ConnectionViewController extends ViewController {
     @FXML
     private Label lbPort;
     @FXML
-    private Label lbHostName;
+    private Label lbFirstPlayer;
     @FXML
-    private Label lbGuestName;
+    private Label lbSecondPlayer;
+    @FXML
+    private Label lblMessage;
     @FXML
     private TextField txtName;
     @FXML
@@ -41,17 +45,33 @@ public class ConnectionViewController extends ViewController {
     private String hostAddress;
     private int port;
     private String playerName;
+    MultiplayerGame game;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        game = new MultiplayerGame();
 
+        // Update playernames on connection
+        game.getPlayerCount().addListener((ChangeListener<Number>)((o, oldVal, newVal) -> {
+            Platform.runLater(() -> {
+                lbFirstPlayer.setText(game.getMyself().getName());
+                lbSecondPlayer.setText(game.getOpponent().getName());
+            });
+        }));
     }
 
 
     @FXML
     public void btnStartGameClick(ActionEvent actionEvent) throws Exception {
-        // TODO: ensure that two players are connected and switch the screen for both
-        setView((Stage)btnStartGame.getScene().getWindow(), "multiplayer.fxml");
+        System.out.println("playercount is: " + game.getPlayerCount());
+        if(game.getPlayerCount().getValue() != 2) {
+            Platform.runLater(() -> {
+                lblMessage.setText("Dir fehlt ein Mitspieler, um das Spiel zu starten.");
+            });
+        } else {
+            // TODO: switch the screen for both
+            setView((Stage)btnStartGame.getScene().getWindow(), "multiplayer.fxml");
+        }
     }
 
     @FXML
@@ -72,13 +92,13 @@ public class ConnectionViewController extends ViewController {
                 port = server.getPortNumber();
                 hostAddress = server.getHost4Address();
                 // then we can connect
-                client.connect(hostAddress, port, playerName);
+                client.connect(hostAddress, port, playerName, game);
                 client.start();
                 // display information
+                client.join(200);
                 Platform.runLater(() -> {
                     lbAddress.setText(hostAddress);
                     lbPort.setText(String.valueOf(port));
-                    lbHostName.setText(playerName);
                 });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -103,14 +123,13 @@ public class ConnectionViewController extends ViewController {
         final Thread playerThread = new Thread(() -> {
             // we just want to join the game so we expect that the server is running
             try {
-
-                client.connect(hostAddress, port, playerName);
+                client.connect(hostAddress, port, playerName, game);
                 client.start();
                 // display information
+                client.join(200);
                 Platform.runLater(() -> {
                     lbAddress.setText(hostAddress);
                     lbPort.setText(String.valueOf(port));
-                    lbGuestName.setText(playerName);
                 });
             } catch (Exception e) {
                 e.printStackTrace();

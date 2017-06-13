@@ -2,7 +2,9 @@ package de.vfh.pressanykey.supertetris.network;
 
 import de.vfh.pressanykey.supertetris.packages.Package00Login;
 import de.vfh.pressanykey.supertetris.packages.Package01Disconnect;
+import de.vfh.pressanykey.supertetris.packages.Package02ConnectState;
 import de.vfh.pressanykey.supertetris.packages.Packet;
+import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.net.*;
@@ -52,20 +54,33 @@ public class GameServer extends Thread {
             case INVALID:
                 break;
             case LOGIN:
-                packet = new Package00Login(data);
+                packet = new Package00Login(data, true);
                 System.out.println("SERVER > User " + ((Package00Login)packet).getUsername() + " has connected with " + address + " : " + port);
                 PlayerOnServer player = new PlayerOnServer(address, port, ((Package00Login)packet).getUsername());
-                this.addConnection(player, (Package00Login) packet);
+                allPlayers.add(player);
+                sendPlayerState();
                 break;
             case DISCONNECT:
-                packet = new Package01Disconnect(data);
-                System.out.println("SERVER > User " + ((Package01Disconnect)packet).getUsername() + " has disconnected :( ...");
+                packet = new Package01Disconnect(data, true);
+                System.out.println("SERVER > User " + ((Package01Disconnect)packet).getUsername() + " has disconnected ...");
                 this.removeConnection((Package01Disconnect)packet);
                 break;
         }
 
 //        dumpPacket(data, address, port);
 
+    }
+
+    private void sendPlayerState() {
+        JSONObject state = new JSONObject();
+        int count = 1;
+        for (PlayerOnServer p : allPlayers) {
+            state.put("player"+count, p.getName());
+            count++;
+        }
+        String message = state.toJSONString();
+        Package02ConnectState packet = new Package02ConnectState(message.getBytes(), false);
+        packet.writeData(this);
     }
 
     private void send(byte[] data, InetAddress address, int port) {
@@ -82,26 +97,6 @@ public class GameServer extends Thread {
     public void sendDataToAll(byte[] data) {
         for (PlayerOnServer p : allPlayers) {
             send(data, p.address, p.port);
-        }
-    }
-
-    private void addConnection(PlayerOnServer player, Package00Login packet) {
-        boolean alreadyConnected = false;
-        for (PlayerOnServer p : allPlayers) {
-            if(player.getName().equalsIgnoreCase(p.getName())) {
-                if(p.address == null) {
-                    p.address = player.address;
-                }
-                if(p.port == -1) {
-                    p.port = player.port;
-                }
-                alreadyConnected = true;
-            } else {
-                send(packet.getData(), p.address, p.port);
-            }
-        }
-        if(!alreadyConnected) {
-            this.allPlayers.add(player);
         }
     }
 
