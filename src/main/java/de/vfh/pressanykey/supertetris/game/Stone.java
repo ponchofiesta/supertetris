@@ -136,14 +136,7 @@ public class Stone extends Group {
             for (int j = 0; j < matrix[i].length; j++) {
 
                 // the painted block
-                final Rectangle rectangle = new Rectangle();
-
-                // set position and dimensions of the block
-                rectangle.setWidth(blockSize.doubleValue());
-                rectangle.setHeight(blockSize.get());
-                rectangle.setTranslateY(blockSize.get() * i);
-                rectangle.setTranslateX(blockSize.get() * j);
-                rectangle.getStyleClass().add("block");
+                Rectangle rectangle = createBlock(j, i, blockSize);
 
                 // paint the blocks - or hide them
                 if (matrix[i][j] == 1) {
@@ -157,6 +150,40 @@ public class Stone extends Group {
 
             }
         }
+    }
+
+    /**
+     * Create a single block
+     * @param x X-position
+     * @param y Y-position
+     * @param blockSize Size of the block
+     * @param color Color of the block
+     * @return A rectangle representing the block
+     */
+    public static Rectangle createBlock(int x, int y, ReadOnlyDoubleProperty blockSize, Color color) {
+        Rectangle rectangle = new Rectangle();
+        rectangle.setWidth(blockSize.doubleValue());
+        rectangle.setHeight(blockSize.doubleValue());
+        rectangle.setTranslateX(blockSize.doubleValue() * x);
+        rectangle.setTranslateY(blockSize.doubleValue() * y);
+        rectangle.setFill(color);
+        rectangle.getStyleClass().add("block");
+        return rectangle;
+    }
+
+    /**
+     * Create a single block
+     * @param x X-position
+     * @param y Y-position
+     * @param blockSize Size of the block
+     * @return A rectangle representing the block
+     */
+    public static Rectangle createBlock(int x, int y, ReadOnlyDoubleProperty blockSize) {
+        Color[] colors = new Color[]{
+                Color.CYAN, Color.BLUE, Color.ORANGE, Color.YELLOW, Color.GREENYELLOW, Color.PURPLE, Color.ORANGERED
+        };
+        Color color = colors[RANDOM.nextInt(colors.length)];
+        return createBlock(x, y, blockSize, color);
     }
 
     /**
