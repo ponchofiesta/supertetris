@@ -115,6 +115,8 @@ public class Board {
         y = 0;
 
         move();
+
+        notifySpawn(currentStone);
     }
 
     /**

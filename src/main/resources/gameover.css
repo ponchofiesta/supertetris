@@ -1,0 +1,15 @@
+#gameoverview {
+    -fx-alignment: center;
+}
+#gameovergrid {
+    -fx-pref-width: 300px;
+    -fx-background-color: rgba(255, 255, 255, .7);
+    -fx-padding: 10px;
+}
+#gameovergrid .label {
+    -fx-text-fill: #000000;
+    -fx-font-size: 20pt;
+}
+#btnHome {
+
+}

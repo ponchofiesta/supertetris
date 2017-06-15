@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -25,10 +24,6 @@
                </HBox.margin>
             </Button>
             <Button fx:id="btnStop" mnemonicParsing="false" onAction="#btnStopClick" prefHeight="49.0" prefWidth="268.0" text="Beenden">
-               <HBox.margin>
-                  <Insets right="15.0" />
-               </HBox.margin></Button>
-            <Button fx:id="btnRestart" mnemonicParsing="false" prefHeight="49.0" prefWidth="205.0" text="Neu">
                <HBox.margin>
                   <Insets right="15.0" />
                </HBox.margin></Button>

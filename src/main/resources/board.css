@@ -40,6 +40,10 @@
     -fx-border-color: white;
     -fx-border-radius: 0;
     -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+.button:hover {
+    -fx-text-fill: orange;
 }
 
 .label {

@@ -2,10 +2,16 @@ package de.vfh.pressanykey.supertetris.game;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -25,15 +31,13 @@ public class BoardViewController extends ViewController {
     @FXML
     protected Button btnStop;
     @FXML
-    protected Button btnRestart;
+    protected Label lbTimer;
     @FXML
-    protected Label lbTimer = new Label();
+    protected Label lblPoints;
     @FXML
-    protected Label lblPoints = new Label();
+    protected Label lblLevel;
     @FXML
-    protected Label lblLevel = new Label();
-    @FXML
-    protected Label lblRows = new Label();
+    protected Label lblRows;
 
     protected GameController gameController;
 
@@ -85,9 +89,14 @@ public class BoardViewController extends ViewController {
 
     }
 
-    public void showGameOver() {
+    public void showGameOver(Scores scores) {
         try {
-            setView((Stage) btnStop.getScene().getWindow(), "gameover.fxml");
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gameover.fxml"));
+            Stage stage = (Stage)btnStop.getScene().getWindow();
+            stage.setScene(new Scene(loader.load(), 800, 500));
+            GameoverViewController gocontroller = loader.getController();
+            gocontroller.setScores(scores);
+            stage.show();
         } catch(Exception ex) {
             System.out.println("Error: Could not show gameover screen.");
         }
