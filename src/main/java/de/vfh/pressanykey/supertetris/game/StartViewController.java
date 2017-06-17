@@ -22,7 +22,7 @@ public class StartViewController extends ViewController  {
 
     @FXML
     public void btnMultiplayerClick(ActionEvent actionEvent) throws Exception {
-        setView((Stage)btnMultiplayer.getScene().getWindow(), "connection.fxml");
+        setView((Stage)btnMultiplayer.getScene().getWindow(), "lobby.fxml");
     }
 
 }

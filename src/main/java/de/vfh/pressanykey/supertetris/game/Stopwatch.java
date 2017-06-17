@@ -15,7 +15,7 @@ public class Stopwatch extends Observable {
     private Timeline stopwatchTimer;
     private long stopwatchStart = 0;
     private long stopwatchPause = 0;
-    private boolean isPaused = false;
+    protected boolean isPaused = false;
 
     /**
      * Start the stopwatch

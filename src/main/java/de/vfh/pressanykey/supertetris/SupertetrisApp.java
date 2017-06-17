@@ -13,6 +13,8 @@ import javafx.stage.Stage;
  */
 public class SupertetrisApp extends Application {
 
+    public static Stage primaryStage;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         try {
@@ -21,6 +23,7 @@ public class SupertetrisApp extends Application {
             Font.loadFont(getClass().getResourceAsStream("/fonts/Bungee-Regular.ttf"), 20);
             Font.loadFont(getClass().getResourceAsStream("/fonts/BungeeHairline-Regular.ttf"), 20);
             // Set stage
+            this.primaryStage = primaryStage;
             Parent root = FXMLLoader.load(getClass().getResource("/start.fxml"));
             primaryStage.setTitle("Super-Tetris");
             primaryStage.setScene(new Scene(root, 800, 500));
@@ -29,6 +32,10 @@ public class SupertetrisApp extends Application {
             e.printStackTrace();
         }
 
+    }
+
+    public static Stage getPrimaryStage() {
+        return primaryStage;
     }
 
     public static void main(String[] args) {

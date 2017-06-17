@@ -3,7 +3,6 @@ package de.vfh.pressanykey.supertetris.network;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
@@ -11,14 +10,19 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
+@SuppressWarnings("unchecked")
 public class GameServer extends Thread {
 
+    // Attributes for client-server communication
     private int port;
     private DatagramSocket socket;
-    private final int MAX_PACKET_SIZE = 1024;
-
+    private boolean running;
+    // List for storing all connected clients
     private List<PlayerOnServer> allPlayers = new ArrayList<>();
 
+    /**
+     * Initializes the server by creating a socket
+     */
     public void connect() {
         try {
             this.socket = new DatagramSocket();
@@ -29,10 +33,15 @@ public class GameServer extends Thread {
         }
     }
 
+
+    /**
+     * Starts the server and listens for incoming datagram packets
+     */
     public void run() {
+        running = true;
         System.out.println("SERVER > Server is running.");
-        while(true) {
-            byte[] data = new byte[MAX_PACKET_SIZE];
+        while(running) {
+            byte[] data = new byte[1024];
             DatagramPacket packet = new DatagramPacket(data, data.length);
             try {
                 socket.receive(packet);
@@ -43,6 +52,30 @@ public class GameServer extends Thread {
         }
     }
 
+
+    /**
+     * Returns the port number of the server.
+     * @return  Port number
+     */
+    public int getPortNumber() {
+        return this.port;
+    }
+
+
+    /**
+     * Return the public IP address of the server as string.
+     * @return Server IP address
+     * @throws SocketException
+     */
+    public String getHost4Address() throws SocketException {
+        List<Inet4Address> inet4 = getInet4Addresses();
+        return !inet4.isEmpty()
+                ? inet4.get(0).getHostAddress()
+                : null;
+    }
+
+
+    // Handles the processing of packages based on their package type which is stored in the "action" key
     private void processPacket(byte[] data, InetAddress address, int port) {
         String message = new String(data).trim();
         if(message.startsWith("{")){
@@ -55,7 +88,10 @@ public class GameServer extends Thread {
                     case Actions.GAME_START:
                         sendDataToAll(message.getBytes());
                         break;
-                    case Actions.GAME_STOP:
+                    case Actions.GAME_OVER:
+                        sendDataToAll(message.getBytes());
+                        running = false;
+                        System.out.println("SERVER > Server has shut down");
                         break;
                     case Actions.LOGIN:
                         String player = (String) messageObject.getOrDefault("player", "");
@@ -67,25 +103,50 @@ public class GameServer extends Thread {
                     case Actions.DISCONNECT:
                         sendDataToAll(message.getBytes());
                         allPlayers.remove(getPlayerIndex(address, port));
+                        if(allPlayers.isEmpty()) {
+                            running = false;
+                            System.out.println("SERVER > Server has shut down");
+                        }
                         break;
-                    case Actions.NEW_STONE:
+                    case Actions.ROW_DELETED:
+                    case Actions.SCORE_CHANGE:
+                    case Actions.GAME_PAUSE:
                         sendToOthers(message.getBytes(), address, port);
+                        break;
                     default:
-                        System.out.println("SERVER > Invalid packet type");
+                        System.out.println("SERVER > Invalid packet type: " + action);
                 }
             } catch (ParseException e) {
                 System.out.println("SERVER > Packet could not be parsed: " + e.getMessage());
             }
         }
-//        dumpPacket(data, address, port);
-
     }
 
+
+    // Forwards received data to all clients connected to the server
+    private void sendDataToAll(byte[] data) {
+        for (PlayerOnServer p : allPlayers) {
+            send(data, p.address, p.port);
+        }
+    }
+
+
+    // Forwards received data to all clients but the sender
+    private void sendToOthers(byte[] data, InetAddress address, int port) {
+        for (PlayerOnServer p : allPlayers) {
+            if(p.getAddress().equals(address) && p.getPort() == port) {
+                continue;
+            }
+            send(data, p.address, p.port);
+        }
+    }
+
+
+    // Sends the names of all connected players so that everyone gets informed who is online
     private void sendPlayerState() {
         JSONObject state = new JSONObject();
         state.put("action", Actions.CONNECT_STATE);
         int count = 1;
-        //TODO in der message unterscheiden zwischen "ich" und "gegner" statt player1 und player2
         for (PlayerOnServer p : allPlayers) {
             state.put("player"+count, p.getName());
             count++;
@@ -94,6 +155,8 @@ public class GameServer extends Thread {
         sendDataToAll(message.getBytes());
     }
 
+
+    // Sends the data to a certain client, based on this IP address and port
     private void send(byte[] data, InetAddress address, int port) {
         assert(socket.isConnected());
         DatagramPacket packet = new DatagramPacket(data, data.length, address, port);
@@ -105,52 +168,8 @@ public class GameServer extends Thread {
 
     }
 
-    public void sendDataToAll(byte[] data) {
-        for (PlayerOnServer p : allPlayers) {
-            send(data, p.address, p.port);
-        }
-    }
 
-    public void sendToOthers(byte[] data, InetAddress address, int port) {
-        for (PlayerOnServer p : allPlayers) {
-            if(p.getAddress().equals(address) && p.getPort() == port) {
-                continue;
-            }
-            send(data, p.address, p.port);
-        }
-    }
-
-    private int getPlayerIndex(InetAddress address, int port) {
-        int index = 0;
-        for (PlayerOnServer p : allPlayers) {
-            if(p.getAddress().equals(address) && p.getPort() == port) {
-                break;
-            }
-            index++;
-        }
-        return index;
-    }
-
-    // for debugging
-    private void dumpPacket(byte[] data, InetAddress address, int port) {
-
-        System.out.println("--------------------------");
-        System.out.println("PACKET: ");
-        System.out.println("\t" + address + " : " + port);
-        System.out.println("\tContents: ");
-        System.out.print("\t\t");
-        for (int i = 0; i < data.length; i++) {
-            System.out.print((char) data[i]);
-        }
-        System.out.println("\n--------------------------");
-    }
-
-
-    public int getPortNumber() {
-        return this.port;
-    }
-
-    // Methods for getting the IP address of the machine on which the server is running:
+    // Finds the public IP address of the server
     private List<Inet4Address> getInet4Addresses() throws SocketException {
         List<Inet4Address> serverAddress = new ArrayList<>();
         Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
@@ -165,12 +184,16 @@ public class GameServer extends Thread {
         return serverAddress;
     }
 
-    public String getHost4Address() throws SocketException {
-        List<Inet4Address> inet4 = getInet4Addresses();
-        return !inet4.isEmpty()
-                ? inet4.get(0).getHostAddress()
-                : null;
+
+    // Returns the index of a player in the list of all players based on his IP address and port
+    private int getPlayerIndex(InetAddress address, int port) {
+        int index = 0;
+        for (PlayerOnServer p : allPlayers) {
+            if(p.getAddress().equals(address) && p.getPort() == port) {
+                break;
+            }
+            index++;
+        }
+        return index;
     }
-
-
 }

@@ -20,7 +20,7 @@ public abstract class ViewController implements Initializable {
     protected final static GameServer server = new GameServer();
     protected final static PlayerClient client = new PlayerClient();
     protected final static ClientInterface clientInterFace = new ClientInterface(client);
-    protected static MultiplayerGame game;
+    protected static MultiplayerGame game = new MultiplayerGame();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
