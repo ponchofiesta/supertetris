@@ -25,6 +25,18 @@ public class Scores extends Observable {
     private int points = 0;
 
     /**
+     * Constructors
+     */
+    public Scores() {}
+
+    public Scores(int level, int lineCount, int points) {
+        this.level = level;
+        this.lineCount = lineCount;
+        this.points = points;
+    }
+
+
+    /**
      * Get current level
      * @return
      */
