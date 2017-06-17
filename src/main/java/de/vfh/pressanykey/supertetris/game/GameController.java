@@ -29,6 +29,7 @@ public class GameController {
 
     protected Scores scores;
 
+    private String className;
 
     /**
      * constructor
@@ -39,12 +40,16 @@ public class GameController {
         board.setBoardPane(boardPane);
         stopwatch = new Stopwatch();
         scores = new Scores();
+        className = this.getClass().getSimpleName();
 
         board.addBoardListener(new BoardListener() {
             @Override
             void onGameover() {
-                stop();
-                view.showGameOver(scores);
+                // Due to inheritance we must handle gameover different for normal and multiplayer mode
+                if(className.equals("GameController")) {
+                    stop();
+                    view.showGameOver(scores);
+                }
             }
 
             @Override
@@ -125,12 +130,11 @@ public class GameController {
      */
     public void pause() {
         if(isPaused) {
-            stopwatch.pause();
             board.play();
         } else {
-            stopwatch.pause();
             board.pause();
         }
+        stopwatch.pause();
         isPaused = !isPaused;
     }
 
