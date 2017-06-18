@@ -21,6 +21,13 @@ public abstract class BoardListener {
     }
 
     /**
+     * Fired when rows are added
+     */
+    void onRowAdded() {
+
+    }
+
+    /**
      * Fired when a new preview stone was chosen
      * @param stone the next stone
      */

@@ -366,6 +366,7 @@ public class Board {
             }
         }
 
+        notifyRowAdded();
         // if we touch top border the game is lost
         if(isCrossingTop) {
             gameOver();
@@ -484,6 +485,15 @@ public class Board {
     private void notifyRowDeleted(int count) {
         for (BoardListener boardListener : boardListeners) {
             boardListener.onRowDeleted(count);
+        }
+    }
+
+    /**
+     * Notify all listeners on added row
+     */
+    private void notifyRowAdded() {
+        for (BoardListener boardListener : boardListeners) {
+            boardListener.onRowAdded();
         }
     }
 
