@@ -89,10 +89,10 @@ public class MultiBoardViewController extends BoardViewController {
             });
         }));
 
-        // Bind game state to view
+        // Pause game if the pause button is clicked
         game.gamePaused.addListener((o, oldVal, newVal) -> ((MultiGameController)gameController).pause(false));
 
-        // Bind score updates of opponent to view
+        // If the opponent's score has changed, update the corresponding labels
         game.oppLines.addListener(((o, oldVal, newVal) -> {
             Platform.runLater(() -> {
                 lblOppRows.setText(game.oppLines.getValue().toString());
@@ -101,11 +101,19 @@ public class MultiBoardViewController extends BoardViewController {
             });
         }));
 
-        // Bind deleted
+        // If the opponent has deleted a row, add them to the board
         game.deletedRows.addListener(((o, oldVal, newVal) -> {
-            Platform.runLater(() -> {
-                ((MultiGameController)gameController).addRows((int) newVal);
-            });
+            Platform.runLater(() -> ((MultiGameController)gameController).addRows((int) newVal));
+        }));
+
+        // If the opponent has dropped a new stone, redraw the opponent's board
+        game.boardSignal.addListener(((o, oldVal, newVal) -> {
+            Platform.runLater(() -> ((MultiGameController)gameController).redrawOppStoneMatrix(game.dropStoneMatrix));
+        }));
+
+        // If the opponent has moved the stone, redraw the stone to the board
+        game.stoneSignal.addListener(((o, oldVal, newVal) -> {
+            Platform.runLater(() -> ((MultiGameController)gameController).redrawFallingStone(game.fallingStone, game.stonePosX, game.stonePosY));
         }));
 
         gameController.start();
@@ -117,6 +125,13 @@ public class MultiBoardViewController extends BoardViewController {
         ((MultiGameController)gameController).pause(true);
     }
 
+
+    /**
+     * Shows a game over screen with the scores of both players
+     * @param myName  Name of the current player
+     * @param oppName  Name of the opponent
+     * @param scores  Scores of the opponent
+     */
     public void showGameOver(String myName, String oppName, Scores scores) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gameover.fxml"));
@@ -128,7 +143,7 @@ public class MultiBoardViewController extends BoardViewController {
             gocontroller.setOppScores(scores);
             stage.show();
         } catch(Exception ex) {
-            System.out.println("Error: Could not show gameover screen.");
+            System.out.println("Could not show gameover screen:" + ex.getMessage());
         }
     }
 

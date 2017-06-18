@@ -2,6 +2,9 @@ package de.vfh.pressanykey.supertetris.game;
 
 import javafx.application.Platform;
 import javafx.beans.property.*;
+
+import java.util.HashMap;
+import java.util.List;
 import java.util.Observable;
 
 /**
@@ -19,12 +22,20 @@ public class MultiplayerGame extends Observable {
     IntegerProperty oppLevel = new SimpleIntegerProperty(1);
     IntegerProperty oppLines = new SimpleIntegerProperty(0);
     IntegerProperty oppPoints = new SimpleIntegerProperty(0);
+
     // Game state (pause)
     BooleanProperty gamePaused = new SimpleBooleanProperty(false);
 
     // Board
+    List<HashMap<String, Object>> dropStoneMatrix;
     BooleanProperty boardSignal = new SimpleBooleanProperty(false);
     IntegerProperty deletedRows = new SimpleIntegerProperty(0);
+
+    // Stone
+    List<HashMap<String, Object>> fallingStone;
+    BooleanProperty stoneSignal = new SimpleBooleanProperty(false);
+    int stonePosX;
+    int stonePosY;
 
 
     /**
@@ -125,6 +136,37 @@ public class MultiplayerGame extends Observable {
     public void setDeletedRows(int rows) {
         deletedRows.setValue(rows);
         deletedRows.setValue(0);
+    }
+
+
+    /**
+     * Indicates that the opponent's matrix of dropped stones has changed
+     * @param dropStoneMatrix Block of dropped stones
+     */
+    public void setDroppedMatrix(List<HashMap<String, Object>> dropStoneMatrix) {
+        this.dropStoneMatrix = dropStoneMatrix;
+        toggle(boardSignal);
+    }
+
+
+    /**
+     * Indicates that a stone was added
+     * @param fallingStone Blocks of the new stone
+     */
+    public void setFallingStone(List<HashMap<String, Object>> fallingStone) {
+        this.fallingStone = fallingStone;
+        toggle(stoneSignal);
+    }
+
+
+    /**
+     * Indicates that a stone was moved
+     * @param stoneX x-coordinate of the stone
+     * @param stoneY y-coordinate of the stone
+     */
+    public void setStonePosition(int stoneX, int stoneY) {
+        this.stonePosX = stoneX;
+        this.stonePosY = stoneY;
     }
 
 

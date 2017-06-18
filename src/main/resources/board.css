@@ -16,21 +16,20 @@
 
 /* correct positioning of stones */
 #boardPane>*,
-#boardPane>* {
+#oppBoardPane>* {
     -fx-alignment: top-left;
 }
 
-#boardPane,
-#oppboardPane,
+#oppBoardPane,
 #nextField {
     -fx-border-style: solid;
     -fx-border-color: white;
 }
 
-#oppboardPane {
+#boardPane {
     -fx-border-style: solid;
     -fx-border-color: lightblue;
-    -fx-background-color: grey;
+    -fx-background-color: midnightblue;
 }
 
 .button {

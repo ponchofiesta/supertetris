@@ -95,11 +95,11 @@ public class LobbyViewController extends ViewController {
      */
     @FXML
     public void btnStartGameClick(ActionEvent actionEvent) throws Exception {
-        if(game.playerCount.getValue() != 2) {
-            Platform.runLater(() -> lblMessage.setText("Dir fehlt ein Mitspieler, um das Spiel zu starten."));
-        } else {
+//        if(game.playerCount.getValue() != 2) {
+//            Platform.runLater(() -> lblMessage.setText("Dir fehlt ein Mitspieler, um das Spiel zu starten."));
+//        } else {
             clientInterFace.sendGameStarted();
-        }
+//        }
    }
 
 
