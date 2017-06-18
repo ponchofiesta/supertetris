@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -20,10 +21,6 @@
                </HBox.margin>
             </Button>
             <Button fx:id="btnStop" mnemonicParsing="false" onAction="#btnStopClick" prefHeight="49.0" prefWidth="268.0" text="Beenden">
-               <HBox.margin>
-                  <Insets right="15.0" />
-               </HBox.margin></Button>
-            <Button fx:id="btnRestart" mnemonicParsing="false" prefHeight="49.0" prefWidth="205.0" text="Neu">
                <HBox.margin>
                   <Insets right="15.0" />
                </HBox.margin></Button>
