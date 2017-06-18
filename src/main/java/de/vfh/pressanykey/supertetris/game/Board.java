@@ -384,6 +384,31 @@ public class Board {
 
 
     /**
+     * Gets the currently falling stone
+     * @return Falling stone
+     */
+    public Stone getCurrentStone() {
+        return this.currentStone;
+    }
+
+    /**
+     * Gets the current x-position of the falling stone
+     * @return x-position of the stone
+     */
+    public int getStoneX() {
+        return x;
+    }
+
+    /**
+     * Gets the current y-position of the falling stone
+     * @return y-position of the stone
+     */
+    public int getStoneY() {
+        return y;
+    }
+
+
+    /**
      * Set new timer delay for falling blocks
      * @param delay Delay in ms
      */
