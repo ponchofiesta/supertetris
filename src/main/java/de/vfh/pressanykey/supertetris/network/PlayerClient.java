@@ -1,16 +1,21 @@
 package de.vfh.pressanykey.supertetris.network;
 
 import de.vfh.pressanykey.supertetris.game.MultiplayerGame;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class PlayerClient extends Thread implements Runnable {
 
     // Attributes for client-server communication
+    private final int PACKET_SIZE = 16384;
     private int port;
     private InetAddress ipAddress;
     private DatagramSocket socket;
@@ -46,7 +51,7 @@ public class PlayerClient extends Thread implements Runnable {
     public void run() {
         running = true;
         while(running) {
-            byte[] data = new byte[1024];
+            byte[] data = new byte[PACKET_SIZE];
             DatagramPacket packet = new DatagramPacket(data, data.length);
             try {
                 socket.receive(packet);
@@ -121,15 +126,52 @@ public class PlayerClient extends Thread implements Runnable {
                         String rows = (String) messageObject.get("rows");
                         game.setDeletedRows(Integer.parseInt(rows));
                         break;
+                    case Actions.STONE_DROPPED:
+                        List<HashMap<String, Object>> droppedMatrix = getMatrix(messageObject.get("dropStoneMatrix"));
+                        game.setDroppedMatrix(droppedMatrix);
+                        break;
+                    case Actions.STONE_MOVED:
+                        String stoneX = (String) messageObject.get("stoneX");
+                        String stoneY = (String) messageObject.get("stoneY");
+                        game.setStonePosition(Integer.parseInt(stoneX), Integer.parseInt(stoneY));
+                        List<HashMap<String, Object>> stoneMatrix = getMatrix(messageObject.get("fallingStone"));
+                        game.setFallingStone(stoneMatrix);
+                        break;
                     default:
                         System.out.println("CLIENT > Invalid packet type: " + action);
                 }
             } catch (ParseException e) {
                 System.out.println("CLIENT > Packet could not be parsed: " + e.getMessage());
             } catch (Exception e) {
-                System.out.println("CLIENT > Problem with game control: " + e.getMessage());
+                System.out.println("CLIENT > Problem with game control: " );
+                e.printStackTrace();
             }
         }
+    }
+
+
+    // Helper method for deserializing the matrix of stones and dropped stones
+    private List<HashMap<String, Object>> getMatrix(Object object) {
+        String jsonStringArray = object.toString();
+        JSONParser parser = new JSONParser();
+        List<HashMap<String, Object>> matrix = new ArrayList<HashMap<String, Object>>();
+        try {
+            JSONArray array = (JSONArray) parser.parse(jsonStringArray);
+            for(int i = 0; i < array.size(); i++){
+                HashMap<String, Object> droppedStones= new HashMap<>();
+                JSONObject currentMatrixPosition = (JSONObject) array.get(i);
+                int x = Math.toIntExact((long)currentMatrixPosition.get("x"));
+                int y = Math.toIntExact((long)currentMatrixPosition.get("y"));
+                String color = currentMatrixPosition.get("color").toString();
+                droppedStones.put("x", x);
+                droppedStones.put("y", y);
+                droppedStones.put("color", color);
+                matrix.add(droppedStones);
+            }
+        } catch (ParseException e) {
+            System.out.println("Could not deserialize dropStoneMatrix: " + e.getMessage());
+        }
+        return matrix;
     }
 
 }

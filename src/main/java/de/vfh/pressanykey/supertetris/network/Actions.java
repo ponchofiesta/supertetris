@@ -13,5 +13,7 @@ public interface Actions {
     public static String GAME_OVER = "gameover";
     public static String SCORE_CHANGE = "scorechange";
     public static String ROW_DELETED = "rowdeleted";
+    public static String STONE_DROPPED = "stonedropped";
+    public static String STONE_MOVED = "stonemoved";
 
 }

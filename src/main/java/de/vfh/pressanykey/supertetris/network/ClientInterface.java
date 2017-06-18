@@ -1,6 +1,10 @@
 package de.vfh.pressanykey.supertetris.network;
 
 import de.vfh.pressanykey.supertetris.game.Scores;
+import de.vfh.pressanykey.supertetris.game.Stone;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 @SuppressWarnings("unchecked")
@@ -10,6 +14,7 @@ public class ClientInterface {
 
     /**
      * Constructor
+     *
      * @param client Client that should be handled through this interface
      */
     public ClientInterface(PlayerClient client) {
@@ -64,7 +69,8 @@ public class ClientInterface {
 
     /**
      * Sends message that a player's scroe has changed
-     * @param score  Score of the player
+     *
+     * @param score Score of the player
      */
     public void sendScore(Scores score) {
         JSONObject scoreAction = new JSONObject();
@@ -90,6 +96,7 @@ public class ClientInterface {
 
     /**
      * Sends message that rows were deleted
+     *
      * @param count Number of deleted rows
      */
     public void sendDeletedRows(int count) {
@@ -99,4 +106,70 @@ public class ClientInterface {
         String message = deleteAction.toJSONString();
         client.send(message.getBytes());
     }
+
+
+    /**
+     * Sends message that block with dropped stones has changed
+     *
+     * @param droppedStones Block of all dropped stones
+     */
+    public void sendDroppedStones(Rectangle[][] droppedStones) {
+        JSONObject message = new JSONObject();
+        message.put("action", Actions.STONE_DROPPED);
+
+        // Serialize the dropped stone matrix
+        JSONArray droppedStoneMatrix = new JSONArray();
+        for (int i = 0; i < droppedStones.length; i++) {
+            for (int j = 0; j < droppedStones[0].length; j++) {
+                // create new rectangle for this block
+                Rectangle rectangle = droppedStones[i][j];
+                // only consider filled blocks
+                if (rectangle != null) {
+                    Color color = (Color) rectangle.getFill();
+                    JSONObject stoneProperties = new JSONObject();
+                    stoneProperties.put("x", j);
+                    stoneProperties.put("y", i);
+                    stoneProperties.put("color", color.toString());
+                    droppedStoneMatrix.add(stoneProperties);
+                }
+            }
+        }
+        message.put("dropStoneMatrix", droppedStoneMatrix.toJSONString());
+        client.send(message.toJSONString().getBytes());
+    }
+
+
+    /**
+     * Sends message that a stone is falling
+     *
+     * @param currentStone Currently falling stone
+     */
+    public void sendStonePosition(Stone currentStone, int stoneX, int stoneY) {
+        JSONObject message = new JSONObject();
+        message.put("action", Actions.STONE_MOVED);
+
+        //Serialize falling stone
+        int[][] stoneMatrix = currentStone.getMatrix();
+        JSONArray fallingStone = new JSONArray();
+        for (int i = 0; i < stoneMatrix.length; i++) {
+            for (int j = 0; j < stoneMatrix[0].length; j++) {
+                // only consider filled blocks
+                if (stoneMatrix[i][j] == 1) {
+                    JSONObject stoneProperties = new JSONObject();
+                    stoneProperties.put("x", j);
+                    stoneProperties.put("y", i);
+                    stoneProperties.put("color", currentStone.getColor().toString());
+                    fallingStone.add(stoneProperties);
+                }
+            }
+        }
+        message.put("fallingStone", fallingStone.toJSONString());
+        // Add stone position
+        message.put("stoneX", String.valueOf(stoneX));
+        message.put("stoneY", String.valueOf(stoneY));
+        client.send(message.toJSONString().getBytes());
+    }
+
 }
+
+

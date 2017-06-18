@@ -14,6 +14,7 @@ import java.util.List;
 public class GameServer extends Thread implements Runnable {
 
     // Attributes for client-server communication
+    private final int PACKET_SIZE = 16384;
     private int port;
     private DatagramSocket socket;
     private boolean running;
@@ -41,7 +42,7 @@ public class GameServer extends Thread implements Runnable {
         running = true;
         System.out.println("SERVER > Server is running.");
         while(running) {
-            byte[] data = new byte[1024];
+            byte[] data = new byte[PACKET_SIZE];
             DatagramPacket packet = new DatagramPacket(data, data.length);
             try {
                 socket.receive(packet);
@@ -108,6 +109,8 @@ public class GameServer extends Thread implements Runnable {
                             System.out.println("SERVER > Server has shut down");
                         }
                         break;
+                    case Actions.STONE_MOVED:
+                    case Actions.STONE_DROPPED:
                     case Actions.ROW_DELETED:
                     case Actions.SCORE_CHANGE:
                     case Actions.GAME_PAUSE:
