@@ -52,9 +52,7 @@ public class MultiBoardViewController extends BoardViewController {
 
 
         // bind stopwatch updates to view
-        gameController.getStopwatch().addObserver((obj, value) -> {
-            this.lbTimer.setText((String)value);
-        });
+        gameController.getStopwatch().addObserver((obj, value) -> this.lbTimer.setText((String)value));
 
         // bind score updates to view
         gameController.getScores().addObserver((o, arg) -> {
@@ -92,9 +90,7 @@ public class MultiBoardViewController extends BoardViewController {
         }));
 
         // Bind game state to view
-        game.gamePaused.addListener(((o, oldVal, newVal) -> {
-            ((MultiGameController)gameController).pause(false);
-        }));
+        game.gamePaused.addListener((o, oldVal, newVal) -> ((MultiGameController)gameController).pause(false));
 
         // Bind score updates of opponent to view
         game.oppLines.addListener(((o, oldVal, newVal) -> {

@@ -11,7 +11,7 @@ import java.util.Enumeration;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
-public class GameServer extends Thread {
+public class GameServer extends Thread implements Runnable {
 
     // Attributes for client-server communication
     private int port;

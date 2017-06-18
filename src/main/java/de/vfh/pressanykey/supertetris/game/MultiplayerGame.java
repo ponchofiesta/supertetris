@@ -104,9 +104,9 @@ public class MultiplayerGame extends Observable {
      * @param points  Current points of the opponent
      */
     public void setScore(int level, int lineCount, int points) {
-            oppPoints.setValue(points);
             oppLevel.setValue(level);
             oppLines.setValue(lineCount);
+            oppPoints.setValue(points);
     }
 
 

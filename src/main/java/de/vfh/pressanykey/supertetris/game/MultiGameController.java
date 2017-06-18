@@ -20,8 +20,6 @@ public class MultiGameController extends GameController {
         super();
         this.client = ViewController.clientInterFace;
 
-        System.out.println("Multigameklasse: " + this.getClass().getName());
-
         // initialize opponent's board
         this.oppBoardPane = new BoardPane(BOARD_WIDTH, BOARD_HEIGHT);
         this.oppBoard = new Board();
@@ -89,7 +87,7 @@ public class MultiGameController extends GameController {
     }
 
     /**
-     * Set the view controller to use
+     * Sets the view controller to use
      * @param view
      */
     public void setView(MultiBoardViewController view) {

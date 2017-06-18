@@ -8,7 +8,7 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 import java.net.*;
 
-public class PlayerClient extends Thread {
+public class PlayerClient extends Thread implements Runnable {
 
     // Attributes for client-server communication
     private int port;
