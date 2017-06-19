@@ -69,9 +69,7 @@ public class OpponentBoard {
 
     // Helper method for clearing the board before redrawing
     private void clearBoard() {
-        for(Node rect : boardPane.getChildren()) {
-            rect.setVisible(false);
-        }
+        boardPane.getChildren().clear();
     }
 
 

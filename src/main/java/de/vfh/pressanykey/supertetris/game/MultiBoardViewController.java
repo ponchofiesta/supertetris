@@ -86,6 +86,7 @@ public class MultiBoardViewController extends BoardViewController {
                 lblOppRows.setText("");
                 lblOppPoints.setText("");
                 lblOppLevel.setText("");
+                oppBoardPane.getChildren().clear();
             });
         }));
 
