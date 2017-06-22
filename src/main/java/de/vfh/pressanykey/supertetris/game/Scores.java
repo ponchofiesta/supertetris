@@ -4,6 +4,7 @@ import java.util.Observable;
 
 /**
  * Manage scores
+ * @author
  */
 public class Scores extends Observable {
 

@@ -159,6 +159,7 @@ public class Board {
         } else if(key == KeyCode.UP) {
             if(tryRotate()) {
                 currentStone.rotate();
+                notifyRotate();
             }
         } else if(key == KeyCode.DOWN) {
             moveDown();
@@ -168,6 +169,7 @@ public class Board {
             y = oldY;
         } else {
             move();
+            notifyMove();
         }
     }
 

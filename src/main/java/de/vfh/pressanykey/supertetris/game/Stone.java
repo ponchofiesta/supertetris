@@ -39,7 +39,7 @@ public class Stone extends Group {
         {1, 0, 0},
         {1, 1, 1},
         {0, 0, 0}
-    }, Color.BLUE);
+    }, Color.DARKCYAN);
 
     private static final StoneType L = new StoneType(new int[][]{
         {0, 0, 1},
@@ -62,7 +62,7 @@ public class Stone extends Group {
         {0, 1, 0},
         {1, 1, 1},
         {0, 0, 0}
-    }, Color.PURPLE);
+    }, Color.BISQUE);
 
     private static final StoneType Z = new StoneType(new int[][]{
         {1, 1, 0},
@@ -180,7 +180,7 @@ public class Stone extends Group {
      */
     public static Rectangle createBlock(int x, int y, ReadOnlyDoubleProperty blockSize) {
         Color[] colors = new Color[]{
-                Color.CYAN, Color.BLUE, Color.ORANGE, Color.YELLOW, Color.GREENYELLOW, Color.PURPLE, Color.ORANGERED
+                Color.CYAN, Color.DARKCYAN, Color.ORANGE, Color.YELLOW, Color.GREENYELLOW, Color.BISQUE, Color.ORANGERED
         };
         Color color = colors[RANDOM.nextInt(colors.length)];
         return createBlock(x, y, blockSize, color);
