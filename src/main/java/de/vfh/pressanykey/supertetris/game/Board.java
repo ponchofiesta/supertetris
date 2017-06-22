@@ -150,6 +150,9 @@ public class Board {
      * @param key Represents the direction: left/right/down or up for rotate
      */
     public void moveStone(KeyCode key) {
+        if(downTimer.getStatus() == Animation.Status.PAUSED) {
+            return;
+        }
         int oldX = x;
         int oldY = y;
         if(key == KeyCode.LEFT) {
