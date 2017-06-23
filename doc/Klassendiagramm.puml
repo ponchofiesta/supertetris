@@ -1,31 +1,49 @@
 @startuml
 skinparam classAttributeIconSize 0
 
-
-SupertetrisApp "1" *-- "1" StartViewController
-SupertetrisApp "1" *-- "1" BoardViewController
-StartViewController "1" *-- "1" BoardViewController
-BoardViewController "1" *-- "1" GameController
+SupertetrisApp ..> StartViewController
+StartViewController ..> BoardViewController
+StartViewController ..> LobbyViewController
+BoardViewController "1" *--* "1" GameController
 GameController "1" *-- "1" Board
-Board "1" *-- "1" Stones
-Stones "1" *-- "*" Stone
-Timer "1" -- "1" GameController
-Player "1-2" -- "1" GameController
-Score "1" -- "1" GameController
-MultiplayerViewController -- GameController
-MultiplayerViewController -- StartViewController
-ViewController -- MultiplayerViewController
-ViewController -- StartViewController
-ViewController -- BoardViewController
-TetrisServer -- TetrisClient
-TetrisServer "1" -- "1" TetrisServerThread
-TetrisServer "1" -- "1" GameController
+GameController "1" *-- "1" Stopwatch
+GameController "1" *-- "1" Scores
+BoardListener <-- Board
+Board "1" *-- "*" Stone
+GameController <-- MultiGameController
+Board <-- MultiplayerBoard
+BoardViewController ..> GameoverViewController
+MultiBoardViewController ..> GameoverViewController
+MultiBoardViewController *-- MultiGameController
+MultiGameController *-- OpponentBoard
+MultiplayerGame ..> MultiBoardViewController
+
+ViewController <-- StartViewController
+ViewController <-- BoardViewController
+ViewController <-- MultiBoardViewController
+ViewController <-- LobbyViewController
+ViewController <-- GameoverViewController
+
+ViewController *-- GameServer
+ViewController *-- PlayerClient
+ViewController *-- ClientInterface
+ViewController *--* MultiplayerGame
+
+ClientInterface *-- PlayerClient
+ClientInterface o-- Actions
+GameServer o-- Actions
+PlayerClient o-- Actions
+
+GameServer *-- PlayerOnServer
 
 class SupertetrisApp {
-    void maim()
+    void main()
 }
 
 abstract class ViewController {
+}
+
+abstract class BoardListener {
 }
 
 class StartViewController {
@@ -37,8 +55,7 @@ class BoardViewController {
     gameController : GameController
 }
 
-class MultiplayerViewController {
-
+class MultiBoardViewController {
 }
 
 class GameController {
@@ -47,40 +64,26 @@ class GameController {
     stop()
 }
 
+class OpponentBoard {
+}
+
+class ClientInterface {
+}
+
+interface Actions {
+}
+
 class Board {
     stones: Stone[]
 }
 
-class Stones {
-
-}
-
 class Stone {
-
 }
 
-class Player {
-    String name
-}
-
-class Timer {
-}
-
-class Score {
+class Scores {
     int level
     int points
     int rows
 }
-
-class TetrisClient {
-
-}
-
-class TetrisServer {
-}
-
-class TetrisServerThread {
-}
-
 
 @enduml
