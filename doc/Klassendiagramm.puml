@@ -11,7 +11,6 @@ GameController "1" *-- "1" Scores
 BoardListener <-- Board
 Board "1" *-- "*" Stone
 GameController <-- MultiGameController
-Board <-- MultiplayerBoard
 BoardViewController ..> GameoverViewController
 MultiBoardViewController ..> GameoverViewController
 MultiBoardViewController *-- MultiGameController
@@ -36,19 +35,27 @@ PlayerClient o-- Actions
 
 GameServer *-- PlayerOnServer
 
+Stone +-- StoneType
+
 class SupertetrisApp {
-    void main()
+    main()
 }
 
 abstract class ViewController {
 }
 
 abstract class BoardListener {
+    onGameover()
+    onRowDeleted(int count)
+    onRowAdded()
+    onNext(Stone stone)
+    onDropped()
+    onMove()
+    onRotate()
+    onSpawn(Stone stone)
 }
 
 class StartViewController {
-    public void btnSingleplayerClick()
-    public void btnMultiplayerClick()
 }
 
 class BoardViewController {
@@ -74,16 +81,26 @@ interface Actions {
 }
 
 class Board {
-    stones: Stone[]
+    currentStone : Stone
+    nextStone : Stone
+    matrix : int[][]
+    downTimer : Timeline
 }
 
 class Stone {
+    matrix : int[][]
+    stoneType : StoneType
+}
+
+class StoneType {
+    color : Color
+    matrix : int[][]
 }
 
 class Scores {
-    int level
-    int points
-    int rows
+    level : int
+    points : int
+    lineCount : int
 }
 
 @enduml
