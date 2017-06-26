@@ -10,6 +10,7 @@ import java.util.Random;
 
 /**
  * A Stone
+ * @author Michael Richter
  */
 public class Stone extends Group {
 

@@ -16,6 +16,7 @@ import java.util.ResourceBundle;
 
 /**
  * View Controller for Multiplayer screen
+ * @author Claudia Kutter
  */
 public class LobbyViewController extends ViewController {
 

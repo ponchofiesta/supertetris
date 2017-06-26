@@ -9,6 +9,7 @@ import javafx.scene.shape.Rectangle;
 
 /**
  * View of the board
+ * @author Michael Richter
  */
 public class BoardPane extends StackPane {
 

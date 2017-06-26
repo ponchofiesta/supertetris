@@ -2,6 +2,7 @@ package de.vfh.pressanykey.supertetris.game;
 
 /**
  * Listener class for Board events
+ * @author Michael Richter
  */
 public abstract class BoardListener {
 

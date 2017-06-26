@@ -3,8 +3,8 @@ package de.vfh.pressanykey.supertetris.game;
 import java.util.Observable;
 
 /**
- * Manage scores
- * @author
+ * Manage scores and level
+ * @author Michael Richter
  */
 public class Scores extends Observable {
 

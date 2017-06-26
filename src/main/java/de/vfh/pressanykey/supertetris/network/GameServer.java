@@ -10,6 +10,10 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
+/**
+ *
+ * @author Claudia Kutter
+ */
 @SuppressWarnings("unchecked")
 public class GameServer extends Thread implements Runnable {
 

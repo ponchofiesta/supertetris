@@ -7,6 +7,10 @@ import javafx.scene.shape.Rectangle;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+/**
+ *
+ * @author Claudia Kutter
+ */
 @SuppressWarnings("unchecked")
 public class ClientInterface {
 

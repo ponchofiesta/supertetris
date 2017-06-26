@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 /**
  * Main class
+ * @author Michael Richter, Claudia Kutter
  */
 public class SupertetrisApp extends Application {
 

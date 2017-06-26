@@ -4,6 +4,7 @@ import java.net.InetAddress;
 
 /**
  * Stores the connection data of a client connected to server
+ * @author Claudia Kutter
  */
 public class PlayerOnServer {
 

@@ -7,6 +7,7 @@ import java.util.*;
 
 /**
  * Logic for the opponent's board which is only passive and used to draw the opponents game state on it
+ * @author Claudia Kutter
  */
 public class OpponentBoard {
 

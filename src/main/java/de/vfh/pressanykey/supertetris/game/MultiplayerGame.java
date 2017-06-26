@@ -9,6 +9,7 @@ import java.util.Observable;
 
 /**
  * Class for storing the connection state and the opponent's game state
+ * @author Claudia Kutter
  */
 public class MultiplayerGame extends Observable {
 

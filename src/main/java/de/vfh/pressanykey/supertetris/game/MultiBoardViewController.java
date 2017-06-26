@@ -18,6 +18,7 @@ import java.util.ResourceBundle;
 
 /**
  * The MultiBoardViewController handles the multiplayer view and displays the game state of the opponent.
+ * @author Claudia Kutter
  */
 public class MultiBoardViewController extends BoardViewController {
 

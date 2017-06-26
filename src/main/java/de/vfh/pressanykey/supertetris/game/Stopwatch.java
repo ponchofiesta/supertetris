@@ -9,6 +9,7 @@ import java.util.Observable;
 
 /**
  * Stopwatch for play time
+ * @author Claudia Kutter, Michael Richter
  */
 public class Stopwatch extends Observable {
 

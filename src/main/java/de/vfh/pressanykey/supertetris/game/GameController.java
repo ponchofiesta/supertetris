@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 
 /**
  * The Game Controller
+ * @author Michael Richter
  */
 public class GameController {
 

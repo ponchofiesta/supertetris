@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 
 /**
  * View Controller for Gameover screen
+ * @author Michael Richter, Claudia Kutter
  */
 public class GameoverViewController extends ViewController {
 

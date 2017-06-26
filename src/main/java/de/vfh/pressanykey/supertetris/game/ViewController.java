@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 
 /**
  * Abstract view controller with methods all controllers need
+ * @author Michael Richter, Claudia Kutter
  */
 public abstract class ViewController implements Initializable {
 

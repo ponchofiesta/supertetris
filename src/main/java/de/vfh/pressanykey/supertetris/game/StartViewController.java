@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 
 /**
  * View Controller for start screen
+ * @author Claudia Kutter, Michael Richter
  */
 public class StartViewController extends ViewController  {
 

@@ -18,6 +18,7 @@ import java.util.*;
 
 /**
  * Game logic
+ * @author Michael Richter
  */
 public class Board {
 

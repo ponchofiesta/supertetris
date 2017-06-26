@@ -17,6 +17,7 @@ import java.util.ResourceBundle;
 
 /**
  * View Controller for game boardPane
+ * @author Michael Richter
  */
 public class BoardViewController extends ViewController {
 

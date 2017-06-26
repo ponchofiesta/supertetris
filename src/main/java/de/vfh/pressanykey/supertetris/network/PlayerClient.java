@@ -12,6 +12,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ *
+ * @author Claudia Kutter
+ */
 public class PlayerClient extends Thread implements Runnable {
 
     // Attributes for client-server communication
