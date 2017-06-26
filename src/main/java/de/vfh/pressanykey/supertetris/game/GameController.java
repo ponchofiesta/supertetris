@@ -54,6 +54,18 @@ public class GameController {
                     stop();
                     view.showGameOver(scores);
                 }
+                
+                musicPlayer.startMusic("sounds/music.mp3", 15);
+            }
+
+            @Override
+            void onDropped() {
+                musicPlayer.startMusic("sounds/sfx_sounds_powerup6.wav", 1);
+            }
+
+            @Override
+            void onRotate() {
+                musicPlayer.startMusic("sounds/sfx_sounds_interaction16.wav", 1);
             }
 
             @Override
