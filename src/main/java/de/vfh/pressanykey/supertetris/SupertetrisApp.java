@@ -1,17 +1,13 @@
 package de.vfh.pressanykey.supertetris;
 
+import de.vfh.pressanykey.supertetris.game.MusicPlayer;
 import javafx.application.Application;
-import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
-import java.net.URL;
-
 
 /**
  * Main class
@@ -20,7 +16,7 @@ import java.net.URL;
 public class SupertetrisApp extends Application {
 
     public static Stage primaryStage;
-    public static Task task;
+    public static MusicPlayer musicPlayer;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -38,7 +34,10 @@ public class SupertetrisApp extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        startMusic();
+
+        // Play Tetris Music in a Background Thread
+        musicPlayer = new MusicPlayer();
+        musicPlayer.startMusic("sounds/music.mp3", MediaPlayer.INDEFINITE);
     }
 
     public static Stage getPrimaryStage() {
@@ -47,26 +46,5 @@ public class SupertetrisApp extends Application {
 
     public static void main(String[] args) {
         launch(args);
-    }
-
-    /**
-     * Play Tetris Music in a Background Thread
-     */
-    public static void startMusic() {
-        task = new Task() {
-            @Override
-            protected Object call() throws Exception {
-                ClassLoader classLoader = getClass().getClassLoader();
-                URL resource = classLoader.getResource("sounds/music.mp3");
-                Media sound = new Media(resource.toString());
-                MediaPlayer mediaPlayer = new MediaPlayer(sound);
-                mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-                mediaPlayer.play();
-                return null;
-            }
-        };
-
-        Thread thread = new Thread(task);
-        thread.start();
     }
 }
