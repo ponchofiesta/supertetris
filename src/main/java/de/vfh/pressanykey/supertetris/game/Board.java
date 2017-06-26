@@ -364,6 +364,7 @@ public class Board {
             holePos = rand.nextInt(matrix[0].length);
             for(int j = 0; j < matrix[0].length; j++) {
                 if(j == holePos) {
+                    matrix[i][j] = null;
                     continue;
                 }
                 Rectangle rectangle = Stone.createBlock(j, i, boardPane.getBlockSize());
