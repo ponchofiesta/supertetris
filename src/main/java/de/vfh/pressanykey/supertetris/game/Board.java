@@ -1,19 +1,11 @@
 package de.vfh.pressanykey.supertetris.game;
 
-import com.sun.deploy.nativesandbox.NativeSandboxBroker;
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
-import de.vfh.pressanykey.supertetris.network.Actions;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.control.Dialog;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
 import java.util.*;
 
 /**

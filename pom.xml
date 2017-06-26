@@ -8,9 +8,6 @@
     <artifactId>super-tetris</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-
-    <!-- WARNING: Doesn't work at the moment! -->
-
     <properties>
 
         <!-- set encoding -->
@@ -33,23 +30,46 @@
                 </configuration>
             </plugin>
 
-            <!-- add classpath for external libraries -->
             <plugin>
-                <artifactId>maven-jar-plugin</artifactId>
+                <artifactId>maven-assembly-plugin</artifactId>
+
+                <!-- include all dependencies into jar -->
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
                 <configuration>
+
+                    <!-- include all dependencies into jar -->
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+
+                    <!-- set entry point for jar -->
                     <archive>
                         <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>de.vfh.pressanykey.supertetris.SupertetrisApp</mainClass>
                         </manifest>
                     </archive>
+
                 </configuration>
             </plugin>
 
         </plugins>
     </build>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+    </dependencies>
 
     
 </project>
