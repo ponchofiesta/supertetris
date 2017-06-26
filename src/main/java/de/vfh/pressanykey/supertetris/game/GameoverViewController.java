@@ -4,11 +4,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
 
 /**
  * View Controller for Gameover screen
- * @author Michael Richter, Claudia Kutter
+ * @author Michael Richter, Claudia Kutter, Ute Mayer
  */
 public class GameoverViewController extends ViewController {
 
@@ -36,7 +35,7 @@ public class GameoverViewController extends ViewController {
 
 
     public void btnHomeClick(ActionEvent actionEvent) throws Exception {
-        setView((Stage)btnHome.getScene().getWindow(), "start.fxml");
+        setView("start.fxml");
     }
 
     public void setScores(Scores scores) {

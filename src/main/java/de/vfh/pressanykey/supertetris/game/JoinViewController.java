@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -58,7 +57,6 @@ public class JoinViewController extends ViewController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         game.setView(this);
-        currentStage = SupertetrisApp.getPrimaryStage();
 
         // Update playernames on connection
         game.playerCount.addListener(((o, oldVal, newVal) -> {
@@ -82,7 +80,7 @@ public class JoinViewController extends ViewController {
         if(clientThread.isAlive() || serverThread.isAlive()) {
             clientInterFace.sendLogout();
         }*/
-        setView((Stage)btnBack.getScene().getWindow(), "start.fxml");
+        setView("start.fxml");
     }
 
 

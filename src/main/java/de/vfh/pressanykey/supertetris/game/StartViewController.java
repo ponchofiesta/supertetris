@@ -3,7 +3,6 @@ package de.vfh.pressanykey.supertetris.game;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
 
 /**
  * View Controller for start screen
@@ -20,16 +19,16 @@ public class StartViewController extends ViewController  {
 
     @FXML
     public void btnSingleplayerClick(ActionEvent actionEvent) throws Exception {
-        setView((Stage)btnSingleplayer.getScene().getWindow(), "board.fxml");
+        setView("board.fxml");
     }
 
     @FXML
     public void btnMultiplayerClick(ActionEvent actionEvent) throws Exception {
-        setView((Stage)btnMultiplayer.getScene().getWindow(), "create.fxml");
+        setView("create.fxml");
     }
 
     @FXML
     public void btnMultiplayerJoinClick(ActionEvent actionEvent) throws Exception {
-        setView((Stage)btnMultiplayerJoin.getScene().getWindow(), "join.fxml");
+        setView("join.fxml");
     }
 }

@@ -9,7 +9,7 @@ import java.util.Observable;
 
 /**
  * Class for storing the connection state and the opponent's game state
- * @author Claudia Kutter
+ * @author Claudia Kutter, Ute Mayer
  */
 public class MultiplayerGame extends Observable {
 
@@ -76,7 +76,7 @@ public class MultiplayerGame extends Observable {
     public void startGame() throws Exception {
         Platform.runLater(() -> {
             try {
-                currentView.setView(currentView.currentStage, "multiplayer.fxml");
+                currentView.setView("multiplayer.fxml");
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 
 /**
  * View Controller for game boardPane
- * @author Michael Richter
+ * @author Michael Richter, Ute Mayer
  */
 public class BoardViewController extends ViewController {
 
@@ -51,7 +51,7 @@ public class BoardViewController extends ViewController {
     @FXML
     public void btnStopClick(ActionEvent actionEvent) throws Exception {
         gameController.stop();
-        setView((Stage)btnStop.getScene().getWindow(), "start.fxml");
+        setView("start.fxml");
     }
 
     @Override
