@@ -49,7 +49,6 @@ public class JoinViewController extends ViewController {
     private int port;
     private String playerName;
     private Thread clientThread;
-    private Thread serverThread;
 
     /**
      * Initializes the view by creating a new multiplayer game and listening for connecting players
