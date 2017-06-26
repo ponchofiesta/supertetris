@@ -1,6 +1,36 @@
 @startuml
 skinparam classAttributeIconSize 0
 
+package network {
+    interface Actions
+    class ClientInterface
+    class GameServer
+    class PlayerClient
+    class PlayerOnServer
+}
+
+package game {
+    class Board
+    class BoardListener
+    class BoardPane
+    class BoardViewController
+    class GameController
+    class GameoverViewController
+    class Scores
+    class StartViewController
+    class Stone
+    class StoneType
+    class Stopwatch
+}
+
+package multiplayer {
+    class MultiBoardViewController
+    class MultiGameController
+    class MultiplayerGame
+    class LobbyViewController
+    class OpponentBoard
+}
+
 SupertetrisApp ..> StartViewController
 StartViewController ..> BoardViewController
 StartViewController ..> LobbyViewController
@@ -10,12 +40,16 @@ GameController "1" *-- "1" Stopwatch
 GameController "1" *-- "1" Scores
 BoardListener <-- Board
 Board "1" *-- "*" Stone
+Board *-- BoardPane
 GameController <-- MultiGameController
+GameController *-- BoardPane
 BoardViewController ..> GameoverViewController
 MultiBoardViewController ..> GameoverViewController
 MultiBoardViewController *-- MultiGameController
 MultiGameController *-- OpponentBoard
+MultiGameController  *-- BoardPane
 MultiplayerGame ..> MultiBoardViewController
+OpponentBoard  *-- BoardPane
 
 ViewController <-- StartViewController
 ViewController <-- BoardViewController
@@ -102,5 +136,7 @@ class Scores {
     points : int
     lineCount : int
 }
+
+
 
 @enduml
