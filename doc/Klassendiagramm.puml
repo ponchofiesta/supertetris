@@ -27,13 +27,15 @@ package multiplayer {
     class MultiBoardViewController
     class MultiGameController
     class MultiplayerGame
-    class LobbyViewController
+    class JoinViewController
+    class CreateViewController
     class OpponentBoard
 }
 
 SupertetrisApp ..> StartViewController
 StartViewController ..> BoardViewController
-StartViewController ..> LobbyViewController
+StartViewController ..> JoinViewController
+StartViewController ..> CreateViewController
 BoardViewController "1" *--* "1" GameController
 GameController "1" *-- "1" Board
 GameController "1" *-- "1" Stopwatch
@@ -54,7 +56,8 @@ OpponentBoard  *-- BoardPane
 ViewController <-- StartViewController
 ViewController <-- BoardViewController
 ViewController <-- MultiBoardViewController
-ViewController <-- LobbyViewController
+ViewController <-- JoinViewController
+ViewController <-- CreateViewController
 ViewController <-- GameoverViewController
 
 ViewController *-- GameServer
