@@ -1,11 +1,16 @@
 package de.vfh.pressanykey.supertetris.game;
 
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.scene.input.KeyCode;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
+import java.net.URL;
 
 /**
  * The Game Controller
- * @author Michael Richter
+ * @author Michael Richter, Ute Mayer
  */
 public class GameController {
 
@@ -27,6 +32,7 @@ public class GameController {
     protected Scores scores;
 
     private String className;
+    private MusicPlayer musicPlayer;
 
     /**
      * constructor
@@ -38,6 +44,7 @@ public class GameController {
         stopwatch = new Stopwatch();
         scores = new Scores();
         className = this.getClass().getSimpleName();
+        musicPlayer = new MusicPlayer();
 
         board.addBoardListener(new BoardListener() {
             @Override
@@ -52,6 +59,7 @@ public class GameController {
             @Override
             void onRowDeleted(int count) {
                 scores.rowsDeleted(count);
+                musicPlayer.startMusic("sounds/sfx_sounds_powerup6.wav", 1);
             }
         });
 
