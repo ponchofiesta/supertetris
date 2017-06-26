@@ -18,16 +18,17 @@
             <Insets bottom="40.0" />
          </VBox.margin>
       </VBox>
-      <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
+      <VBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
            <Button fx:id="btnSingleplayer" mnemonicParsing="false" onAction="#btnSingleplayerClick" text="Einzelspieler">
                <HBox.margin>
                   <Insets right="60.0" />
                </HBox.margin>
             </Button>
-           <Button fx:id="btnMultiplayer" mnemonicParsing="false" onAction="#btnMultiplayerClick" text="Mehrspieler" />
+           <Button fx:id="btnMultiplayer" mnemonicParsing="false" onAction="#btnMultiplayerClick" text="Mehrspieler Erstellen" />
+             <Button fx:id="btnMultiplayerJoin" mnemonicParsing="false" onAction="#btnMultiplayerJoinClick" text="Mehrspieler Beitreten" />
          </children>
-      </HBox>
+      </VBox>
 
    </children>
     <stylesheets>

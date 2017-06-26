@@ -1,5 +1,6 @@
 package de.vfh.pressanykey.supertetris.game;
 
+import de.vfh.pressanykey.supertetris.SupertetrisApp;
 import de.vfh.pressanykey.supertetris.network.ClientInterface;
 import de.vfh.pressanykey.supertetris.network.GameServer;
 import de.vfh.pressanykey.supertetris.network.PlayerClient;
@@ -14,7 +15,7 @@ import java.util.ResourceBundle;
 
 /**
  * Abstract view controller with methods all controllers need
- * @author Michael Richter, Claudia Kutter
+ * @author Michael Richter, Claudia Kutter, Ute Mayer
  */
 public abstract class ViewController implements Initializable {
 
@@ -28,7 +29,8 @@ public abstract class ViewController implements Initializable {
 
     }
 
-    protected void setView(Stage stage, String fxmlfile) throws Exception {
+    protected void setView(String fxmlfile) throws Exception {
+        Stage stage = SupertetrisApp.getPrimaryStage();
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource(fxmlfile));
         stage.setScene(new Scene(root, 800, 500));
         stage.show();
