@@ -14,9 +14,9 @@ import java.util.ResourceBundle;
 
 /**
  * View Controller for Multiplayer screen
- * @author Claudia Kutter
+ * @author Claudia Kutter, Ute Mayer
  */
-public class LobbyViewController extends ViewController {
+public class CreateViewController extends ViewController {
 
     // GUI elements
     @FXML
@@ -48,7 +48,6 @@ public class LobbyViewController extends ViewController {
     private String hostAddress;
     private int port;
     private String playerName;
-    public Stage currentStage;
     private Thread clientThread;
     private Thread serverThread;
 
@@ -80,10 +79,11 @@ public class LobbyViewController extends ViewController {
      */
     @FXML
     public void btnBackClick(ActionEvent actionEvent) throws Exception {
+        /* TODO: This doesn't work
         if(clientThread.isAlive() || serverThread.isAlive()) {
             clientInterFace.sendLogout();
-        }
-        setView(currentStage, "start.fxml");
+        }*/
+        setView((Stage)btnBack.getScene().getWindow(), "start.fxml");
     }
 
 
@@ -139,42 +139,4 @@ public class LobbyViewController extends ViewController {
             e.printStackTrace();
         }
     }
-
-
-    /**
-     * Connects to a running server when the join game button is clicked.
-     * @param actionEvent
-     * @throws Exception
-     */
-    @FXML
-    public void btnJoinGameClick(ActionEvent actionEvent) throws Exception {
-        playerName = txtName.getText();
-
-        // Get connection infos
-        hostAddress = connectIP.getText();
-        try {
-            port = Integer.parseInt(connectPort.getText());
-        } catch (Exception e) {
-            Platform.runLater(() -> lblMessage.setText("Der angegebene Port ist fehlerhaft."));
-        }
-
-        // connect to server
-        try {
-            client.connect(hostAddress, port, game);
-            clientThread = new Thread(client);
-            clientThread.setDaemon(true);
-            clientThread.start();
-            clientInterFace.sendLogin(playerName);
-            game.addMyself(playerName);
-            // display information
-            client.join(200);
-            Platform.runLater(() -> {
-                lbAddress.setText(hostAddress);
-                lbPort.setText(String.valueOf(port));
-            });
-        } catch (Exception e) {
-            System.out.println("Fehler bei den Verbindungsdaten.");
-        }
-    }
-
 }

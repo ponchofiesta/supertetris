@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 
 /**
  * View Controller for start screen
- * @author Claudia Kutter, Michael Richter
+ * @author Claudia Kutter, Michael Richter, Ute Mayer
  */
 public class StartViewController extends ViewController  {
 
@@ -15,6 +15,8 @@ public class StartViewController extends ViewController  {
     private Button btnSingleplayer;
     @FXML
     private Button btnMultiplayer;
+    @FXML
+    private Button btnMultiplayerJoin;
 
     @FXML
     public void btnSingleplayerClick(ActionEvent actionEvent) throws Exception {
@@ -23,7 +25,11 @@ public class StartViewController extends ViewController  {
 
     @FXML
     public void btnMultiplayerClick(ActionEvent actionEvent) throws Exception {
-        setView((Stage)btnMultiplayer.getScene().getWindow(), "lobby.fxml");
+        setView((Stage)btnMultiplayer.getScene().getWindow(), "create.fxml");
     }
 
+    @FXML
+    public void btnMultiplayerJoinClick(ActionEvent actionEvent) throws Exception {
+        setView((Stage)btnMultiplayerJoin.getScene().getWindow(), "join.fxml");
+    }
 }

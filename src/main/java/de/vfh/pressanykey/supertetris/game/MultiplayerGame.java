@@ -76,7 +76,7 @@ public class MultiplayerGame extends Observable {
     public void startGame() throws Exception {
         Platform.runLater(() -> {
             try {
-                currentView.setView(((LobbyViewController)currentView).currentStage, "multiplayer.fxml");
+                currentView.setView(currentView.currentStage, "multiplayer.fxml");
             } catch (Exception e) {
                 e.printStackTrace();
             }
