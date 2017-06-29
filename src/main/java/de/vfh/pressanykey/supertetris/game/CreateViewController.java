@@ -1,6 +1,8 @@
 package de.vfh.pressanykey.supertetris.game;
 
-import de.vfh.pressanykey.supertetris.SupertetrisApp;
+import de.vfh.pressanykey.supertetris.network.ClientInterface;
+import de.vfh.pressanykey.supertetris.network.GameServer;
+import de.vfh.pressanykey.supertetris.network.PlayerClient;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,7 +15,7 @@ import java.util.ResourceBundle;
 
 /**
  * View Controller for Multiplayer screen
- * @author Claudia Kutter, Ute Mayer
+ * @author Claudia Kutter, Ute Mayer, Michael Richter
  */
 public class CreateViewController extends ViewController {
 
@@ -50,6 +52,11 @@ public class CreateViewController extends ViewController {
     private Thread clientThread;
     private Thread serverThread;
 
+    private GameServer server;
+    private PlayerClient client;
+    private ClientInterface clientInterFace;
+    private MultiplayerGame game;
+
     /**
      * Initializes the view by creating a new multiplayer game and listening for connecting players
      * @param location
@@ -57,6 +64,11 @@ public class CreateViewController extends ViewController {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        server = GameServer.getInstance();
+        client = PlayerClient.getInstance();
+        clientInterFace = ClientInterface.getInstance(client);
+        game = MultiplayerGame.getInstance();
+
         game.setView(this);
 
         // Update playernames on connection

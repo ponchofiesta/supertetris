@@ -1,6 +1,7 @@
 package de.vfh.pressanykey.supertetris.game;
 
 import de.vfh.pressanykey.supertetris.network.ClientInterface;
+import de.vfh.pressanykey.supertetris.network.PlayerClient;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +9,7 @@ import java.util.List;
 
 /**
  *
- * @author Claudia Kutter
+ * @author Claudia Kutter, Michael Richter
  */
 public class MultiGameController extends GameController {
 
@@ -24,7 +25,7 @@ public class MultiGameController extends GameController {
      */
     public MultiGameController() {
         super();
-        this.client = ViewController.clientInterFace;
+        this.client = ClientInterface.getInstance(PlayerClient.getInstance());
 
         // Initialize opponent's board
         this.oppBoardPane = new BoardPane(BOARD_WIDTH, BOARD_HEIGHT);

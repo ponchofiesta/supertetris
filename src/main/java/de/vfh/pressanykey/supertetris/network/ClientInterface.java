@@ -9,20 +9,33 @@ import org.json.simple.JSONObject;
 
 /**
  *
- * @author Claudia Kutter
+ * @author Claudia Kutter, Michael Richter
  */
 @SuppressWarnings("unchecked")
 public class ClientInterface {
 
-    public static PlayerClient client;
+    private PlayerClient client;
+
+    private static ClientInterface instance;
 
     /**
      * Constructor
      *
      * @param client Client that should be handled through this interface
      */
-    public ClientInterface(PlayerClient client) {
+    private ClientInterface(PlayerClient client) {
         this.client = client;
+    }
+
+    /**
+     * Get Singleton instance
+     * @return
+     */
+    public static ClientInterface getInstance(PlayerClient client) {
+        if(instance == null) {
+            instance = new ClientInterface(client);
+        }
+        return instance;
     }
 
 

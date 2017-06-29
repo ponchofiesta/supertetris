@@ -9,7 +9,7 @@ import java.util.Observable;
 
 /**
  * Class for storing the connection state and the opponent's game state
- * @author Claudia Kutter, Ute Mayer
+ * @author Claudia Kutter, Ute Mayer, Michael Richter
  */
 public class MultiplayerGame extends Observable {
 
@@ -38,6 +38,25 @@ public class MultiplayerGame extends Observable {
     int stonePosX;
     int stonePosY;
 
+    private static MultiplayerGame instance;
+
+    /**
+     * Constructor
+     */
+    private MultiplayerGame() {
+
+    }
+
+    /**
+     * Get Singleton instance
+     * @return
+     */
+    public static MultiplayerGame getInstance() {
+        if(instance == null) {
+            instance = new MultiplayerGame();
+        }
+        return instance;
+    }
 
     /**
      * Sets the view that the game is currently in
