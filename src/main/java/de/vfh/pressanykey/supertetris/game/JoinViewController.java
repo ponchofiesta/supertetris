@@ -68,7 +68,7 @@ public class JoinViewController extends ViewController {
         game.setView(this);
 
         // Update playernames on connection
-        game.playerCount.addListener(((o, oldVal, newVal) -> {
+        game.playerSignal.addListener(((o, oldVal, newVal) -> {
             Platform.runLater(() -> {
                 lbFirstPlayer.setText(game.myName.getValue());
                 lbSecondPlayer.setText(game.oppName.getValue());
@@ -85,10 +85,9 @@ public class JoinViewController extends ViewController {
      */
     @FXML
     public void btnBackClick(ActionEvent actionEvent) throws Exception {
-        /* TODO: This doesn't work
-        if(clientThread.isAlive() || serverThread.isAlive()) {
-            clientInterFace.sendLogout();
-        }*/
+        if(clientThread != null) {
+            clientInterface.sendLogout();
+        }
         setView("start.fxml");
     }
 
@@ -100,7 +99,7 @@ public class JoinViewController extends ViewController {
      */
     @FXML
     public void btnStartGameClick(ActionEvent actionEvent) throws Exception {
-        if(game.playerCount.getValue() != 2) {
+        if(game.oppName.getValue().equals("") || game.oppName.getValue() == null) {
             Platform.runLater(() -> lblMessage.setText("Dir fehlt ein Mitspieler, um das Spiel zu starten."));
         } else {
             clientInterface.sendGameStarted();

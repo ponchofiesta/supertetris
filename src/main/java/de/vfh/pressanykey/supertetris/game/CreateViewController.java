@@ -49,12 +49,12 @@ public class CreateViewController extends ViewController {
     private String hostAddress;
     private int port;
     private String playerName;
-    private Thread clientThread;
-    private Thread serverThread;
+    private Thread clientThread = null;
+    private Thread serverThread = null;
 
     private GameServer server;
     private PlayerClient client;
-    private ClientInterface clientInterFace;
+    private ClientInterface clientInterface;
     private MultiplayerGame game;
 
     /**
@@ -66,13 +66,13 @@ public class CreateViewController extends ViewController {
     public void initialize(URL location, ResourceBundle resources) {
         server = GameServer.getInstance();
         client = PlayerClient.getInstance();
-        clientInterFace = ClientInterface.getInstance(client);
+        clientInterface = ClientInterface.getInstance(client);
         game = MultiplayerGame.getInstance();
 
         game.setView(this);
 
         // Update playernames on connection
-        game.playerCount.addListener(((o, oldVal, newVal) -> {
+        game.playerSignal.addListener(((o, oldVal, newVal) -> {
             Platform.runLater(() -> {
                 lbFirstPlayer.setText(game.myName.getValue());
                 lbSecondPlayer.setText(game.oppName.getValue());
@@ -89,10 +89,9 @@ public class CreateViewController extends ViewController {
      */
     @FXML
     public void btnBackClick(ActionEvent actionEvent) throws Exception {
-        /* TODO: This doesn't work
-        if(clientThread.isAlive() || serverThread.isAlive()) {
-            clientInterFace.sendLogout();
-        }*/
+        if(clientThread != null) {
+            clientInterface.sendLogout();
+        }
         setView("start.fxml");
     }
 
@@ -104,10 +103,10 @@ public class CreateViewController extends ViewController {
      */
     @FXML
     public void btnStartGameClick(ActionEvent actionEvent) throws Exception {
-        if(game.playerCount.getValue() != 2) {
+        if(game.oppName.getValue().equals("") || game.oppName.getValue() == null) {
             Platform.runLater(() -> lblMessage.setText("Dir fehlt ein Mitspieler, um das Spiel zu starten."));
         } else {
-            clientInterFace.sendGameStarted();
+            clientInterface.sendGameStarted();
         }
    }
 
@@ -137,7 +136,7 @@ public class CreateViewController extends ViewController {
             clientThread = new Thread(client);
             clientThread.setDaemon(true);
             clientThread.start();
-            clientInterFace.sendLogin(playerName);
+            clientInterface.sendLogin(playerName);
             game.addMyself(playerName);
             // display information
             client.join(200);

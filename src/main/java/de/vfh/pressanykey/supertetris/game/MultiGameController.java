@@ -19,7 +19,6 @@ public class MultiGameController extends GameController {
     private final OpponentBoard oppBoard;
     private BoardPane oppBoardPane;
     List<HashMap<String, Object>> dropStoneMatrix = new ArrayList<>();
-
     /**
      * Constructor
      */

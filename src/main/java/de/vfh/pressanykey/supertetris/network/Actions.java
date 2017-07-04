@@ -2,7 +2,7 @@ package de.vfh.pressanykey.supertetris.network;
 
 /**
  * Defines all possible actions for the client-server communication.
- * @author Michael Richter, Claudia Kutter
+ * @author Claudia Kutter
  */
 public interface Actions {
 

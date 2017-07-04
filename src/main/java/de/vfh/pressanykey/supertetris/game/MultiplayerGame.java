@@ -15,9 +15,9 @@ public class MultiplayerGame extends Observable {
 
     // Attributes for initializing the game
     private ViewController currentView;
-    public StringProperty myName = new SimpleStringProperty();
-    StringProperty oppName = new SimpleStringProperty();
-    IntegerProperty playerCount = new SimpleIntegerProperty(0);
+    public StringProperty myName = new SimpleStringProperty(null);
+    StringProperty oppName = new SimpleStringProperty(null);
+    BooleanProperty playerSignal = new SimpleBooleanProperty(false);
 
     // Score attributes
     IntegerProperty oppLevel = new SimpleIntegerProperty(1);
@@ -26,6 +26,7 @@ public class MultiplayerGame extends Observable {
 
     // Game state (pause)
     BooleanProperty gamePaused = new SimpleBooleanProperty(false);
+    BooleanProperty stopSignal = new SimpleBooleanProperty(false);
 
     // Board
     List<HashMap<String, Object>> dropStoneMatrix;
@@ -44,7 +45,6 @@ public class MultiplayerGame extends Observable {
      * Constructor
      */
     private MultiplayerGame() {
-
     }
 
     /**
@@ -72,19 +72,17 @@ public class MultiplayerGame extends Observable {
      */
     public void addMyself(String name) {
         myName.setValue(name);
-        int count = playerCount.getValue();
-        playerCount.setValue(count + 1);
+        toggle(playerSignal);
     }
-
 
     /**
      * Adds the opponent to the game
      * @param name  Name of the opponent
      */
     public void addOpponent(String name) {
+        System.out.println("Added opponent: " + name);
         oppName.setValue(name);
-        int count = playerCount.getValue();
-        playerCount.setValue(count + 1);
+        toggle(playerSignal);
     }
 
 
@@ -111,6 +109,11 @@ public class MultiplayerGame extends Observable {
         Platform.runLater(() -> {
             try {
                 ((MultiBoardViewController)currentView).showGameOver(myName.getValue(), oppName.getValue(), oppScores);
+                oppName.setValue(null);
+                myName.setValue(null);
+                dropStoneMatrix = null;
+                fallingStone = null;
+                toggle(stopSignal);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -122,9 +125,8 @@ public class MultiplayerGame extends Observable {
      * Removes the opponent from the game
      */
     public void removeOpponent() {
-        oppName.setValue("");
-        int count = playerCount.getValue();
-        playerCount.setValue(count - 1);
+        oppName.setValue(null);
+        toggle(playerSignal);
     }
 
 

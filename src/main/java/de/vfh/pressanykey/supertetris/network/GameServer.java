@@ -115,6 +115,7 @@ public class GameServer extends Thread implements Runnable {
                         break;
                     case Actions.GAME_OVER:
                         sendDataToAll(message.getBytes());
+                        allPlayers.clear();
                         running = false;
                         System.out.println("SERVER > Server has shut down");
                         break;
@@ -126,8 +127,8 @@ public class GameServer extends Thread implements Runnable {
                         sendPlayerState();
                         break;
                     case Actions.DISCONNECT:
-                        sendDataToAll(message.getBytes());
                         allPlayers.remove(getPlayerIndex(address, port));
+                        sendPlayerState();
                         if(allPlayers.isEmpty()) {
                             running = false;
                             System.out.println("SERVER > Server has shut down");

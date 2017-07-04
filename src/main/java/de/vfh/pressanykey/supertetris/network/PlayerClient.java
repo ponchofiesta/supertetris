@@ -123,18 +123,27 @@ public class PlayerClient extends Thread implements Runnable {
                     case Actions.CONNECT_STATE:
                         String player1 = (String) messageObject.get("player1");
                         String player2 = (String) messageObject.get("player2");
-                        // Find out which of both the opponent's name is
-                        String opponent = (player1.equals(game.myName.getValue())) ? player2 : player1;
-                        // Add opponent if it's not null
-                        if (opponent != null) {
+                        String opponent, myself;
+                        // Find out who is who
+                        if (player1.equals(game.myName.getValue())) {
+                            opponent = player2;
+                            myself = player1;
+                        } else {
+                            myself = player2;
+                            opponent = player1;
+                        }
+                        // If my name is empty, I have left the game and the thread can be stopped
+                        if (myself == null) {
+                            running = false;
+                        }
+                        // If opponents name is empty, remove him from game
+                        if (opponent == null) {
+                            game.removeOpponent();
+                            System.out.println("CLIENT > Opponent has left the game :( ...");
+                        } else {
                             game.addOpponent(opponent);
                         }
                         System.out.println("CLIENT > Connected players: " + player1 + " and " + player2);
-                        break;
-                    case Actions.DISCONNECT:
-                        System.out.println("CLIENT > User has left the game :( ...");
-                        game.removeOpponent();
-                        running = false;
                         break;
                     case Actions.GAME_PAUSE:
                         game.setGamePaused();

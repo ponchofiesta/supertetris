@@ -83,7 +83,7 @@ public class MultiBoardViewController extends BoardViewController {
         // Delete opponent's name and score when he leaves the game
         game.oppName.addListener(((o, oldVal, newVal) -> {
             Platform.runLater(() -> {
-                lblOppName.setText(game.oppName.getValue());
+                lblOppName.setText(newVal);
                 lblOppRows.setText("");
                 lblOppPoints.setText("");
                 lblOppLevel.setText("");
@@ -116,6 +116,11 @@ public class MultiBoardViewController extends BoardViewController {
         // If the opponent has moved the stone, redraw the stone to the board
         game.stoneSignal.addListener(((o, oldVal, newVal) -> {
             Platform.runLater(() -> ((MultiGameController)gameController).redrawFallingStone(game.fallingStone, game.stonePosX, game.stonePosY));
+        }));
+
+        // If game is stopped, notify board
+        game.stopSignal.addListener(((o, oldVal, newVal) -> {
+            Platform.runLater(() -> gameController.stop());
         }));
 
         gameController.start();
