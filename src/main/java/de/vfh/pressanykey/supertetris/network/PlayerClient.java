@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  *
- * @author Claudia Kutter
+ * @author Claudia Kutter, Michael Richter
  */
 public class PlayerClient extends Thread implements Runnable {
 
@@ -27,6 +27,25 @@ public class PlayerClient extends Thread implements Runnable {
     // Game state buffer
     private MultiplayerGame game;
 
+    private static PlayerClient instance;
+
+    /**
+     * Constructor
+     */
+    private PlayerClient() {
+
+    }
+
+    /**
+     * Get Singleton instance
+     * @return
+     */
+    public static PlayerClient getInstance() {
+        if(instance == null) {
+            instance = new PlayerClient();
+        }
+        return instance;
+    }
 
     /**
      * Initializes the client by creating a socket for communication

@@ -1,6 +1,7 @@
 package de.vfh.pressanykey.supertetris.game;
 
-import de.vfh.pressanykey.supertetris.SupertetrisApp;
+import de.vfh.pressanykey.supertetris.network.ClientInterface;
+import de.vfh.pressanykey.supertetris.network.PlayerClient;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,7 +14,7 @@ import java.util.ResourceBundle;
 
 /**
  * View Controller for Multiplayer screen
- * @author Claudia Kutter, Ute Mayer
+ * @author Claudia Kutter, Ute Mayer, Michael Richter
  */
 public class JoinViewController extends ViewController {
 
@@ -49,6 +50,10 @@ public class JoinViewController extends ViewController {
     private String playerName;
     private Thread clientThread;
 
+    private PlayerClient client;
+    private ClientInterface clientInterface;
+    private MultiplayerGame game;
+
     /**
      * Initializes the view by creating a new multiplayer game and listening for connecting players
      * @param location
@@ -56,6 +61,10 @@ public class JoinViewController extends ViewController {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        client = PlayerClient.getInstance();
+        clientInterface = ClientInterface.getInstance(client);
+        game = MultiplayerGame.getInstance();
+
         game.setView(this);
 
         // Update playernames on connection
@@ -94,7 +103,7 @@ public class JoinViewController extends ViewController {
         if(game.playerCount.getValue() != 2) {
             Platform.runLater(() -> lblMessage.setText("Dir fehlt ein Mitspieler, um das Spiel zu starten."));
         } else {
-            clientInterFace.sendGameStarted();
+            clientInterface.sendGameStarted();
         }
    }
 
@@ -121,7 +130,7 @@ public class JoinViewController extends ViewController {
             clientThread = new Thread(client);
             clientThread.setDaemon(true);
             clientThread.start();
-            clientInterFace.sendLogin(playerName);
+            clientInterface.sendLogin(playerName);
             game.addMyself(playerName);
             // display information
             client.join(200);

@@ -7,6 +7,12 @@ package network {
     class GameServer
     class PlayerClient
     class PlayerOnServer
+    class MultiBoardViewController
+    class MultiGameController
+    class MultiplayerGame
+    class JoinViewController
+    class CreateViewController
+    class OpponentBoard
 }
 
 package game {
@@ -23,47 +29,44 @@ package game {
     class Stopwatch
 }
 
-package multiplayer {
-    class MultiBoardViewController
-    class MultiGameController
-    class MultiplayerGame
-    class JoinViewController
-    class CreateViewController
-    class OpponentBoard
-}
 
-SupertetrisApp ..> StartViewController
-StartViewController ..> BoardViewController
-StartViewController ..> JoinViewController
-StartViewController ..> CreateViewController
+SupertetrisApp ..> StartViewController : starts
+StartViewController ..> BoardViewController : starts
+StartViewController ..> JoinViewController : starts
+StartViewController ..> CreateViewController : starts
 BoardViewController "1" *--* "1" GameController
 GameController "1" *-- "1" Board
 GameController "1" *-- "1" Stopwatch
 GameController "1" *-- "1" Scores
-BoardListener <-- Board
+BoardListener <|-- Board
 Board "1" *-- "*" Stone
 Board *-- BoardPane
-GameController <-- MultiGameController
+GameController <|-- MultiGameController
 GameController *-- BoardPane
-BoardViewController ..> GameoverViewController
-MultiBoardViewController ..> GameoverViewController
+BoardViewController ..> GameoverViewController : starts
+MultiBoardViewController ..> GameoverViewController : starts
 MultiBoardViewController *-- MultiGameController
 MultiGameController *-- OpponentBoard
 MultiGameController  *-- BoardPane
-MultiplayerGame ..> MultiBoardViewController
+MultiplayerGame ..> MultiBoardViewController : starts
 OpponentBoard  *-- BoardPane
 
-ViewController <-- StartViewController
-ViewController <-- BoardViewController
-ViewController <-- MultiBoardViewController
-ViewController <-- JoinViewController
-ViewController <-- CreateViewController
-ViewController <-- GameoverViewController
+'ViewController <|-- StartViewController
+'ViewController <|-- BoardViewController
+'ViewController <|-- MultiBoardViewController
+'ViewController <|-- JoinViewController
+'ViewController <|-- CreateViewController
+'ViewController <|-- GameoverViewController
 
-ViewController *-- GameServer
-ViewController *-- PlayerClient
-ViewController *-- ClientInterface
-ViewController *--* MultiplayerGame
+JoinViewController *-- PlayerClient
+JoinViewController *-- ClientInterface
+JoinViewController *-- MultiplayerGame
+MultiBoardViewController *-- MultiplayerGame
+MultiGameController *-- ClientInterface
+CreateViewController *-- PlayerClient
+CreateViewController *-- ClientInterface
+CreateViewController *-- MultiplayerGame
+CreateViewController *-- GameServer
 
 ClientInterface *-- PlayerClient
 ClientInterface o-- Actions
@@ -80,6 +83,7 @@ class SupertetrisApp {
 
 abstract class ViewController {
 }
+note right: base class for all \n *ViewController classes
 
 abstract class BoardListener {
     onGameover()

@@ -1,7 +1,6 @@
 package de.vfh.pressanykey.supertetris.game;
 
 
-import de.vfh.pressanykey.supertetris.SupertetrisApp;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,11 +17,10 @@ import java.util.ResourceBundle;
 
 /**
  * The MultiBoardViewController handles the multiplayer view and displays the game state of the opponent.
- * @author Claudia Kutter
+ * @author Claudia Kutter, Michael Richter
  */
 public class MultiBoardViewController extends BoardViewController {
 
-    public Stage currentStage;
     @FXML
     protected StackPane oppBoardPaneContainer;
     @FXML
@@ -42,10 +40,12 @@ public class MultiBoardViewController extends BoardViewController {
     @FXML
     protected BorderPane boardview;
 
+    private MultiplayerGame game;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        game = MultiplayerGame.getInstance();
         game.setView(this);
-        currentStage = SupertetrisApp.getPrimaryStage();
 
         gameController = new MultiGameController();
         gameController.setView(this);

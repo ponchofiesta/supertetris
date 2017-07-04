@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  *
- * @author Claudia Kutter
+ * @author Claudia Kutter, Michael Richter
  */
 @SuppressWarnings("unchecked")
 public class GameServer extends Thread implements Runnable {
@@ -24,6 +24,26 @@ public class GameServer extends Thread implements Runnable {
     private boolean running;
     // List for storing all connected clients
     private List<PlayerOnServer> allPlayers = new ArrayList<>();
+
+    private static GameServer instance;
+
+    /**
+     * Constructor
+     */
+    private GameServer() {
+
+    }
+
+    /**
+     * Get Singleton instance
+     * @return
+     */
+    public static GameServer getInstance() {
+        if(instance == null) {
+            instance = new GameServer();
+        }
+        return instance;
+    }
 
     /**
      * Initializes the server by creating a socket
