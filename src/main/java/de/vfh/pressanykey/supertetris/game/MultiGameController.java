@@ -1,7 +1,10 @@
 package de.vfh.pressanykey.supertetris.game;
 
+import de.vfh.pressanykey.supertetris.SupertetrisApp;
 import de.vfh.pressanykey.supertetris.network.ClientInterface;
 import de.vfh.pressanykey.supertetris.network.PlayerClient;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,6 +80,11 @@ public class MultiGameController extends GameController {
 
         // Send score changes to the server
         scores.addObserver((o, arg) -> client.sendScore(scores));
+
+        // Send logout if connection was established and window is closed
+        Stage stage = SupertetrisApp.getPrimaryStage();
+        Window window = stage.getScene().getWindow();
+        window.setOnCloseRequest(event -> client.sendLogout());
 
     }
 
