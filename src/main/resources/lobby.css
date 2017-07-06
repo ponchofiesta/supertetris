@@ -1,29 +1,46 @@
 #lobbyview {
-    -fx-background-color: #1d4d99;
+    -fx-background-image: url("images/bg_game.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-color: #070707;
+    -fx-background-position: center;
 }
 
 #topbox {
-    -fx-border-width: 0 0 5 0;
+    -fx-border-width: 0 0 3 0;
     -fx-border-style: solid;
-    -fx-border-color: white;
+    -fx-border-color: #f2f2f2;
 }
 
 .button {
-    -fx-font: 14pt "Bungee";
-    -fx-padding: 10;
+    -fx-font: 12pt "Orbitron Medium";
+    -fx-padding: 8;
     -fx-background-color: none;
-    -fx-border-color: white;
+    -fx-border-color: #f2f2f2;
     -fx-border-radius: 0;
-    -fx-text-fill: white;
+    -fx-text-fill: #f2f2f2;
+}
+
+.button:hover {
+    -fx-text-fill: orange;
 }
 
 .label {
-    -fx-text-fill: white;
-    -fx-font: 11pt "Bungee";
+    -fx-text-fill: #f2f2f2;
+    -fx-font: 13pt "Orbitron Bold";
 }
 
 #title {
-    -fx-font-family: "Bungee Outline";
-    -fx-font-size: 26pt;
-    -fx-text-fill: white;
+    -fx-font-family: "UNIVERSALISME";
+    -fx-font-size: 52pt;
+    -fx-text-fill: #f2f2f2;
+}
+
+#lblMessage {
+    -fx-font: 16pt "Orbitron Bold";
+    -fx-text-fill: orange;
+    -fx-padding: 5;
+}
+
+#btnStartGame {
+    -fx-font-size: 14pt;
 }

@@ -12,7 +12,7 @@
          <children>
             <Label fx:id="title" prefHeight="62.0" prefWidth="494.0" text="Supertetris">
                <HBox.margin>
-                  <Insets right="30.0" />
+                  <Insets left="15.0" right="30.0" />
                </HBox.margin>
             </Label>
             <Button fx:id="btnPause" mnemonicParsing="false" onAction="#btnPauseClick" prefHeight="49.0" prefWidth="222.0" text="Pause">

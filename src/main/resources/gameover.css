@@ -6,9 +6,10 @@
     -fx-background-color: rgba(255, 255, 255, .7);
     -fx-padding: 10px;
 }
+
 #gameovergrid .label {
     -fx-text-fill: #000000;
-    -fx-font-size: 20pt;
+    -fx-font: 16pt "Orbitron Bold";
 }
 #btnHome {
 

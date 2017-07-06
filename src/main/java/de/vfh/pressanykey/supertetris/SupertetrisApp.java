@@ -22,9 +22,9 @@ public class SupertetrisApp extends Application {
     public void start(Stage primaryStage) throws Exception{
         try {
             // Load fonts
-            Font.loadFont(getClass().getResourceAsStream("/fonts/BungeeOutline-Regular.ttf"), 36);
-            Font.loadFont(getClass().getResourceAsStream("/fonts/Bungee-Regular.ttf"), 20);
-            Font.loadFont(getClass().getResourceAsStream("/fonts/BungeeHairline-Regular.ttf"), 20);
+            Font.loadFont(getClass().getResourceAsStream("/fonts/Universalisme.ttf"), 20);
+            Font.loadFont(getClass().getResourceAsStream("/fonts/Orbitron-Medium.ttf"), 20);
+            Font.loadFont(getClass().getResourceAsStream("/fonts/Orbitron-Bold.ttf"), 20);
             // Set stage
             this.primaryStage = primaryStage;
             Parent root = FXMLLoader.load(getClass().getResource("/start.fxml"));

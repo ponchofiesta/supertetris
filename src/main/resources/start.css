@@ -2,14 +2,15 @@
 #gameoverview {
     -fx-background-image: url("images/bg_start.jpg");
     -fx-background-repeat: no-repeat;
-    -fx-background-color: #011749;
+    -fx-background-color: #070707;
     -fx-background-position: center;
+    -fx-alignment: center;
 }
 
 .button {
-    -fx-font: 20pt "Bungee";
+    -fx-font: 16pt "Orbitron Medium";
     -fx-padding: 10;
-    -fx-background-color: rgba(255, 255, 255, 0.7);
+    -fx-background-color: rgba(255, 255, 255, 0.6);
     -fx-border-color: white;
     -fx-border-radius: 0;
     -fx-cursor: hand;
@@ -24,7 +25,7 @@
 #titlesuper,
 #titletetris,
 #lblGameover {
-    -fx-font-family: "Bungee Outline";
-    -fx-font-size: 60pt;
+    -fx-font-family: "UNIVERSALISME";
+    -fx-font-size: 80pt;
     -fx-text-fill: white;
 }

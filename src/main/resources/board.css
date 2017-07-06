@@ -1,17 +1,21 @@
 #boardview {
-    -fx-background-color: #1d4d99;
+    -fx-background-image: url("images/bg_game.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-color: #070707;
+    -fx-background-position: center;
 }
 
 #topbox {
-    -fx-border-width: 0 0 5 0;
+    -fx-border-width: 0 0 3 0;
     -fx-border-style: solid;
     -fx-border-color: white;
 }
 
 #title {
-    -fx-font-family: "Bungee Outline";
-    -fx-font-size: 32pt;
+    -fx-font-family: "UNIVERSALISME";
+    -fx-font-size: 50pt;
     -fx-text-fill: white;
+    -fx-padding-left: 10;
 }
 
 /* correct positioning of stones */
@@ -28,12 +32,12 @@
 
 #boardPane {
     -fx-border-style: solid;
-    -fx-border-color: lightblue;
-    -fx-background-color: midnightblue;
+    -fx-border-color: whitesmoke;
+    -fx-background-color: rgba(07, 07, 07, 0.6);
 }
 
 .button {
-    -fx-font: 14pt "Bungee Hairline";
+    -fx-font: 12pt "Orbitron Medium";
     -fx-padding: 10;
     -fx-background-color: none;
     -fx-border-color: white;
@@ -47,7 +51,7 @@
 
 .label {
     -fx-text-fill: white;
-    -fx-font: 11pt "Bungee";
+    -fx-font: 11pt "Orbitron Bold";
 }
 
 .block {

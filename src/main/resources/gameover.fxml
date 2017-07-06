@@ -14,9 +14,12 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="gameoverview" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.vfh.pressanykey.supertetris.game.GameoverViewController">
+<VBox fx:id="gameoverview" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.vfh.pressanykey.supertetris.game.GameoverViewController">
    <children>
-      <Label fx:id="lblGameover" text="Game over" />
+      <Label fx:id="lblGameover" text="Game over" textAlignment="CENTER">
+         <VBox.margin>
+            <Insets bottom="30.0" />
+         </VBox.margin></Label>
       <GridPane fx:id="gameovergrid" GridPane.columnIndex="1" GridPane.rowIndex="1">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -43,7 +46,7 @@
             <Label fx:id="lblOppName" text="" GridPane.columnIndex="2" />
          </children>
          <VBox.margin>
-            <Insets bottom="30.0" left="200.0" right="200.0" top="30.0" />
+            <Insets bottom="30.0" left="200.0" right="200.0" top="40.0" />
          </VBox.margin>
       </GridPane>
       <Button fx:id="btnHome" mnemonicParsing="false" onAction="#btnHomeClick" text="&lt; Start" />
@@ -53,6 +56,6 @@
         <URL value="@gameover.css" />
     </stylesheets>
     <padding>
-        <Insets bottom="30.0" top="30.0" />
+        <Insets bottom="30.0" top="15.0" />
     </padding>
 </VBox>
