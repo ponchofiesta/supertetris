@@ -63,7 +63,7 @@ public class Stone extends Group {
         {0, 1, 0},
         {1, 1, 1},
         {0, 0, 0}
-    }, Color.BISQUE);
+    }, Color.FUCHSIA);
 
     private static final StoneType Z = new StoneType(new int[][]{
         {1, 1, 0},
