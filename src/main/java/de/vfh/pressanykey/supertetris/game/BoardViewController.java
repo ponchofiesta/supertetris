@@ -51,7 +51,7 @@ public class BoardViewController extends ViewController {
     @FXML
     public void btnStopClick(ActionEvent actionEvent) throws Exception {
         gameController.stop();
-        setView("start.fxml");
+        showGameOver(gameController.getScores());
     }
 
     @Override
