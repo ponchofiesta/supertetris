@@ -27,10 +27,12 @@ package game {
     class Stone
     class StoneType
     class Stopwatch
+    class MusicPlayer
 }
 
 
 SupertetrisApp ..> StartViewController : starts
+SupertetrisApp *-- MusicPlayer
 StartViewController ..> BoardViewController : starts
 StartViewController ..> JoinViewController : starts
 StartViewController ..> CreateViewController : starts
@@ -69,9 +71,9 @@ CreateViewController *-- MultiplayerGame
 CreateViewController *-- GameServer
 
 ClientInterface *-- PlayerClient
-ClientInterface o-- Actions
-GameServer o-- Actions
-PlayerClient o-- Actions
+ClientInterface -- Actions
+GameServer -- Actions
+PlayerClient -- Actions
 
 GameServer *-- PlayerOnServer
 
