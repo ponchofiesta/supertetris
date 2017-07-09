@@ -51,6 +51,8 @@ public class BoardViewController extends ViewController {
     @FXML
     public void btnStopClick(ActionEvent actionEvent) throws Exception {
         gameController.stop();
+        MusicPlayer musicPlayer = MusicPlayer.getInstance();
+        musicPlayer.startMusic("sounds/music.mp3", 15);
         showGameOver(gameController.getScores());
     }
 
