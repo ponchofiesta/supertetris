@@ -44,7 +44,7 @@ public class GameController {
         stopwatch = new Stopwatch();
         scores = new Scores();
         className = this.getClass().getSimpleName();
-        musicPlayer = new MusicPlayer();
+        MusicPlayer musicPlayer = MusicPlayer.getInstance();
 
         board.addBoardListener(new BoardListener() {
             @Override

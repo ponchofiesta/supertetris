@@ -36,7 +36,7 @@ public class SupertetrisApp extends Application {
         }
 
         // Play Tetris Music in a Background Thread
-        musicPlayer = new MusicPlayer();
+        MusicPlayer musicPlayer = MusicPlayer.getInstance();
         musicPlayer.startMusic("sounds/music.mp3", MediaPlayer.INDEFINITE);
     }
 

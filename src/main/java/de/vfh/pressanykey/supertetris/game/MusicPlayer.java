@@ -14,6 +14,7 @@ import java.net.URL;
 public class MusicPlayer {
     private Task task;
     private Thread thread;
+    private static MusicPlayer instance;
 
     public void startMusic(String path, int times) {
         task = new Task() {
@@ -31,5 +32,12 @@ public class MusicPlayer {
 
         thread = new Thread(task);
         thread.start();
+    }
+
+    public static MusicPlayer getInstance() {
+        if(instance == null) {
+            instance = new MusicPlayer();
+        }
+        return instance;
     }
 }
