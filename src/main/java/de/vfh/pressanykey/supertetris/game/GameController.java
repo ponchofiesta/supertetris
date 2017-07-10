@@ -54,24 +54,22 @@ public class GameController {
                     stop();
                     view.showGameOver(scores);
                 }
-                
-                musicPlayer.startMusic("sounds/music.mp3", 15);
             }
 
             @Override
             void onDropped() {
-                musicPlayer.startMusic("sounds/sfx_sounds_powerup6.wav", 1);
+                musicPlayer.play("drop");
             }
 
             @Override
             void onRotate() {
-                musicPlayer.startMusic("sounds/sfx_sounds_interaction16.wav", 1);
+                musicPlayer.play("rotate");
             }
 
             @Override
             void onRowDeleted(int count) {
                 scores.rowsDeleted(count);
-                musicPlayer.startMusic("sounds/sfx_sounds_powerup6.wav", 1);
+                musicPlayer.play("rowdelete");
             }
         });
 

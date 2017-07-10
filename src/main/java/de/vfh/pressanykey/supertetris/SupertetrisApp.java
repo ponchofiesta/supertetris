@@ -35,9 +35,15 @@ public class SupertetrisApp extends Application {
             e.printStackTrace();
         }
 
-        // Play Tetris Music in a Background Thread
+        // Initialize MusicPlayer and play background music
         MusicPlayer musicPlayer = MusicPlayer.getInstance();
-        musicPlayer.startMusic("sounds/music.mp3", MediaPlayer.INDEFINITE);
+
+        musicPlayer.add("music", "sounds/music.mp3");
+        musicPlayer.add("drop", "sounds/sfx_sounds_powerup6.wav");
+        musicPlayer.add("rotate", "sounds/sfx_sounds_interaction16.wav");
+        musicPlayer.add("rowdelete", "sounds/sfx_sounds_powerup6.wav");
+
+        musicPlayer.play("music", MediaPlayer.INDEFINITE);
     }
 
     public static Stage getPrimaryStage() {
