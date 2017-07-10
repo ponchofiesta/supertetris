@@ -71,9 +71,9 @@ CreateViewController *-- MultiplayerGame
 CreateViewController *-- GameServer
 
 ClientInterface *-- PlayerClient
-ClientInterface -- Actions
-GameServer -- Actions
-PlayerClient -- Actions
+ClientInterface ..> Actions : use
+GameServer ..> Actions : use
+PlayerClient ..> Actions : use
 
 GameServer *-- PlayerOnServer
 

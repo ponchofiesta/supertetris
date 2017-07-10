@@ -1,0 +1,24 @@
+@startuml
+BoardListener <|-- Board
+GameController *-- Board
+
+BoardListener <. GameController : use
+
+abstract class BoardListener {
+    onGameover()
+    onRowDeleted(int count)
+    onRowAdded()
+    onNext(Stone stone)
+    onDropped()
+    onMove()
+    onRotate()
+    onSpawn(Stone stone)
+}
+
+class Board {
+}
+
+class GameController {
+}
+
+@enduml
